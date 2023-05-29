@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Table, Space, Avatar, Modal, message, Popconfirm } from "antd";
-
+import Footer from "../components/Footer";
 
 interface CustomerProps {
     id: number;
@@ -66,6 +66,7 @@ const HotelBooking = () => {
 
     return (
         <>
+        <div className="flex-grow">
             <div className="justify-evenly w-full p-2 ">
                 <p className="text-xl my-4 ">Airbnb Booking</p>
                 <div className=" bg-white rounded-lg shadow-sm">
@@ -388,6 +389,8 @@ const HotelBooking = () => {
                     </form>
                 </div>
             </Modal>
+        
+            </div>
         </>
     );
 }

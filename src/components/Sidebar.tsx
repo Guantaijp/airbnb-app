@@ -4,22 +4,53 @@ import {
     ShoppingCartOutlined,
     BookOutlined,
     TeamOutlined
-    
+
 } from "@ant-design/icons";
 import '../App.css';
 import Profile from "../images/images.jpeg";
+import { Badge, Drawer, Image, List, Space, Dropdown, Menu } from "antd";
 import { Link } from "react-router-dom";
 
 
 
+
 const Sidebar = () => {
+
+    // once i click profile i want to be directed to the profile page
+    const handleMenuClick = (e: any) => {
+        if (e.key === "logout") {
+            localStorage.removeItem("token");
+            // history.push("/login");
+        }
+        if (e.key === "profile") {
+            // history.push("/adminProfile");
+        }
+
+    };
+
+    const menu = (
+        <Menu onClick={handleMenuClick}>
+            <Menu.Item key="profile">
+                <Link to="/adminProfile">Profile</Link>
+            </Menu.Item>
+            <Menu.Item key="logout">
+                <Link to="/login">Logout</Link>
+            </Menu.Item>
+        </Menu>
+    );
+
+
+
     return (
         <div className="bg-slate-900">
             <div style={{ height: '100vh', display: 'flex' }}>
                 <div style={{ position: 'fixed', top: 0 }}>
-                    <div className="p-10">
-                        <img className="rounded-full w-40 h-40" src={Profile} alt="Profile" />
-                    </div>
+                    <Dropdown overlay={menu} placement="bottomRight">
+
+                        <div className="p-10">
+                            <img className="rounded-full w-40 h-40" src={Profile} alt="Profile" />
+                        </div>
+                    </Dropdown>
 
                     <div className="flex flex-col m-2">
                         <Link to="/" className="flex flex-row mb-8">

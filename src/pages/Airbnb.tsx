@@ -485,6 +485,7 @@ const Airbnb = () => {
                     </form>
                 </div>
             </Modal>
+            
         </>
     );
 }
