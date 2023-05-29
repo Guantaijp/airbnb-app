@@ -1,14 +1,29 @@
 import { Link } from 'react-router-dom';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useContext } from 'react';
 import lottie, { AnimationItem } from 'lottie-web';
 import animation from '../images/animation.json';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import { Button, Input, Space } from 'antd';
+import { AuthContext } from '../AuthContext';
+
+
 
 const Login = () => {
 
     const animationContainer = useRef<HTMLDivElement>(null);
     const [passwordVisible, setPasswordVisible] = React.useState(false);
+    const [email, setEmail] = React.useState<string>("");
+    const [password, setPassword] = React.useState<string>("");
+
+
+    const { login } = useContext(AuthContext);
+
+    const handleLogin = () => {
+        login(email, password, "user");
+    };
+
+
+
 
     useEffect(() => {
         let anim: AnimationItem | null = null;
@@ -43,12 +58,21 @@ const Login = () => {
                                 <p className="mt-2 text-3xl font-extrabold text-gray-900">Login to your account</p>
                             </div>
                             <div className="mt-8 max-w-[300px]">
-                                <div className=" space-y-6">
+                                <form 
+                                    onSubmit={(e) => {
+                                        e.preventDefault();
+                                        handleLogin();
+                                    }}
+                                className=" space-y-6">
                                     <Input
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
                                         placeholder="Email"
                                         style={{ border : "1px solid #95873C" }}
                                     />
                                     <Input.Password
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
                                         placeholder="Password"
                                         style={{ border : "1px solid #95873C" }}
                                         iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
@@ -65,7 +89,7 @@ const Login = () => {
                                             Sign up
                                         </Link>
                                     </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>

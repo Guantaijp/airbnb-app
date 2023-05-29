@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useContext } from 'react';
 import lottie, { AnimationItem } from 'lottie-web';
 import animation from '../images/animation.json';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import { Button, Input, Space } from 'antd';
+import { AuthContext } from '../AuthContext';
+
 
 
 
@@ -11,6 +13,17 @@ const Signup = () => {
 
     const animationContainer = useRef<HTMLDivElement>(null);
     const [passwordVisible, setPasswordVisible] = React.useState(false);
+    const [email, setEmail] = React.useState<string>("");
+    const [password, setPassword] = React.useState<string>("");
+    const [name, setName] = React.useState<string>("");
+    const [confirmPassword, setConfirmPassword] = React.useState<string>("");
+
+    const { register } = useContext(AuthContext);
+
+    const handleRegister = () => {
+        register(name, email, password, confirmPassword);
+    };
+
 
     useEffect(() => {
         let anim: AnimationItem | null = null;
@@ -31,8 +44,6 @@ const Signup = () => {
         };
     }, []);
 
-
-
     return (
         <>
             <div className="flex flex-col items-center justify-center min-h-screen ">
@@ -45,23 +56,36 @@ const Signup = () => {
                                 <p className="mt-2 text-3xl font-extrabold text-gray-900">Sign up for an account</p>
                             </div>
                             <div className="mt-8 max-w-[300px]">
-                                <div className="w-full space-y-6">
-                                <Input
+                                <form
+                                    onSubmit={(e) => {
+                                        e.preventDefault();
+                                        handleRegister();
+                                    }}
+                                    className="w-full space-y-6">
+                                    <Input
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
                                         placeholder="Name"
-                                        style={{ border : "1px solid #95873C" }}
+                                        style={{ border: "1px solid #95873C" }}
                                     />
                                     <Input
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
                                         placeholder="Email"
-                                        style={{ border : "1px solid #95873C" }}
+                                        style={{ border: "1px solid #95873C" }}
                                     />
-                                  <Input.Password
+                                    <Input.Password
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
                                         placeholder="Password"
-                                        style={{ border : "1px solid #95873C" }}
+                                        style={{ border: "1px solid #95873C" }}
                                         iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
                                     />
-                                       <Input.Password
+                                    <Input.Password
+                                        value={confirmPassword}
+                                        onChange={(e) => setConfirmPassword(e.target.value)}
                                         placeholder="Confirm Password"
-                                        style={{ border : "1px solid #95873C" }}
+                                        style={{ border: "1px solid #95873C" }}
                                         iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
                                     />
                                     <div className="w-full">
@@ -78,7 +102,7 @@ const Signup = () => {
                                             Login
                                         </Link>
                                     </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>
