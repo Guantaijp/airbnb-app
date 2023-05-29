@@ -7,6 +7,8 @@ import Airbnb from "../pages/Airbnb";
 import Transactions from "../pages/Transactions";
 import HotelBooking from "../pages/HotelBooking";
 import ProfilePage from "../pages/ProfilePage";
+import Login from "../pages/Login";
+import Signup from "../pages/Signup";
 
 const AppRoutes = () => {
     return (
@@ -19,6 +21,8 @@ const AppRoutes = () => {
             <Route path="/transactions" element={<Transactions />} />
             <Route path="/hotelbookings" element={<HotelBooking />} />
             <Route path="/adminProfile" element={<ProfilePage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
         </Routes>
     );
 };
