@@ -45,11 +45,11 @@ const Login = () => {
                             <div className="mt-8 max-w-[300px]">
                                 <div className=" space-y-6">
                                     <Input
-                                        placeholder="email"
+                                        placeholder="Email"
                                         style={{ border : "1px solid #95873C" }}
                                     />
                                     <Input.Password
-                                        placeholder="password"
+                                        placeholder="Password"
                                         style={{ border : "1px solid #95873C" }}
                                         iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
                                     />
