@@ -4,8 +4,8 @@ import Dashboard from "../pages/Dashboard";
 import Inventory from "../pages/Inventory";
 import Orders from "../pages/Orders";
 import Airbnb from "../pages/Airbnb";
-import HotelList from "../pages/HotelList";
-import AddHotel from "../pages/AddHotel";
+import Transactions from "../pages/Transactions";
+import HotelBooking from "../pages/HotelBooking";
 
 const AppRoutes = () => {
     return (
@@ -15,8 +15,8 @@ const AppRoutes = () => {
             <Route path="/orders" element={<Orders />} />
             <Route path="/customers" element={<Customers />} />
             <Route path="/airbnb" element={<Airbnb />} />
-            <Route path="/hotellistings" element={<HotelList />} />
-            <Route path="/addhotel" element={<AddHotel />} />
+            <Route path="/transactions" element={<Transactions />} />
+            <Route path="/hotelbookings" element={<HotelBooking />} />
         </Routes>
     );
 };

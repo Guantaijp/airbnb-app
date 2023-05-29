@@ -36,14 +36,14 @@ const Sidebar = () => {
                                 Airbnbs
                             </h1>
                         </Link>
-                        <Link to="/orders" className="flex flex-row mb-8">
+                        <Link to="/transactions" className="flex flex-row mb-8">
                             < ShoppingCartOutlined
                                 className="text-3xl text-white hover:text-gray-400 mr-2" />
                             <h1 className="text-start text-2xl font-bold text-white hover:text-gray-400">
                                 Transactions
                             </h1>
                         </Link>
-                        <Link to="/customers" className="flex flex-row mb-8">
+                        <Link to="/hotelbookings" className="flex flex-row mb-8">
                             < BookOutlined
                                 className="text-3xl text-white hover:text-gray-400 mr-2" />
                             <h1 className="text-start text-2xl font-bold text-white hover:text-gray-400">

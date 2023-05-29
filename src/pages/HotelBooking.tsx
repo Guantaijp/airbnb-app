@@ -21,10 +21,7 @@ interface ApiResponse {
 
 
 
-
-
-const Airbnb = () => {
-
+const HotelBooking = () => {
     const [page, setPage] = useState(1);
     const [activeButton, setActiveButton] = useState(1);
     const [loading, setLoading] = useState<boolean>(true);
@@ -70,23 +67,23 @@ const Airbnb = () => {
     return (
         <>
             <div className="justify-evenly w-full p-2 ">
-                <p className="text-xl my-4 ">Airbnb</p>
+                <p className="text-xl my-4 ">Airbnb Booking</p>
                 <div className=" bg-white rounded-lg shadow-sm">
-                    <p className=" text-xl p-2 text-white w-full bg-[#95873C]">AirBnbs Listing </p>
+                    <p className=" text-xl p-2 text-white w-full bg-[#95873C]">AirBnbs Booking List </p>
                     <div className="flex flex-row mt-4 ml-8">
                         <button
                             className={` p-2  ${activeButton === 1 ? 'bg-[#95873C] text-white' : 'bg-white text-black'
                                 }`}
                             onClick={handleClick1}
                         >
-                            Hotel List
+                            Bnb Bookings
                         </button>
                         <button
                             className={` p-2  ${activeButton === 2 ? 'bg-[#95873C] text-white' : 'bg-white text-black'
                                 }`}
                             onClick={handleClick}
                         >
-                            Add Hotel
+                            Make Booking
                         </button>
                     </div>
 
@@ -97,23 +94,29 @@ const Airbnb = () => {
                                     loading={loading}
                                     columns={[
                                         {
-                                            title: "Hotel Name",
-                                            dataIndex: "image",
-                                            render: (link: string) => {
-                                                return <Avatar src={link} />;
-                                            },
+                                            title: "Customer",
+                                            dataIndex: "firstName",
+
                                         },
                                         {
-                                            title: "Location",
+                                            title: "Hotel",
                                             dataIndex: "firstName",
                                         },
                                         {
-                                            title: "Price",
+                                            title: "From",
                                             dataIndex: "lastName",
                                         },
                                         {
-                                            title: "Beds",
+                                            title: "To",
                                             dataIndex: "email",
+                                        },
+                                        {
+                                            title: "Phone Number",
+                                            dataIndex: "phone",
+                                        },
+                                        {
+                                            title: "Amount Paid",
+                                            dataIndex: "address",
                                         },
 
                                         {
@@ -139,7 +142,7 @@ const Airbnb = () => {
                                             ),
                                         },
                                     ]}
-                                    
+
                                     dataSource={dataSource}
                                     pagination={{
                                         pageSize: 10,
@@ -152,16 +155,16 @@ const Airbnb = () => {
                                     <form className="justify-center">
                                         <div className="flex flex-row m-4">
                                             <div className="flex flex-col flex-grow mr-4">
-                                                <label className="text-sm">Hotel Name</label>
+                                                <label className="text-sm">Customer Name</label>
                                                 <input
                                                     type="text"
                                                     className="border border-gray-300 rounded-sm p-2"
-                                                    placeholder="Hotel Name"
+                                                    placeholder="customer Name"
                                                 />
                                             </div>
 
                                             <div className="flex flex-col flex-grow mr-4">
-                                                <label className="text-sm">Location</label>
+                                                <label className="text-sm">Mobile Number</label>
                                                 <input
                                                     type="text"
                                                     className="border border-gray-300 rounded-sm p-2"
@@ -170,7 +173,7 @@ const Airbnb = () => {
                                             </div>
 
                                             <div className="flex flex-col flex-grow">
-                                                <label className="text-sm">Price</label>
+                                                <label className="text-sm">Amount Paid</label>
                                                 <input
                                                     type="number"
                                                     className="border border-gray-300 rounded-sm p-2"
@@ -189,8 +192,16 @@ const Airbnb = () => {
                                                 />
                                             </div>
 
+                                            <div className="flex flex-col flex-grow mr-4">
+                                                <label className="text-sm">From </label>
+                                                <input
+                                                    type="text"
+                                                    className="border border-gray-300 rounded-sm p-2"
+                                                    placeholder="About"
+                                                />
+                                            </div>
                                             <div className="flex flex-col flex-grow">
-                                                <label className="text-sm">About</label>
+                                                <label className="text-sm">To </label>
                                                 <input
                                                     type="text"
                                                     className="border border-gray-300 rounded-sm p-2"
@@ -198,114 +209,6 @@ const Airbnb = () => {
                                                 />
                                             </div>
                                         </div>
-
-
-                                        <label className="text-sm ml-4">Upload Images</label>
-
-                                        <div className="flex flex-row m-4">
-                                            <div className="flex flex-col flex-grow mr-4">
-                                                <input
-                                                    type="file"
-                                                    className="border border-gray-300 rounded-sm p-2"
-                                                    placeholder="Upload Image"
-                                                />
-                                            </div>
-
-                                            <div className="flex flex-col flex-grow mr-4">
-                                                <input
-                                                    type="file"
-                                                    className="border border-gray-300 rounded-sm p-2"
-                                                    placeholder="Upload Image"
-                                                />
-                                            </div>
-
-                                            <div className="flex flex-col flex-grow">
-                                                <input
-                                                    type="file"
-                                                    className="border border-gray-300 rounded-sm p-2"
-                                                    placeholder="Upload Image"
-                                                />
-                                            </div>
-                                        </div>
-
-
-                                        <div className="flex flex-row m-4">
-                                            <div className="flex flex-col flex-grow mr-4">
-                                                <input
-                                                    type="file"
-                                                    className="border border-gray-300 rounded-sm p-2"
-                                                    placeholder="Upload Image"
-                                                />
-                                            </div>
-
-                                            <div className="flex flex-col flex-grow mr-4">
-                                                <input
-                                                    type="file"
-                                                    className="border border-gray-300 rounded-sm p-2"
-                                                    placeholder="Upload Image"
-                                                />
-                                            </div>
-
-                                            <div className="flex flex-col flex-grow">
-                                                <input
-                                                    type="file"
-                                                    className="border border-gray-300 rounded-sm p-2"
-                                                    placeholder="Upload Image"
-                                                />
-                                            </div>
-                                        </div>
-
-
-                                        <label className="text-sm ml-4">Add Amenities</label>
-
-                                        <div className="flex flex-row m-4">
-                                            <div className="flex flex-col flex-grow mr-4">
-                                                <input
-                                                    type="text"
-                                                    className="border border-gray-300 rounded-sm p-2"
-                                                    placeholder="Amenity"
-                                                />
-                                            </div>
-                                            <div className="flex flex-col flex-grow mr-4">
-                                                <input
-                                                    type="text"
-                                                    className="border border-gray-300 rounded-sm p-2"
-                                                    placeholder="Amenity"
-                                                />
-                                            </div>
-                                            <div className="flex flex-col flex-grow mr-4">
-                                                <input
-                                                    type="text"
-                                                    className="border border-gray-300 rounded-sm p-2"
-                                                    placeholder="Amenity"
-                                                />
-                                            </div>
-                                        </div>
-                                        <div className="flex flex-row m-4">
-                                            <div className="flex flex-col flex-grow mr-4">
-                                                <input
-                                                    type="text"
-                                                    className="border border-gray-300 rounded-sm p-2"
-                                                    placeholder="Amenity"
-                                                />
-                                            </div>
-                                            <div className="flex flex-col flex-grow mr-4">
-                                                <input
-                                                    type="text"
-                                                    className="border border-gray-300 rounded-sm p-2"
-                                                    placeholder="Amenity"
-                                                />
-                                            </div>
-                                            <div className="flex flex-col flex-grow mr-4">
-                                                <input
-                                                    type="text"
-                                                    className="border border-gray-300 rounded-sm p-2"
-                                                    placeholder="Amenity"
-                                                />
-                                            </div>
-                                        </div>
-
-                                        {/* Button */}
                                         <button className="bg-[#95873C] text-center  text-white p-2  w-1/4 m-4" type='submit'>Add Hotel</button>
                                     </form>
                                 </div>
@@ -489,6 +392,5 @@ const Airbnb = () => {
     );
 }
 
-export default Airbnb;
 
-
+export default HotelBooking
