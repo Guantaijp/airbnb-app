@@ -29,7 +29,7 @@ const Sidebar = () => {
                                 Dashboard
                             </h1>
                         </Link>
-                        <Link to="/aibnb" className="flex flex-row mb-8">
+                        <Link to="/airbnb" className="flex flex-row mb-8">
                             < ShopOutlined
                                 className="text-3xl text-white hover:text-gray-400 mr-2" />
                             <h1 className="text-start text-2xl font-bold text-white hover:text-gray-400">
