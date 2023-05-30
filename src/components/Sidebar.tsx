@@ -13,15 +13,16 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from '../AuthContext';
 import { useContext } from "react";
+import { AdminsProps } from "../App";
 
+interface SidebarProps {
+    adminProps: AdminsProps[];
+  }
 
+  const Sidebar: React.FC<SidebarProps> = ({ adminProps }) => {
 
-const Sidebar = () => {
     const navigate = useNavigate();
-
     const {logout} = useContext(AuthContext);
-
-
     const handleMenuClick = (e: any) => {
         if (e.key === "logout") {
             localStorage.removeItem("token");
@@ -31,8 +32,10 @@ const Sidebar = () => {
         if (e.key === "profile") {
             // history.push("/adminProfile");
         }
-
     };
+
+
+
 
     const menu = (
         <Menu onClick={handleMenuClick}>

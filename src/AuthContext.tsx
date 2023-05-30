@@ -1,5 +1,9 @@
 import React, { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Alert, Space } from 'antd';
+import { error } from "console";
+import { message } from 'antd';
+
 
 export interface User {
   // Define the properties of the User object
@@ -45,15 +49,11 @@ export default function AuthProvider({
   const [admin, setAdmin] = useState<Admin | undefined>();
 
   // login
-  const login = (
-    email: string,
-    password: string,
-    userType: string
-  ): void => {
-    fetch("http://127.0.0.1:4000/login", {
-      method: "POST",
+  const login = (email: string, password: string, userType: string): void => {
+    fetch('http://127.0.0.1:4000/login', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({ email, password, userType }),
     })
@@ -61,16 +61,23 @@ export default function AuthProvider({
       .then((response) => {
         setOnChange(!change);
         if (response.error) {
+          message.error('Wrong email or password');
         } else if (response.user) {
+          message.success('Login successful');
           setUser(response.user);
-          sessionStorage.setItem("user", JSON.stringify(response.user));
-          sessionStorage.setItem("jwtToken", response.jwt);
-          navigate("/");
+          localStorage.setItem('token', response.jwt);
+          localStorage.setItem('user', JSON.stringify(response.user));
+          sessionStorage.setItem('user', JSON.stringify(response.user));
+          sessionStorage.setItem('jwtToken', response.jwt);
+          navigate('/');
         } else if (response.admin) {
+          message.success('Welcome Admin');
           setAdmin(response.admin);
-          sessionStorage.setItem("admin", JSON.stringify(response.admin));
-          sessionStorage.setItem("jwtToken", response.jwt);
-          navigate("/airbnb");
+          localStorage.setItem('token', response.jwt);
+          localStorage.setItem('admin', JSON.stringify(response.admin));
+          sessionStorage.setItem('admin', JSON.stringify(response.admin));
+          sessionStorage.setItem('jwtToken', response.jwt);
+          navigate('/airbnb');
         }
       });
   };

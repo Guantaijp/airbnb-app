@@ -70,7 +70,7 @@ const Airbnb = () => {
     return (
         <>
             <div className="justify-evenly w-full p-8 ">
-                <p className="text-xl my-4 ">Airbnb</p>
+                <p className="text-xl my-8 ">Airbnb</p>
                 <div className=" bg-white rounded-lg shadow-sm">
                     <p className=" text-xl p-2 text-white w-full bg-[#95873C]">AirBnbs Listing </p>
                     <div className="flex flex-row mt-4 ml-8">

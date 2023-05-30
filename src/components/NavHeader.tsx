@@ -1,12 +1,24 @@
 import { BellFilled, MailOutlined } from "@ant-design/icons";
-import { Badge, Drawer,List, Space, Dropdown, Menu } from "antd";
+import { Badge, Drawer, List, Space, Dropdown, Menu } from "antd";
 import { useState } from "react";
 import Profile from "../images/download.jpeg";
 import { Link } from "react-router-dom";
+import { AdminsProps } from "../App";
+
+interface NavHeaderProps {
+  adminProps: AdminsProps[];
+  setAdmin: (admin: AdminsProps[]) => void;
+  
+}
 
 
-
-const NavHeader = () => {
+const NavHeader: React.FC<NavHeaderProps> = ({ adminProps, setAdmin}) => {
+  
+      const adminData = JSON.parse(sessionStorage.getItem('admin') || '{}');
+      const loggedAdmin = adminProps.find((admin: AdminsProps) => admin.id === adminData.id);
+      const loggedAdminEmail = loggedAdmin?.email;
+     
+  
 
   const [commentsOpen, setCommentsOpen] = useState<boolean>(false);
   const [notificationsOpen, setNotificationsOpen] = useState<boolean>(false);
@@ -16,12 +28,9 @@ const NavHeader = () => {
   const handleMenuClick = (e: any) => {
     if (e.key === "logout") {
       localStorage.removeItem("token");
-      // history.push("/login");
     }
     if (e.key === "profile") {
-      // history.push("/adminProfile");
     }
-
   };
 
   const menu = (
@@ -34,6 +43,8 @@ const NavHeader = () => {
       </Menu.Item>
     </Menu>
   );
+
+
 
 
 
@@ -64,6 +75,7 @@ const NavHeader = () => {
           <Dropdown overlay={menu} placement="bottomRight">
             <img className="ml-2" width={40} src={Profile} alt="Profile" />
           </Dropdown>
+          < p className="ml-2 mt-2  text-xl" >{loggedAdminEmail}</p>
         </Space>
       </div>
 
