@@ -7,11 +7,10 @@ const PageContent = () => {
     return (
         <>
             <NavHeader />
-            <div className="PageContent m-12">
+             <div className="PageContent m-12">
                 <AppRoutes />
-                
             </div>
-           
+
         </>
     );
 };

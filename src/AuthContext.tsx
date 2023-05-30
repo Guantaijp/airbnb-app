@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState, useContext } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export interface User {
@@ -107,6 +107,9 @@ export default function AuthProvider({
   };
 
   const logout = (): void => {
+    sessionStorage.removeItem("jwtToken");
+    sessionStorage.removeItem("user");
+    localStorage.removeItem("token");
     sessionStorage.clear();
     navigate("/login");
   };

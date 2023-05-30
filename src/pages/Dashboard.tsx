@@ -135,7 +135,7 @@ const Dashboard = () => {
 
 
     return (
-        <div className="flex flex-col justify-center ">
+        <div className="flex flex-col justify-center m-8 ">
             <h1 className="text-xl mt-8 font-bold">DashBoard</h1>
 
             <Space direction="horizontal">

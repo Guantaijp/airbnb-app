@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useContext } from 'react';
 import lottie, { AnimationItem } from 'lottie-web';
 import animation from '../images/animation.json';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
-import { Button, Input, Space } from 'antd';
+import {  Input, } from 'antd';
 import { AuthContext } from '../AuthContext';
 
 
@@ -12,7 +12,7 @@ import { AuthContext } from '../AuthContext';
 const Signup = () => {
 
     const animationContainer = useRef<HTMLDivElement>(null);
-    const [passwordVisible, setPasswordVisible] = React.useState(false);
+    // const [passwordVisible, setPasswordVisible] = React.useState(false);
     const [email, setEmail] = React.useState<string>("");
     const [password, setPassword] = React.useState<string>("");
     const [name, setName] = React.useState<string>("");

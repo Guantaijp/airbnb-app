@@ -4,8 +4,8 @@ import Profile from "../images/images.jpeg"
 const ProfilePage = () => {
     return (
         <>
-            <div className="justify-evenly w-full p-2 ">
-                <p className="text-xl my-4  "> Profile </p>
+            <div className="justify-evenly w-full p-8 ">
+                <p className="text-xl my-8  "> Profile </p>
                 <div className=" bg-white rounded-lg shadow-sm">
                     <p className=" text-xl p-2 text-white w-full bg-[#95873C]">My Profile</p>
                     <div className="flex flex-col mx-8">
