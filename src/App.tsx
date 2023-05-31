@@ -23,6 +23,7 @@ export interface AdminsProps {
   email: string;
   name: string;
   password: string;
+  imageUrl: string;
   setAdmin: (admin: AdminsProps[]) => void;
 }
 
@@ -31,10 +32,7 @@ export interface AdminsProps {
 
 function App() {
 
-  const [admin, setAdmin] = React.useState<AdminsProps[]>([]);
-    
-  const adminData = JSON.parse(sessionStorage.getItem('admin') || '{}');
-  
+  const [admin, setAdmin] = React.useState<AdminsProps[]>([]);  
   // Fetch the admins and set the initial form state
   React.useEffect(() => {
     fetch("http://127.0.0.1:4000/admins")

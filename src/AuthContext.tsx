@@ -25,24 +25,14 @@ interface AuthContextData {
   user: User | undefined;
   admin: Admin | undefined;
   login: (email: string, password: string, userType: string) => void;
-  register: (
-    name: string,
-    email: string,
-    password: string,
-    confirmPassword: string
-  ) => void;
+  register: (name: string,email: string,password: string,confirmPassword: string ) => void;
   logout: () => void;
 }
 
-export const AuthContext = createContext<AuthContextData>(
-  {} as AuthContextData
-);
+export const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
-export default function AuthProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function AuthProvider({children}: {children: React.ReactNode;}) {
+  
   const navigate = useNavigate();
   const [user, setUser] = useState<User | undefined>();
   const [change, setOnChange] = useState<boolean>(false);

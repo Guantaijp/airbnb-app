@@ -8,17 +8,16 @@ import { AdminsProps } from "../App";
 interface NavHeaderProps {
   adminProps: AdminsProps[];
   setAdmin: (admin: AdminsProps[]) => void;
-  
 }
 
 
-const NavHeader: React.FC<NavHeaderProps> = ({ adminProps, setAdmin}) => {
-  
-      const adminData = JSON.parse(sessionStorage.getItem('admin') || '{}');
-      const loggedAdmin = adminProps.find((admin: AdminsProps) => admin.id === adminData.id);
-      const loggedAdminEmail = loggedAdmin?.email;
-     
-  
+const NavHeader: React.FC<NavHeaderProps> = ({ adminProps, setAdmin }) => {
+
+  const adminData = JSON.parse(sessionStorage.getItem('admin') || '{}');
+  const loggedAdmin = adminProps.find((admin: AdminsProps) => admin.id === adminData.id);
+  const loggedAdminEmail = loggedAdmin?.email;
+
+
 
   const [commentsOpen, setCommentsOpen] = useState<boolean>(false);
   const [notificationsOpen, setNotificationsOpen] = useState<boolean>(false);
