@@ -10,6 +10,7 @@ interface OwnerData {
   image: string | File | null;
 }
 
+
 const ProfilePage = () => {
   const [ownerData, setOwnerData] = useState<OwnerData[]>([]);
   const [name, setName] = useState<string>("");

@@ -1,48 +1,110 @@
-import { useEffect, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState, useEffect } from "react";
 import { Table, Space, Avatar, Modal, message, Popconfirm } from "antd";
+import { AdminsProps } from "../App";
 
 
-interface CustomerProps {
+interface HotelData {
     id: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone: string;
-    address: {
-        address: string;
-        city: string;
+    name: string;
+    location: string;
+    price: number;
+    beds: number;
+    images: string | FileList | null;
+    category: string;
+    description: string;
+    amenity: string;
+
+}
+
+interface BnbAdminData {
+    adminProps: AdminsProps[];
+}
+
+
+const Airbnb: React.FC<BnbAdminData> = ({ adminProps }) => {
+
+
+    const adminData = JSON.parse(sessionStorage.getItem('admin') || '{}');
+    const loggedAdmin = adminProps.find((admin: AdminsProps) => admin.id === adminData.id);
+    const loggedAdminId = loggedAdmin?.id;
+
+    // =======================================================================================================================================================================================================
+
+    const [name, setName] = useState<string>("");
+    const [location, setLocation] = useState<string>("");
+    const [price, setPrice] = useState<number>(0);
+    const [beds, setBeds] = useState<number>(0);
+    const [images, setImages] = useState<FileList | null>(null);
+    const [category, setCategory] = useState<string>("");
+    const [description, setDescription] = useState<string>("");
+    const [amenity, setAmenity] = useState<string>("");
+
+    const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setName(event.target.value);
     };
-    image: string;
-}
+    const handleLocationChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setLocation(event.target.value);
+    };
+    const handlePriceChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setPrice(Number(event.target.value));
+    };
+    const handleBedsChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setBeds(Number(event.target.value));
+    };
+    const handleImagesChange = (event: ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files) {
+            setImages(event.target.files);
+        }
+    };
+    const handleCategoryChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setCategory(event.target.value);
+    };
+    const handleDescriptionChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setDescription(event.target.value);
+    };
+    const handleAmenityChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setAmenity(event.target.value);
+    };
 
-interface ApiResponse {
-    users: CustomerProps[];
-}
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const formData = new FormData();
+        formData.append("name", name);
+        formData.append("location", location);
+        formData.append("price", String(price));
+        formData.append("beds", String(beds));
 
+        if (images) {
+            for (let i = 0; i < images.length; i++) {
+                formData.append("images", images[i]);
+            }
+        }
 
+        formData.append("category", category);
+        formData.append("description", description);
+        formData.append("amenity", amenity);
+        formData.append("admin_id", String(loggedAdminId));
 
+        fetch("http://127.0.0.1:4000/airbnbs", {
+            method: "POST",
+            body: formData,
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data);
+                message.success("Hotel added successfully");
+            })
+            .catch((err) => {
+                console.log(err);
+                message.error("Hotel not added");
+            });
+    };
 
-
-const Airbnb = () => {
-
+    // =======================================================================================================================================================================================================
     const [page, setPage] = useState(1);
     const [activeButton, setActiveButton] = useState(1);
     const [loading, setLoading] = useState<boolean>(true);
     const [open, setOpen] = useState(false);
-    const [dataSource, setDataSource] = useState<CustomerProps[]>([]);
-
-    useEffect(() => {
-        setLoading(true);
-        fetch("https://dummyjson.com/users")
-            .then((response) => response.json())
-            .then((json: ApiResponse) => {
-                // console.log(json);
-                setDataSource(json.users);
-                setLoading(false);
-            });
-    }, []);
-
-
 
     const handleClick1 = () => {
         setLoading(true)
@@ -65,6 +127,11 @@ const Airbnb = () => {
         console.log("cancel");
         message.error('Click on No');
     };
+    // =======================================================================================================================================================================================================
+
+
+
+
 
 
     return (
@@ -94,7 +161,7 @@ const Airbnb = () => {
                         <div className="flex flex-col justify-center border-2 border-[#95873C]  mb-8">
                             {page === 1 && (
                                 <Table
-                                    loading={loading}
+
                                     columns={[
                                         {
                                             title: "Hotel Name",
@@ -139,8 +206,8 @@ const Airbnb = () => {
                                             ),
                                         },
                                     ]}
-                                    
-                                    dataSource={dataSource}
+
+
                                     pagination={{
                                         pageSize: 10,
                                     }}
@@ -149,11 +216,15 @@ const Airbnb = () => {
 
                             {page === 2 && (
                                 <div>
-                                    <form className="justify-center">
+                                    <form
+                                        onSubmit={handleSubmit}
+                                        className="justify-center">
                                         <div className="flex flex-row m-4">
                                             <div className="flex flex-col flex-grow mr-4">
                                                 <label className="text-sm">Hotel Name</label>
                                                 <input
+                                                    value={name}
+                                                    onChange={handleNameChange}
                                                     type="text"
                                                     className="border border-gray-300 rounded-sm p-2"
                                                     placeholder="Hotel Name"
@@ -163,6 +234,8 @@ const Airbnb = () => {
                                             <div className="flex flex-col flex-grow mr-4">
                                                 <label className="text-sm">Location</label>
                                                 <input
+                                                    value={location}
+                                                    onChange={handleLocationChange}
                                                     type="text"
                                                     className="border border-gray-300 rounded-sm p-2"
                                                     placeholder="Location"
@@ -172,6 +245,8 @@ const Airbnb = () => {
                                             <div className="flex flex-col flex-grow">
                                                 <label className="text-sm">Price</label>
                                                 <input
+                                                    value={price}
+                                                    onChange={handlePriceChange}
                                                     type="number"
                                                     className="border border-gray-300 rounded-sm p-2"
                                                     placeholder="Price"
@@ -183,7 +258,9 @@ const Airbnb = () => {
                                             <div className="flex flex-col flex-grow mr-4">
                                                 <label className="text-sm">Beds</label>
                                                 <input
-                                                    type="text"
+                                                    value={beds}
+                                                    onChange={handleBedsChange}
+                                                    type="number"
                                                     className="border border-gray-300 rounded-sm p-2"
                                                     placeholder="Beds"
                                                 />
@@ -192,6 +269,8 @@ const Airbnb = () => {
                                             <div className="flex flex-col flex-grow">
                                                 <label className="text-sm">About</label>
                                                 <input
+                                                    value={description}
+                                                    onChange={handleDescriptionChange}
                                                     type="text"
                                                     className="border border-gray-300 rounded-sm p-2"
                                                     placeholder="About"
@@ -205,6 +284,47 @@ const Airbnb = () => {
                                         <div className="flex flex-row m-4">
                                             <div className="flex flex-col flex-grow mr-4">
                                                 <input
+                                                    onChange={handleImagesChange}
+                                                    type="file"
+                                                    className="border border-gray-300 rounded-sm p-2"
+                                                    placeholder="Upload Images"
+                                                    multiple
+                                                />
+                                                {images && images.length > 0 && (
+                                                    <div>
+                                                        <p>{`${images.length} ${images.length === 1 ? "image" : "images"} selected`}</p>
+                                                        <ul>
+                                                            {Array.from(images).map((image, index) => (
+                                                                <li key={index}>{image.name}</li>
+                                                            ))}
+                                                        </ul>
+                                                    </div>
+                                                )}
+                                            </div>
+
+
+
+                                            {/* <div className="flex flex-col flex-grow mr-4">
+                                                <input
+                                                    type="file"
+                                                    className="border border-gray-300 rounded-sm p-2"
+                                                    placeholder="Upload Image"
+                                                />
+                                            </div>
+
+                                            <div className="flex flex-col flex-grow">
+                                                <input
+                                                    type="file"
+                                                    className="border border-gray-300 rounded-sm p-2"
+                                                    placeholder="Upload Image"
+                                                />
+                                            </div> */}
+                                        </div>
+
+
+                                        {/* <div className="flex flex-row m-4">
+                                            <div className="flex flex-col flex-grow mr-4">
+                                                <input
                                                     type="file"
                                                     className="border border-gray-300 rounded-sm p-2"
                                                     placeholder="Upload Image"
@@ -226,34 +346,7 @@ const Airbnb = () => {
                                                     placeholder="Upload Image"
                                                 />
                                             </div>
-                                        </div>
-
-
-                                        <div className="flex flex-row m-4">
-                                            <div className="flex flex-col flex-grow mr-4">
-                                                <input
-                                                    type="file"
-                                                    className="border border-gray-300 rounded-sm p-2"
-                                                    placeholder="Upload Image"
-                                                />
-                                            </div>
-
-                                            <div className="flex flex-col flex-grow mr-4">
-                                                <input
-                                                    type="file"
-                                                    className="border border-gray-300 rounded-sm p-2"
-                                                    placeholder="Upload Image"
-                                                />
-                                            </div>
-
-                                            <div className="flex flex-col flex-grow">
-                                                <input
-                                                    type="file"
-                                                    className="border border-gray-300 rounded-sm p-2"
-                                                    placeholder="Upload Image"
-                                                />
-                                            </div>
-                                        </div>
+                                        </div> */}
 
 
                                         <label className="text-sm ml-4">Add Amenities</label>
@@ -261,6 +354,8 @@ const Airbnb = () => {
                                         <div className="flex flex-row m-4">
                                             <div className="flex flex-col flex-grow mr-4">
                                                 <input
+                                                    value={amenity}
+                                                    onChange={handleAmenityChange}
                                                     type="text"
                                                     className="border border-gray-300 rounded-sm p-2"
                                                     placeholder="Amenity"
@@ -268,20 +363,22 @@ const Airbnb = () => {
                                             </div>
                                             <div className="flex flex-col flex-grow mr-4">
                                                 <input
+                                                    value={category}
+                                                    onChange={handleCategoryChange}
                                                     type="text"
                                                     className="border border-gray-300 rounded-sm p-2"
                                                     placeholder="Amenity"
                                                 />
                                             </div>
-                                            <div className="flex flex-col flex-grow mr-4">
+                                            {/* <div className="flex flex-col flex-grow mr-4">
                                                 <input
                                                     type="text"
                                                     className="border border-gray-300 rounded-sm p-2"
                                                     placeholder="Amenity"
                                                 />
-                                            </div>
+                                            </div> */}
                                         </div>
-                                        <div className="flex flex-row m-4">
+                                        {/* <div className="flex flex-row m-4">
                                             <div className="flex flex-col flex-grow mr-4">
                                                 <input
                                                     type="text"
@@ -303,7 +400,7 @@ const Airbnb = () => {
                                                     placeholder="Amenity"
                                                 />
                                             </div>
-                                        </div>
+                                        </div> */}
 
                                         {/* Button */}
                                         <button className="bg-[#95873C] text-center  text-white p-2  w-1/4 m-4" type='submit'>Add Hotel</button>
@@ -485,7 +582,7 @@ const Airbnb = () => {
                     </form>
                 </div>
             </Modal>
-            
+
         </>
     );
 }

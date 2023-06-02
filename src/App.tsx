@@ -88,7 +88,7 @@ function App() {
                 <Route path="/inventory" element={<Inventory />} />
                 <Route path="/orders" element={<Orders />} />
                 <Route path="/customers" element={<Customers />} />
-                <Route path="/airbnb" element={<Airbnb />} />
+                <Route path="/airbnb" element={<Airbnb adminProps={admin} />} />
                 <Route path="/transactions" element={<Transactions />} />
                 <Route path="/hotelbookings" element={<HotelBooking />} />
                 <Route path="/adminProfile" element={<ProfilePage 
