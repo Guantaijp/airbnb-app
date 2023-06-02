@@ -16,8 +16,7 @@ const NavHeader: React.FC<NavHeaderProps> = ({ adminProps, setAdmin }) => {
   const adminData = JSON.parse(sessionStorage.getItem('admin') || '{}');
   const loggedAdmin = adminProps.find((admin: AdminsProps) => admin.id === adminData.id);
   const loggedAdminEmail = loggedAdmin?.email;
-
-
+  const loggedAdminImageUrl = loggedAdmin?.image;
 
   const [commentsOpen, setCommentsOpen] = useState<boolean>(false);
   const [notificationsOpen, setNotificationsOpen] = useState<boolean>(false);
@@ -72,7 +71,9 @@ const NavHeader: React.FC<NavHeaderProps> = ({ adminProps, setAdmin }) => {
             />
           </Badge>
           <Dropdown overlay={menu} placement="bottomRight">
-            <img className="ml-2" width={40} src={Profile} alt="Profile" />
+
+            { loggedAdminImageUrl ? <img className="ml-2 rounded-full h-8 w-8"  src={loggedAdminImageUrl} alt="Profile" /> : <img className="ml-2" width={40} src={Profile} alt="Profile" />
+            }
           </Dropdown>
           < p className="ml-2 mt-2  text-xl" >{loggedAdminEmail}</p>
         </Space>

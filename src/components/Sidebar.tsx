@@ -23,6 +23,14 @@ interface SidebarProps {
 
     const navigate = useNavigate();
     const {logout} = useContext(AuthContext);
+
+    const adminData = JSON.parse(sessionStorage.getItem('admin') || '{}');
+    const loggedAdmin = adminProps.find((admin: AdminsProps) => admin.id === adminData.id);
+   
+    const loggedAdminImageUrl = loggedAdmin?.image;
+  
+
+
     const handleMenuClick = (e: any) => {
         if (e.key === "logout") {
             localStorage.removeItem("token");
@@ -58,7 +66,12 @@ interface SidebarProps {
                     <Dropdown overlay={menu} placement="bottomRight">
 
                         <div className="p-10">
-                            <img className="rounded-full w-40 h-40" src={Profile} alt="Profile" />
+                            {/* <img className="rounded-full w-40 h-40" src={Profile} alt="Profile" /> */}
+                            {loggedAdminImageUrl ? (
+                                <img className="rounded-full w-40 h-40" src={loggedAdminImageUrl} alt="Profile" />
+                            ) : (
+                                <img className="rounded-full w-40 h-40" src={Profile} alt="Profile" />
+                            )}
                         </div>
                     </Dropdown>
 

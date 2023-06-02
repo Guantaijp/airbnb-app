@@ -96,6 +96,7 @@ const ProfilePage = () => {
       .then((data) => {
         console.log(data);
         message.success("Profile updated successfully");
+        window.location.reload();
       })
       .catch((error) => {
         console.log(error);

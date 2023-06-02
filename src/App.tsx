@@ -23,7 +23,7 @@ export interface AdminsProps {
   email: string;
   name: string;
   password: string;
-  imageUrl: string;
+  image: string;
   setAdmin: (admin: AdminsProps[]) => void;
 }
 
