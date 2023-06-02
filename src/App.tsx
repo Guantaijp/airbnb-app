@@ -91,9 +91,8 @@ function App() {
                 <Route path="/airbnb" element={<Airbnb />} />
                 <Route path="/transactions" element={<Transactions />} />
                 <Route path="/hotelbookings" element={<HotelBooking />} />
-                <Route path="/adminProfile" element={<ProfilePage adminProps={admin}  setAdmin={setAdmin}
-                
-                 />} />
+                <Route path="/adminProfile" element={<ProfilePage 
+/>} />
               </Routes>
             </div>
           </div>
