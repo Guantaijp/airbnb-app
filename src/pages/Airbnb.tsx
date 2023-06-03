@@ -9,7 +9,7 @@ interface HotelData {
     location: string;
     price: number;
     beds: number;
-    images: string | FileList | null;
+    images: string | File | null;
     category: string;
     description: string;
     amenity: string;
@@ -29,61 +29,71 @@ const Airbnb: React.FC<BnbAdminData> = ({ adminProps }) => {
     const loggedAdminId = loggedAdmin?.id;
 
     // =======================================================================================================================================================================================================
-
-    const [name, setName] = useState<string>("");
-    const [location, setLocation] = useState<string>("");
-    const [price, setPrice] = useState<number>(0);
-    const [beds, setBeds] = useState<number>(0);
-    const [images, setImages] = useState<FileList | null>(null);
-    const [category, setCategory] = useState<string>("");
-    const [description, setDescription] = useState<string>("");
-    const [amenity, setAmenity] = useState<string>("");
+    const [name, setName] = useState("");
+    const [location, setLocation] = useState("");
+    const [price, setPrice] = useState(0);
+    const [beds, setBeds] = useState(0);
+    const [images, setImages] = useState<Array<File> | null>(null);
+    console.log("images", images);
+    const [category, setCategory] = useState("");
+    const [description, setDescription] = useState("");
+    const [amenity, setAmenity] = useState("");
 
     const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
         setName(event.target.value);
     };
+
     const handleLocationChange = (event: ChangeEvent<HTMLInputElement>) => {
         setLocation(event.target.value);
     };
+
     const handlePriceChange = (event: ChangeEvent<HTMLInputElement>) => {
         setPrice(Number(event.target.value));
     };
+
     const handleBedsChange = (event: ChangeEvent<HTMLInputElement>) => {
         setBeds(Number(event.target.value));
     };
-    const handleImagesChange = (event: ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files) {
-            setImages(event.target.files);
-        }
-    };
+
     const handleCategoryChange = (event: ChangeEvent<HTMLInputElement>) => {
         setCategory(event.target.value);
     };
+
     const handleDescriptionChange = (event: ChangeEvent<HTMLInputElement>) => {
         setDescription(event.target.value);
     };
+
     const handleAmenityChange = (event: ChangeEvent<HTMLInputElement>) => {
         setAmenity(event.target.value);
     };
 
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+        // if (e.target.files) {
+        //     setImages(e.target.files);
+        // }
+    };
+
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+
         const formData = new FormData();
-        formData.append("name", name);
-        formData.append("location", location);
-        formData.append("price", String(price));
-        formData.append("beds", String(beds));
+        formData.append("airbnb[name]", name);
+        formData.append("airbnb[location]", location);
+        formData.append("airbnb[price]", String(price));
+        formData.append("airbnb[beds]", String(beds));
+        formData.append("airbnb[category]", category);
+        formData.append("airbnb[description]", description);
+        formData.append("airbnb[amenity]", amenity);
+        formData.append("airbnb[admin_id]", String(loggedAdminId));
 
         if (images) {
-            for (let i = 0; i < images.length; i++) {
-                formData.append("images", images[i]);
-            }
+            const imageFiles = Array.from(images);
+            imageFiles.forEach((image) => {
+                formData.append("image", image);
+            });
         }
 
-        formData.append("category", category);
-        formData.append("description", description);
-        formData.append("amenity", amenity);
-        formData.append("admin_id", String(loggedAdminId));
+        console.log("formData", formData);
 
         fetch("http://127.0.0.1:4000/airbnbs", {
             method: "POST",
@@ -91,14 +101,18 @@ const Airbnb: React.FC<BnbAdminData> = ({ adminProps }) => {
         })
             .then((res) => res.json())
             .then((data) => {
-                console.log(data);
-                message.success("Hotel added successfully");
-            })
-            .catch((err) => {
-                console.log(err);
-                message.error("Hotel not added");
-            });
-    };
+                console.log("data", data);
+                if (data.error) {
+                    message.error(data.error);
+                } else {
+                    message.success("Hotel added successfully");
+                }
+            }
+            )
+
+
+    }
+
 
     // =======================================================================================================================================================================================================
     const [page, setPage] = useState(1);
@@ -284,22 +298,15 @@ const Airbnb: React.FC<BnbAdminData> = ({ adminProps }) => {
                                         <div className="flex flex-row m-4">
                                             <div className="flex flex-col flex-grow mr-4">
                                                 <input
-                                                    onChange={handleImagesChange}
+                                                    onChange={handleImageChange}
                                                     type="file"
                                                     className="border border-gray-300 rounded-sm p-2"
                                                     placeholder="Upload Images"
                                                     multiple
                                                 />
-                                                {images && images.length > 0 && (
-                                                    <div>
-                                                        <p>{`${images.length} ${images.length === 1 ? "image" : "images"} selected`}</p>
-                                                        <ul>
-                                                            {Array.from(images).map((image, index) => (
-                                                                <li key={index}>{image.name}</li>
-                                                            ))}
-                                                        </ul>
-                                                    </div>
-                                                )}
+
+
+
                                             </div>
 
 

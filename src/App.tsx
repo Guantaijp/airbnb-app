@@ -15,6 +15,7 @@ import ProfilePage from "./pages/ProfilePage";
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import NavHeader from './components/NavHeader';
+import MultipleImageUploadComponent from './pages/MultipleImageUploadComponent';
 
 
 export interface AdminsProps {
@@ -91,8 +92,8 @@ function App() {
                 <Route path="/airbnb" element={<Airbnb adminProps={admin} />} />
                 <Route path="/transactions" element={<Transactions />} />
                 <Route path="/hotelbookings" element={<HotelBooking />} />
-                <Route path="/adminProfile" element={<ProfilePage 
-/>} />
+                <Route path="/adminProfile" element={<ProfilePage />} />
+                <Route path="/images" element={<MultipleImageUploadComponent />} />
               </Routes>
             </div>
           </div>
