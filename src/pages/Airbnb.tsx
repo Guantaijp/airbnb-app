@@ -1,6 +1,8 @@
 import React, { ChangeEvent, FormEvent, useState, useEffect } from "react";
 import { Table, Space, Avatar, Modal, message, Popconfirm } from "antd";
 import { AdminsProps } from "../App";
+import MultipleImageUploadComponent from "./MultipleImageUploadComponent";
+import Amenity from "./Amenity";
 
 
 interface HotelData {
@@ -9,11 +11,8 @@ interface HotelData {
     location: string;
     price: number;
     beds: number;
-    images: string | File | null;
-    category: string;
     description: string;
-    amenity: string;
-
+    category: string;
 }
 
 interface BnbAdminData {
@@ -33,11 +32,9 @@ const Airbnb: React.FC<BnbAdminData> = ({ adminProps }) => {
     const [location, setLocation] = useState("");
     const [price, setPrice] = useState(0);
     const [beds, setBeds] = useState(0);
-    const [images, setImages] = useState<Array<File> | null>(null);
-    console.log("images", images);
-    const [category, setCategory] = useState("");
     const [description, setDescription] = useState("");
-    const [amenity, setAmenity] = useState("");
+    const [category, setCategory] = useState("");
+
 
     const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
         setName(event.target.value);
@@ -55,63 +52,45 @@ const Airbnb: React.FC<BnbAdminData> = ({ adminProps }) => {
         setBeds(Number(event.target.value));
     };
 
-    const handleCategoryChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setCategory(event.target.value);
-    };
 
     const handleDescriptionChange = (event: ChangeEvent<HTMLInputElement>) => {
         setDescription(event.target.value);
     };
 
-    const handleAmenityChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setAmenity(event.target.value);
+    const handleCategoryChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setCategory(event.target.value);
     };
 
-    const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-        // if (e.target.files) {
-        //     setImages(e.target.files);
-        // }
-    };
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        const formData = new FormData();
-        formData.append("airbnb[name]", name);
-        formData.append("airbnb[location]", location);
-        formData.append("airbnb[price]", String(price));
-        formData.append("airbnb[beds]", String(beds));
-        formData.append("airbnb[category]", category);
-        formData.append("airbnb[description]", description);
-        formData.append("airbnb[amenity]", amenity);
-        formData.append("airbnb[admin_id]", String(loggedAdminId));
-
-        if (images) {
-            const imageFiles = Array.from(images);
-            imageFiles.forEach((image) => {
-                formData.append("image", image);
-            });
-        }
-
-        console.log("formData", formData);
+        const data = {
+            name: name,
+            location: location,
+            price: price,
+            beds: beds,
+            description: description,
+            category: category,
+            admin_id: loggedAdminId,
+        };
 
         fetch("http://127.0.0.1:4000/airbnbs", {
             method: "POST",
-            body: formData,
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json",
+            },
         })
             .then((res) => res.json())
             .then((data) => {
-                console.log("data", data);
-                if (data.error) {
-                    message.error(data.error);
-                } else {
-                    message.success("Hotel added successfully");
-                }
+                console.log(data);
+                message.success("Hotel added successfully");
             }
-            )
+            );
 
+    };
 
-    }
 
 
     // =======================================================================================================================================================================================================
@@ -142,11 +121,6 @@ const Airbnb: React.FC<BnbAdminData> = ({ adminProps }) => {
         message.error('Click on No');
     };
     // =======================================================================================================================================================================================================
-
-
-
-
-
 
     return (
         <>
@@ -279,6 +253,16 @@ const Airbnb: React.FC<BnbAdminData> = ({ adminProps }) => {
                                                     placeholder="Beds"
                                                 />
                                             </div>
+                                            <div className="flex flex-col flex-grow mr-4">
+                                                <label className="text-sm">Category</label>
+                                                <input
+                                                    value={category}
+                                                    onChange={handleCategoryChange}
+                                                    type="text"
+                                                    className="border border-gray-300 rounded-sm p-2"
+                                                    placeholder="Amenity"
+                                                />
+                                            </div>
 
                                             <div className="flex flex-col flex-grow">
                                                 <label className="text-sm">About</label>
@@ -291,127 +275,20 @@ const Airbnb: React.FC<BnbAdminData> = ({ adminProps }) => {
                                                 />
                                             </div>
                                         </div>
-
-
-                                        <label className="text-sm ml-4">Upload Images</label>
-
-                                        <div className="flex flex-row m-4">
-                                            <div className="flex flex-col flex-grow mr-4">
-                                                <input
-                                                    onChange={handleImageChange}
-                                                    type="file"
-                                                    className="border border-gray-300 rounded-sm p-2"
-                                                    placeholder="Upload Images"
-                                                    multiple
-                                                />
-
-
-
-                                            </div>
-
-
-
-                                            {/* <div className="flex flex-col flex-grow mr-4">
-                                                <input
-                                                    type="file"
-                                                    className="border border-gray-300 rounded-sm p-2"
-                                                    placeholder="Upload Image"
-                                                />
-                                            </div>
-
-                                            <div className="flex flex-col flex-grow">
-                                                <input
-                                                    type="file"
-                                                    className="border border-gray-300 rounded-sm p-2"
-                                                    placeholder="Upload Image"
-                                                />
-                                            </div> */}
-                                        </div>
-
-
-                                        {/* <div className="flex flex-row m-4">
-                                            <div className="flex flex-col flex-grow mr-4">
-                                                <input
-                                                    type="file"
-                                                    className="border border-gray-300 rounded-sm p-2"
-                                                    placeholder="Upload Image"
-                                                />
-                                            </div>
-
-                                            <div className="flex flex-col flex-grow mr-4">
-                                                <input
-                                                    type="file"
-                                                    className="border border-gray-300 rounded-sm p-2"
-                                                    placeholder="Upload Image"
-                                                />
-                                            </div>
-
-                                            <div className="flex flex-col flex-grow">
-                                                <input
-                                                    type="file"
-                                                    className="border border-gray-300 rounded-sm p-2"
-                                                    placeholder="Upload Image"
-                                                />
-                                            </div>
-                                        </div> */}
-
-
-                                        <label className="text-sm ml-4">Add Amenities</label>
-
-                                        <div className="flex flex-row m-4">
-                                            <div className="flex flex-col flex-grow mr-4">
-                                                <input
-                                                    value={amenity}
-                                                    onChange={handleAmenityChange}
-                                                    type="text"
-                                                    className="border border-gray-300 rounded-sm p-2"
-                                                    placeholder="Amenity"
-                                                />
-                                            </div>
-                                            <div className="flex flex-col flex-grow mr-4">
-                                                <input
-                                                    value={category}
-                                                    onChange={handleCategoryChange}
-                                                    type="text"
-                                                    className="border border-gray-300 rounded-sm p-2"
-                                                    placeholder="Amenity"
-                                                />
-                                            </div>
-                                            {/* <div className="flex flex-col flex-grow mr-4">
-                                                <input
-                                                    type="text"
-                                                    className="border border-gray-300 rounded-sm p-2"
-                                                    placeholder="Amenity"
-                                                />
-                                            </div> */}
-                                        </div>
-                                        {/* <div className="flex flex-row m-4">
-                                            <div className="flex flex-col flex-grow mr-4">
-                                                <input
-                                                    type="text"
-                                                    className="border border-gray-300 rounded-sm p-2"
-                                                    placeholder="Amenity"
-                                                />
-                                            </div>
-                                            <div className="flex flex-col flex-grow mr-4">
-                                                <input
-                                                    type="text"
-                                                    className="border border-gray-300 rounded-sm p-2"
-                                                    placeholder="Amenity"
-                                                />
-                                            </div>
-                                            <div className="flex flex-col flex-grow mr-4">
-                                                <input
-                                                    type="text"
-                                                    className="border border-gray-300 rounded-sm p-2"
-                                                    placeholder="Amenity"
-                                                />
-                                            </div>
-                                        </div> */}
-
-                                        {/* Button */}
                                         <button className="bg-[#95873C] text-center  text-white p-2  w-1/4 m-4" type='submit'>Add Hotel</button>
-                                    </form>
+                                    </form> 
+                                    < Amenity />
+                                    <div className="flex flex-row m-4">
+                                        <div className="flex flex-col ">
+                                            <label className="text-lg ml-4">Upload Hotel Images</label>
+                                            <div className="flex flex-col flex-grow ml-4 ">
+                                                <MultipleImageUploadComponent />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {/* <button className="bg-[#95873C] text-center  text-white p-2  w-1/4 m-4" type='submit'>Add Hotel</button> */}
+
+
                                 </div>
                             )}
                         </div>
