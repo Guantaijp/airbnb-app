@@ -13,29 +13,34 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from '../AuthContext';
 import { useContext } from "react";
-import { AdminsProps } from "../App";
+import { OwnerData } from "../App";
 
 interface SidebarProps {
-    adminProps: AdminsProps[];
-  }
+    ownerData: OwnerData[];
+}
 
-  const Sidebar: React.FC<SidebarProps> = ({ adminProps }) => {
+
+
+function Sidebar(props: SidebarProps) {
 
     const navigate = useNavigate();
-    const {logout} = useContext(AuthContext);
+    const { logout } = useContext(AuthContext);
 
-    const adminData = JSON.parse(sessionStorage.getItem('admin') || '{}');
-    const loggedAdmin = adminProps.find((admin: AdminsProps) => admin.id === adminData.id);
-   
-    const loggedAdminImageUrl = loggedAdmin?.image;
-  
+    const { ownerData } = props;
+
+    const admiData = JSON.parse(sessionStorage.getItem("admin") || "{}");
+    const loggedAdmin = ownerData.find((admin: OwnerData) => admin.id === admiData.id);
+    const loggedAdminId = loggedAdmin?.id;
+    const loggedAdminImage = loggedAdmin?.image;
+    const loggedAdminEmail = loggedAdmin?.email;
+
 
 
     const handleMenuClick = (e: any) => {
         if (e.key === "logout") {
             localStorage.removeItem("token");
             logout();
-            navigate("/login"); 
+            navigate("/login");
         }
         if (e.key === "profile") {
             // history.push("/adminProfile");
@@ -66,12 +71,7 @@ interface SidebarProps {
                     <Dropdown overlay={menu} placement="bottomRight">
 
                         <div className="p-10">
-                            {/* <img className="rounded-full w-40 h-40" src={Profile} alt="Profile" /> */}
-                            {loggedAdminImageUrl ? (
-                                <img className="rounded-full w-40 h-40" src={loggedAdminImageUrl} alt="Profile" />
-                            ) : (
-                                <img className="rounded-full w-40 h-40" src={Profile} alt="Profile" />
-                            )}
+                        <img src={loggedAdminImage ? loggedAdminImage.toString() : Profile} alt="profile" className="rounded-full h-40 w-40" />
                         </div>
                     </Dropdown>
 

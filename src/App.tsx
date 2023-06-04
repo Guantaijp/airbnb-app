@@ -18,34 +18,81 @@ import NavHeader from './components/NavHeader';
 import MultipleImageUploadComponent from './pages/MultipleImageUploadComponent';
 
 
-export interface AdminsProps {
-  id: string;
-  find(arg0: (admin: AdminsProps) => boolean): AdminsProps | undefined;
-  email: string;
+export interface OwnerData {
+  id: number;
   name: string;
+  email: string;
   password: string;
-  image: string;
-  setAdmin: (admin: AdminsProps[]) => void;
+  image: string | File | null;
+  loggedAdmin : OwnerData | undefined;
 }
 
 
+export interface AirbnbData {
+  admin_id: number | undefined;
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  image: string | File | null;
+  owner_id: number;
+}
 
 
 function App() {
 
-  const [admin, setAdmin] = React.useState<AdminsProps[]>([]);  
-  // Fetch the admins and set the initial form state
-  React.useEffect(() => {
-    fetch("http://127.0.0.1:4000/admins")
+  // fetch airbnb data from the server
+  const [airbnbData, setAirbnbData] = useState<AirbnbData[]>([]);
+  useEffect(() => {
+    fetch("http://127.0.0.1:4000/airbnbs")
       .then((res) => res.json())
       .then((data) => {
-        setAdmin(data);
+        setAirbnbData(data);
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
-  
+
+
+
+
+// =======================================================================================================================================================================================================
+  const [ownerData, setOwnerData] = useState<OwnerData[]>([]);
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [image, setImage] = useState<File | null>(null);
+
+  useEffect(() => {
+    // Fetch owner data from the server
+    fetch("http://127.0.0.1:4000/admins")
+      .then((res) => res.json())
+      .then((data) => {
+        setOwnerData(data);
+        // Find the logged-in admin's data
+        const loggedAdmin = data.find(
+          (admin: OwnerData) => admin.id === admiData.id
+        );
+        if (loggedAdmin) {
+          setName(loggedAdmin.name);
+          setEmail(loggedAdmin.email);
+          setPassword(loggedAdmin.password);
+          setImage(loggedAdmin.image);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+
+
+  const admiData = JSON.parse(sessionStorage.getItem("admin") || "{}");
+  const loggedAdmin = ownerData.find((admin: OwnerData) => admin.id === admiData.id);
+  const loggedAdminId = loggedAdmin?.id;
+  const loggedAdminImage = loggedAdmin?.image;
+
 
   // =======================================================================================================================================================================================================  
   const location = useLocation();
@@ -80,20 +127,28 @@ function App() {
         ) : (
           <div className="app">
             <div className="fixed-sidebar">
-              <Sidebar adminProps={admin} />
+              <Sidebar ownerData={ownerData} />
             </div>
             <div className="scrollable-content ">
-              <NavHeader adminProps={admin} setAdmin={setAdmin} />
+              <NavHeader
+                ownerData={ownerData}
+                name={name}
+                email={email}
+                password={password}
+                image={image}
+                loggedAdmin = {loggedAdmin}
+                
+              />
               <Routes>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/inventory" element={<Inventory />} />
                 <Route path="/orders" element={<Orders />} />
                 <Route path="/customers" element={<Customers />} />
-                <Route path="/airbnb" element={<Airbnb adminProps={admin} />} />
+                <Route path="/airbnb" element={<Airbnb ownerData={ownerData} airbnbData={airbnbData}/>} />
                 <Route path="/transactions" element={<Transactions />} />
                 <Route path="/hotelbookings" element={<HotelBooking />} />
                 <Route path="/adminProfile" element={<ProfilePage />} />
-                <Route path="/images" element={<MultipleImageUploadComponent />} />
+                <Route path="*" element={<h1>Not Found</h1>} />
               </Routes>
             </div>
           </div>

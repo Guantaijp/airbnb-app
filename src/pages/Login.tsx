@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useContext } from 'react';
 import lottie, { AnimationItem } from 'lottie-web';
 import animation from '../images/animation.json';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
-import {  Input, } from 'antd';
+import { Input, } from 'antd';
 import { AuthContext } from '../AuthContext';
 
 
@@ -18,8 +18,8 @@ const Login = () => {
 
     const { login } = useContext(AuthContext);
 
-    const handleLogin = () => {
-        login(email, password, "user");
+    const handleLogin = (userType: string | undefined) => {
+        login(email, password, userType === "admin" ? "admin" : "user");
     };
 
 
@@ -58,23 +58,27 @@ const Login = () => {
                                 <p className="mt-2 text-3xl font-extrabold text-gray-900">Login to your account</p>
                             </div>
                             <div className="mt-8 max-w-[300px]">
-                                <form 
+                                <form
                                     onSubmit={(e) => {
                                         e.preventDefault();
-                                        handleLogin();
+                                        const userTypes = ["user", "admin"]; // Add any additional user types as needed
+                                        userTypes.forEach((userType) => {
+                                            handleLogin(userType);
+                                        });
                                     }}
-                                className=" space-y-6">
+
+                                    className=" space-y-6">
                                     <Input
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         placeholder="Email"
-                                        style={{ border : "1px solid #95873C" }}
+                                        style={{ border: "1px solid #95873C" }}
                                     />
                                     <Input.Password
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
                                         placeholder="Password"
-                                        style={{ border : "1px solid #95873C" }}
+                                        style={{ border: "1px solid #95873C" }}
                                         iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
                                     />
                                     <div className="w-full">

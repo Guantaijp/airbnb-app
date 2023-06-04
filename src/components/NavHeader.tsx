@@ -1,22 +1,36 @@
 import { BellFilled, MailOutlined } from "@ant-design/icons";
 import { Badge, Drawer, List, Space, Dropdown, Menu } from "antd";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import Profile from "../images/download.jpeg";
 import { Link } from "react-router-dom";
-import { AdminsProps } from "../App";
+import {  OwnerData } from "../App";
 
 interface NavHeaderProps {
-  adminProps: AdminsProps[];
-  setAdmin: (admin: AdminsProps[]) => void;
+  ownerData: OwnerData[];
+  name: string;
+  email: string;
+  password: string;
+  image: string | File | null;
+  loggedAdmin : OwnerData | undefined;
 }
 
 
-const NavHeader: React.FC<NavHeaderProps> = ({ adminProps, setAdmin }) => {
 
-  const adminData = JSON.parse(sessionStorage.getItem('admin') || '{}');
-  const loggedAdmin = adminProps.find((admin: AdminsProps) => admin.id === adminData.id);
-  const loggedAdminEmail = loggedAdmin?.email;
-  const loggedAdminImageUrl = loggedAdmin?.image;
+function NavHeader(props: NavHeaderProps) {
+
+  const { ownerData, name, email, password, image, loggedAdmin} = props;
+  const admiData = JSON.parse(sessionStorage.getItem("admin") || "{}");
+  const loggedAdminId = loggedAdmin?.id;
+  const [loggedAdminImage, setLoggedAdminImage] = useState(loggedAdmin?.image);
+  const [loggedAdminEmail, setLoggedAdminEmail] = useState(loggedAdmin?.email);
+
+  useEffect(() => {
+    setLoggedAdminImage(loggedAdmin?.image);
+    setLoggedAdminEmail(loggedAdmin?.email);
+  }, [loggedAdmin]);
+
+
+
 
   const [commentsOpen, setCommentsOpen] = useState<boolean>(false);
   const [notificationsOpen, setNotificationsOpen] = useState<boolean>(false);
@@ -72,8 +86,12 @@ const NavHeader: React.FC<NavHeaderProps> = ({ adminProps, setAdmin }) => {
           </Badge>
           <Dropdown overlay={menu} placement="bottomRight">
 
-            { loggedAdminImageUrl ? <img className="ml-2 rounded-full h-8 w-8"  src={loggedAdminImageUrl} alt="Profile" /> : <img className="ml-2" width={40} src={Profile} alt="Profile" />
-            }
+            {image ? (
+              <img className="ml-2 rounded-full h-8 w-8" src={image as string} alt="Profile" />
+            ) : (
+              <img className="ml-2" width={40} src={Profile} alt="Profile" />
+            )}
+
           </Dropdown>
           < p className="ml-2 mt-2  text-xl" >{loggedAdminEmail}</p>
         </Space>

@@ -14,7 +14,6 @@ export interface User {
 }
 
 export interface Admin {
-  // Define the properties of the Admin object
   name: string;
   email: string;
   password: string;

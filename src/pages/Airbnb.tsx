@@ -1,32 +1,40 @@
 import React, { ChangeEvent, FormEvent, useState, useEffect } from "react";
 import { Table, Space, Avatar, Modal, message, Popconfirm } from "antd";
-import { AdminsProps } from "../App";
+import { OwnerData, AirbnbData } from "../App";
 import MultipleImageUploadComponent from "./MultipleImageUploadComponent";
 import Amenity from "./Amenity";
 
 
-interface HotelData {
-    id: number;
-    name: string;
-    location: string;
-    price: number;
-    beds: number;
-    description: string;
-    category: string;
-}
 
 interface BnbAdminData {
-    adminProps: AdminsProps[];
+    ownerData: OwnerData[];
+}
+
+interface BnbData {
+    airbnbData: AirbnbData[];
 }
 
 
-const Airbnb: React.FC<BnbAdminData> = ({ adminProps }) => {
 
 
-    const adminData = JSON.parse(sessionStorage.getItem('admin') || '{}');
-    const loggedAdmin = adminProps.find((admin: AdminsProps) => admin.id === adminData.id);
+
+function Airbnb(props: BnbAdminData & BnbData) {
+
+    const { ownerData } = props;
+    const { airbnbData } = props;
+
+
+    const admiData = JSON.parse(sessionStorage.getItem("admin") || "{}");
+    const loggedAdmin = ownerData.find((admin: OwnerData) => admin.id === admiData.id);
     const loggedAdminId = loggedAdmin?.id;
+    // console.log(loggedAdminId);
+    const loggedAdminImage = loggedAdmin?.image;
+    const loggedAdminEmail = loggedAdmin?.email;
 
+    //get the airbnb data that belongs to the logged-in admin
+    // const loggedAdminAirbnbs = airbnbData.filter((airbnb: AirbnbData) => airbnb.admin_id === loggedAdminId);
+    // console.log(loggedAdminAirbnbs);
+  
     // =======================================================================================================================================================================================================
     const [name, setName] = useState("");
     const [location, setLocation] = useState("");
@@ -276,13 +284,14 @@ const Airbnb: React.FC<BnbAdminData> = ({ adminProps }) => {
                                             </div>
                                         </div>
                                         <button className="bg-[#95873C] text-center  text-white p-2  w-1/4 m-4" type='submit'>Add Hotel</button>
-                                    </form> 
-                                    < Amenity />
+                                    </form>
+                                    <Amenity ownerData={ownerData} airbnbData = {airbnbData } />
                                     <div className="flex flex-row m-4">
                                         <div className="flex flex-col ">
                                             <label className="text-lg ml-4">Upload Hotel Images</label>
                                             <div className="flex flex-col flex-grow ml-4 ">
-                                                <MultipleImageUploadComponent />
+                                            <MultipleImageUploadComponent ownerData={ownerData} airbnbData={airbnbData} />
+
                                             </div>
                                         </div>
                                     </div>

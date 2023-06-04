@@ -1,7 +1,26 @@
 import React, { useEffect, Component, useState, ChangeEvent, FormEvent } from 'react';
 import { message } from "antd";
+import {  OwnerData, AirbnbData } from "../App";
 
-const Amenity = () => {
+interface AmenityProps {
+    ownerData: OwnerData[];
+    airbnbData : AirbnbData[];
+}
+
+
+
+
+function Amenity(props: AmenityProps ) {
+
+    const { ownerData } = props;
+    const { airbnbData } = props;
+    
+    const admiData = JSON.parse(sessionStorage.getItem("admin") || "{}");
+    const loggedAdmin = ownerData.find((admin: OwnerData) => admin.id === admiData.id);
+    const loggedAdminAirbnbs = airbnbData.filter((airbnb: AirbnbData) => airbnb.admin_id ===  loggedAdmin?.id);
+    const lastAirbnbId = loggedAdminAirbnbs[loggedAdminAirbnbs.length - 1].id;
+    
+  
 
     const [item1, setItem1] = useState("");
     const [item2, setItem2] = useState("");
@@ -38,7 +57,7 @@ const Amenity = () => {
             item4: item4,
             item5: item5,
             item6: item6,
-            airbnb_id: 2,
+            airbnb_id: lastAirbnbId,
         };
 
         fetch("http://127.0.0.1:4000/amenities", {

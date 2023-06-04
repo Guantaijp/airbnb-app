@@ -12,6 +12,7 @@ interface OwnerData {
 
 
 const ProfilePage = () => {
+  
   const [ownerData, setOwnerData] = useState<OwnerData[]>([]);
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -104,8 +105,6 @@ const ProfilePage = () => {
         message.error("Profile update failed");
       });
   };
-
-
 useEffect(() => {
   // Set initial values for input fields
   if (loggedAdmin) {
@@ -122,9 +121,6 @@ useEffect(() => {
     }
   }
 }, [loggedAdmin]);
-
-
-
 
   return (
     <>
