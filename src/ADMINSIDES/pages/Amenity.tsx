@@ -1,6 +1,6 @@
 import React, { useEffect, Component, useState, ChangeEvent, FormEvent } from 'react';
 import { message } from "antd";
-import { OwnerData, AirbnbData } from "../App";
+import { OwnerData, AirbnbData } from "../../App";
 
 interface AmenityProps {
     ownerData: OwnerData[];

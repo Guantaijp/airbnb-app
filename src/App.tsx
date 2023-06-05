@@ -2,20 +2,20 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from './components/Sidebar';
 import AuthProvider from "../src/AuthContext";
 import { Route, Routes, useRoutes } from 'react-router-dom';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import Airbnb from './pages/Airbnb';
-import Customers from "./pages/Customers";
-import Dashboard from "./pages/Dashboard";
-import Inventory from "./pages/Inventory";
-import Orders from "./pages/Orders";
-import Transactions from "./pages/Transactions";
-import HotelBooking from "./pages/HotelBooking";
-import ProfilePage from "./pages/ProfilePage";
+import Login from './ADMINSIDES/pages/Login';
+import Signup from './ADMINSIDES/pages/Signup';
+import Airbnb from './ADMINSIDES/pages/Airbnb';
+import Customers from "./ADMINSIDES/pages/Customers";
+import Dashboard from "./ADMINSIDES/pages/Dashboard";
+import Inventory from "./ADMINSIDES/pages/Inventory";
+import Orders from "./ADMINSIDES/pages/Orders";
+import Transactions from "./ADMINSIDES/pages/Transactions";
+import HotelBooking from "./ADMINSIDES/pages/HotelBooking";
+import ProfilePage from "./ADMINSIDES/pages/ProfilePage";
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import NavHeader from './components/NavHeader';
-import MultipleImageUploadComponent from './pages/MultipleImageUploadComponent';
+import MultipleImageUploadComponent from './ADMINSIDES/pages/MultipleImageUploadComponent';
 
 
 export interface OwnerData {
@@ -40,8 +40,54 @@ export interface AirbnbData {
   setAibnbData: React.Dispatch<React.SetStateAction<AirbnbData[]>>;
 }
 
+export interface BookingData {
+  id: number;
+  to_date: string;
+  from_date: string;
+  paid_amount: number;
+  airbnb_id: number;
+  user_id: number;
+  setBookingData: React.Dispatch<React.SetStateAction<BookingData[]>>;
+}
+
+export interface UserData {
+  id: number;
+  name: string;
+  email: string;
+  password: string;
+  image: string | File | null;
+  setUserData: React.Dispatch<React.SetStateAction<UserData[]>>;
+}
+
+
 
 function App() {
+  //fetch users
+  const [userData, setUserData] = useState<UserData[]>([]);
+  useEffect(() => {
+    fetch("http://127.0.0.1:4000/users")
+      .then((res) => res.json())
+      .then((data) => {
+        setUserData(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+
+  // fetch booking data from the server
+  const [bookingData, setBookingData] = useState<BookingData[]>([]);
+  useEffect(() => {
+    fetch("http://127.0.0.1:4000/bookings")
+      .then((res) => res.json())
+      .then((data) => {
+        setBookingData(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   // fetch airbnb data from the server
   const [airbnbData, setAirbnbData] = useState<AirbnbData[]>([]);
@@ -137,10 +183,10 @@ function App() {
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/inventory" element={<Inventory />} />
                 <Route path="/orders" element={<Orders />} />
-                <Route path="/customers" element={<Customers />} />
+                <Route path="/customers" element={<Customers  userData={userData} />} />
                 <Route path="/airbnb" element={<Airbnb ownerData={ownerData} airbnbData={airbnbData} setAirbnbData={setAirbnbData}/>} />
                 <Route path="/transactions" element={<Transactions />} />
-                <Route path="/hotelbookings" element={<HotelBooking />} />
+                <Route path="/hotelbookings" element={<HotelBooking bookingData={bookingData} ownerData={ownerData} airbnbData={airbnbData}  userData={userData}/>} />
                 <Route path="/adminProfile" element={<ProfilePage ownerData={ownerData}  setOwnerData={setOwnerData} />} />
                 <Route path="*" element={<h1>Not Found</h1>} />
               </Routes>

@@ -1,37 +1,28 @@
 import { useEffect, useState } from "react";
 import { Avatar, Table } from "antd";
+import { UserData } from "../../App";
 
 interface CustomerProps {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  address: {
-    address: string;
-    city: string;
-  };
-  image: string;
+  userData: UserData[];
 }
 
-interface ApiResponse {
-  users: CustomerProps[];
-}
 
-const Customers = () => {
+const Customers = (props: CustomerProps) => {
+
+  const { userData } = props;
+
   const [loading, setLoading] = useState<boolean>(true);
   const [dataSource, setDataSource] = useState<CustomerProps[]>([]);
 
   useEffect(() => {
-    setLoading(true);
-    fetch("https://dummyjson.com/users")
-      .then((response) => response.json())
-      .then((json: ApiResponse) => {
-        // console.log(json);
-        setDataSource(json.users);
-        setLoading(false);
-      });
-  }, []);
+    // Simulate data loading delay
+    setLoading(true); // Set loading state to true when the page changes
+
+    setTimeout(() => {
+        setLoading(false); // Set loading state to false after data has been loaded
+    }, 500);
+}, []); // Add page as a dependency
+
 
   return (
     <div className="justify-evenly w-full p-8 ">
@@ -52,11 +43,7 @@ const Customers = () => {
                 },
                 {
                   title: "First Name",
-                  dataIndex: "firstName",
-                },
-                {
-                  title: "Last Name",
-                  dataIndex: "lastName",
+                  dataIndex: "name",
                 },
                 {
                   title: "Email",
@@ -64,21 +51,11 @@ const Customers = () => {
                 },
                 {
                   title: "Phone",
-                  dataIndex: "phone",
+                  dataIndex: "phone_number",
                 },
-                {
-                  title: "Address",
-                  dataIndex: "address",
-                  render: (address: { address: string; city: string }) => {
-                    return (
-                      <span>
-                        {address.address}, {address.city}
-                      </span>
-                    );
-                  },
-                },
+                
               ]}
-              dataSource={dataSource}
+              dataSource={userData}
               pagination={{
                 pageSize: 8,
               }}

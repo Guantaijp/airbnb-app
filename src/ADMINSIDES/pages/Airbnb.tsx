@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FormEvent, useState, useEffect } from "react";
-import { Table, Space, Avatar, Modal, message, Popconfirm } from "antd";
-import { OwnerData, AirbnbData } from "../App";
+import { Table, Space, Modal, message, Popconfirm } from "antd";
+import { OwnerData, AirbnbData } from "../../App";
 import MultipleImageUploadComponent from "./MultipleImageUploadComponent";
 import Amenity from "./Amenity";
 
@@ -18,19 +18,17 @@ interface BnbData {
 function Airbnb(props: BnbAdminData & BnbData) {
 
     const { ownerData } = props;
-    const { airbnbData , setAirbnbData} = props;
+    const { airbnbData, setAirbnbData } = props;
 
 
     const admiData = JSON.parse(sessionStorage.getItem("admin") || "{}");
     const loggedAdmin = ownerData.find((admin: OwnerData) => admin.id === admiData.id);
     const loggedAdminId = loggedAdmin?.id;
-    // console.log(loggedAdminId);
     const loggedAdminImage = loggedAdmin?.image;
     const loggedAdminEmail = loggedAdmin?.email;
-
     //get the airbnb data that belongs to the logged-in admin
     const loggedAdminAirbnbs = airbnbData.filter((airbnb: AirbnbData) => airbnb.admin_id === loggedAdminId);
-    console.log(loggedAdminAirbnbs);
+
 
     // =======================================================================================================================================================================================================
     const [name, setName] = useState("");
@@ -62,7 +60,11 @@ function Airbnb(props: BnbAdminData & BnbData) {
         setDescription(event.target.value);
     };
 
-    const handleCategoryChange = (event: ChangeEvent<HTMLInputElement>) => {
+    // const handleCategoryChange = (event: ChangeEvent<HTMLInputElement>) => {
+    //     setCategory(event.target.value);
+    // };
+    const handleCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
+        // Handle the change event logic here
         setCategory(event.target.value);
     };
 
@@ -151,6 +153,40 @@ function Airbnb(props: BnbAdminData & BnbData) {
         // message.error("Click on No");
     };
     // =======================================================================================================================================================================================================
+
+    // update hotel
+    const handleUpdate = async (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const data = {
+            name: name,
+            location: location,
+            price: price,
+            beds: beds,
+            description: description,
+            category: category,
+            admin_id: loggedAdminId,
+        };
+
+        fetch("`http://127.0.0.1:4000/airbnbs/${id}`", {
+            method: "PUT",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data);
+                message.success("Hotel updated successfully");
+
+                // Fetch the updated data after adding a new hotel
+                airbnbData.push(data);
+            });
+    };
+
+
+
+
 
     // =======================================================================================================================================================================================================
 
@@ -254,6 +290,7 @@ function Airbnb(props: BnbAdminData & BnbData) {
                                                     type="text"
                                                     className="border border-gray-300 rounded-sm p-2"
                                                     placeholder="Hotel Name"
+                                                    required
                                                 />
                                             </div>
 
@@ -265,6 +302,7 @@ function Airbnb(props: BnbAdminData & BnbData) {
                                                     type="text"
                                                     className="border border-gray-300 rounded-sm p-2"
                                                     placeholder="Location"
+                                                    required
                                                 />
                                             </div>
 
@@ -276,6 +314,7 @@ function Airbnb(props: BnbAdminData & BnbData) {
                                                     type="number"
                                                     className="border border-gray-300 rounded-sm p-2"
                                                     placeholder="Price"
+                                                    required
                                                 />
                                             </div>
                                         </div>
@@ -289,17 +328,23 @@ function Airbnb(props: BnbAdminData & BnbData) {
                                                     type="number"
                                                     className="border border-gray-300 rounded-sm p-2"
                                                     placeholder="Beds"
+                                                    required
                                                 />
                                             </div>
                                             <div className="flex flex-col flex-grow mr-4">
                                                 <label className="text-sm">Category</label>
-                                                <input
+                                                <select
                                                     value={category}
                                                     onChange={handleCategoryChange}
-                                                    type="text"
                                                     className="border border-gray-300 rounded-sm p-2"
-                                                    placeholder="Amenity"
-                                                />
+                                                    required
+                                                >
+                                                    <option value="">Select Category</option>
+                                                    <option value="entirePlace">Entire Place</option>
+                                                    <option value="hotelRooms">Hotel Rooms</option>
+                                                    <option value="privateRooms">Private Rooms</option>
+                                                </select>
+
                                             </div>
 
                                             <div className="flex flex-col flex-grow">
@@ -310,6 +355,7 @@ function Airbnb(props: BnbAdminData & BnbData) {
                                                     type="text"
                                                     className="border border-gray-300 rounded-sm p-2"
                                                     placeholder="About"
+                                                    required
                                                 />
                                             </div>
                                         </div>
