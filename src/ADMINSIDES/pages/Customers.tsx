@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Avatar, Table } from "antd";
 import { UserData } from "../../App";
-
 interface CustomerProps {
   userData: UserData[];
 }

@@ -1,5 +1,6 @@
 import React, { ChangeEvent, FormEvent, useState, useEffect } from "react";
-import Profile from "../images/images.jpeg";
+// import Profile from "../images/images.jpeg";
+import Profile from "../../images/images.jpeg";
 import { message } from "antd";
 import { OwnerData, } from "../../App";
 
