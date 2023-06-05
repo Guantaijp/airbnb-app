@@ -12,16 +12,13 @@ interface BnbAdminData {
 
 interface BnbData {
     airbnbData: AirbnbData[];
+    setAirbnbData: React.Dispatch<React.SetStateAction<AirbnbData[]>>;
 }
-
-
-
-
 
 function Airbnb(props: BnbAdminData & BnbData) {
 
     const { ownerData } = props;
-    const { airbnbData } = props;
+    const { airbnbData , setAirbnbData} = props;
 
 
     const admiData = JSON.parse(sessionStorage.getItem("admin") || "{}");
@@ -32,9 +29,9 @@ function Airbnb(props: BnbAdminData & BnbData) {
     const loggedAdminEmail = loggedAdmin?.email;
 
     //get the airbnb data that belongs to the logged-in admin
-    // const loggedAdminAirbnbs = airbnbData.filter((airbnb: AirbnbData) => airbnb.admin_id === loggedAdminId);
-    // console.log(loggedAdminAirbnbs);
-  
+    const loggedAdminAirbnbs = airbnbData.filter((airbnb: AirbnbData) => airbnb.admin_id === loggedAdminId);
+    console.log(loggedAdminAirbnbs);
+
     // =======================================================================================================================================================================================================
     const [name, setName] = useState("");
     const [location, setLocation] = useState("");
@@ -72,7 +69,6 @@ function Airbnb(props: BnbAdminData & BnbData) {
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
         const data = {
             name: name,
             location: location,
@@ -94,18 +90,28 @@ function Airbnb(props: BnbAdminData & BnbData) {
             .then((data) => {
                 console.log(data);
                 message.success("Hotel added successfully");
-            }
-            );
 
+                // Fetch the updated data after adding a new hotel
+                airbnbData.push(data);
+            });
     };
-
 
 
     // =======================================================================================================================================================================================================
     const [page, setPage] = useState(1);
     const [activeButton, setActiveButton] = useState(1);
+
     const [loading, setLoading] = useState<boolean>(true);
     const [open, setOpen] = useState(false);
+
+    useEffect(() => {
+        // Simulate data loading delay
+        setLoading(true); // Set loading state to true when the page changes
+
+        setTimeout(() => {
+            setLoading(false); // Set loading state to false after data has been loaded
+        }, 500);
+    }, [page]); // Add page as a dependency
 
     const handleClick1 = () => {
         setLoading(true)
@@ -119,16 +125,35 @@ function Airbnb(props: BnbAdminData & BnbData) {
         setActiveButton(2);
     };
 
-    const confirm = () => {
-        console.log("confirm")
-        message.success('Click on Yes');
+
+    // delete hotel
+    const handleDelete = (id: number) => {
+        fetch(`http://127.0.0.1:4000/airbnbs/${id}`, {
+            method: "DELETE",
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data);
+                message.success("Hotel deleted successfully");
+
+                setAirbnbData(airbnbData.filter((airbnb: AirbnbData) => airbnb.id !== id));
+            });
+    };
+
+    const confirm = (id: number) => {
+        console.log("confirm");
+        handleDelete(id);
+        // message.success("Click on Yes");
     };
 
     const cancel = () => {
         console.log("cancel");
-        message.error('Click on No');
+        // message.error("Click on No");
     };
     // =======================================================================================================================================================================================================
+
+    // =======================================================================================================================================================================================================
+
 
     return (
         <>
@@ -161,22 +186,24 @@ function Airbnb(props: BnbAdminData & BnbData) {
                                     columns={[
                                         {
                                             title: "Hotel Name",
-                                            dataIndex: "image",
-                                            render: (link: string) => {
-                                                return <Avatar src={link} />;
-                                            },
+                                            dataIndex: "name",
+
                                         },
                                         {
                                             title: "Location",
-                                            dataIndex: "firstName",
+                                            dataIndex: "location",
                                         },
                                         {
                                             title: "Price",
-                                            dataIndex: "lastName",
+                                            dataIndex: "price",
                                         },
                                         {
                                             title: "Beds",
-                                            dataIndex: "email",
+                                            dataIndex: "beds",
+                                        },
+                                        {
+                                            title: "Category",
+                                            dataIndex: "category",
                                         },
 
                                         {
@@ -188,7 +215,7 @@ function Airbnb(props: BnbAdminData & BnbData) {
                                                     <Popconfirm
                                                         title="Delete the task"
                                                         description="Are you sure to delete this task?"
-                                                        onConfirm={confirm}
+                                                        onConfirm={() => confirm(record.id)} // Pass the id to confirm function
                                                         onCancel={cancel}
                                                         okText={<span className="text-red-500">Yes</span>}
                                                         cancelText="No"
@@ -197,13 +224,16 @@ function Airbnb(props: BnbAdminData & BnbData) {
                                                     </Popconfirm>
                                                     <button
                                                         onClick={() => setOpen(true)}
-                                                        className="bg-[#95873C] text-white p-0.5 text-sm rounded-sm shadow-xs">Edit</button>
+                                                        className="bg-[#95873C] text-white p-0.5 text-sm rounded-sm shadow-xs"
+                                                    >
+                                                        Edit
+                                                    </button>
                                                 </Space>
                                             ),
                                         },
                                     ]}
-
-
+                                    loading={loading}
+                                    dataSource={loggedAdminAirbnbs}
                                     pagination={{
                                         pageSize: 10,
                                     }}
@@ -285,19 +315,15 @@ function Airbnb(props: BnbAdminData & BnbData) {
                                         </div>
                                         <button className="bg-[#95873C] text-center  text-white p-2  w-1/4 m-4" type='submit'>Add Hotel</button>
                                     </form>
-                                    <Amenity ownerData={ownerData} airbnbData = {airbnbData } />
+                                    <Amenity ownerData={ownerData} airbnbData={airbnbData} />
                                     <div className="flex flex-row m-4">
                                         <div className="flex flex-col ">
                                             <label className="text-lg ml-4">Upload Hotel Images</label>
                                             <div className="flex flex-col flex-grow ml-4 ">
-                                            <MultipleImageUploadComponent ownerData={ownerData} airbnbData={airbnbData} />
-
+                                                <MultipleImageUploadComponent ownerData={ownerData} airbnbData={airbnbData} />
                                             </div>
                                         </div>
                                     </div>
-                                    {/* <button className="bg-[#95873C] text-center  text-white p-2  w-1/4 m-4" type='submit'>Add Hotel</button> */}
-
-
                                 </div>
                             )}
                         </div>

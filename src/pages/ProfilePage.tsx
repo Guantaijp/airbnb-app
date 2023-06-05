@@ -1,45 +1,25 @@
 import React, { ChangeEvent, FormEvent, useState, useEffect } from "react";
 import Profile from "../images/images.jpeg";
-import {message } from "antd";
+import { message } from "antd";
+import { OwnerData, } from "../App";
 
-interface OwnerData {
-  id: number;
-  name: string;
-  email: string;
-  password: string;
-  image: string | File | null;
+
+interface ProfilePageProps {
+  ownerData: OwnerData[];
+  setOwnerData: React.Dispatch<React.SetStateAction<OwnerData[]>>;
 }
 
+function ProfilePage(props: ProfilePageProps) {
 
-const ProfilePage = () => {
-  
-  const [ownerData, setOwnerData] = useState<OwnerData[]>([]);
+  const { ownerData, setOwnerData } = props;
+
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [image, setImage] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    // Fetch owner data from the server
-    fetch("http://127.0.0.1:4000/admins")
-      .then((res) => res.json())
-      .then((data) => {
-        setOwnerData(data);
-        // Find the logged-in admin's data
-        const loggedAdmin = data.find(
-          (admin: OwnerData) => admin.id === admiData.id
-        );
-        if (loggedAdmin) {
-          setName(loggedAdmin.name);
-          setEmail(loggedAdmin.email);
-          setPassword(loggedAdmin.password);
-          setImage(loggedAdmin.image);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+
 
   const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -66,6 +46,7 @@ const ProfilePage = () => {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setLoading(true);
     const formData = new FormData();
 
     if (name !== "") {
@@ -98,29 +79,43 @@ const ProfilePage = () => {
       .then((data) => {
         console.log(data);
         message.success("Profile updated successfully");
-        window.location.reload();
+        // Update the ownerData state with the new data
+        setOwnerData((prevOwnerData) => {
+          const updatedOwnerData = prevOwnerData.map((admin: OwnerData) => {
+            if (admin.id === loggedAdminId) {
+              // Update the matched admin with the new data
+              return data;
+            }
+            return admin;
+          });
+          return updatedOwnerData;
+        });
       })
       .catch((error) => {
         console.log(error);
         message.error("Profile update failed");
+      })
+      .finally(() => {
+        setLoading(false); // Set loading state to false regardless of success or error
       });
   };
-useEffect(() => {
-  // Set initial values for input fields
-  if (loggedAdmin) {
-    setName(loggedAdmin.name);
-    setEmail(loggedAdmin.email);
-    setPassword(loggedAdmin.password);
 
-    if (typeof loggedAdmin.image === "string") {
-      // If the image is a URL, set it directly
-      setImage(null);
-    } else {
-      // If the image is a File object, set it as is
-      setImage(loggedAdmin.image);
+  useEffect(() => {
+    // Set initial values for input fields
+    if (loggedAdmin) {
+      setName(loggedAdmin.name);
+      setEmail(loggedAdmin.email);
+      setPassword(loggedAdmin.password);
+
+      if (typeof loggedAdmin.image === "string") {
+        // If the image is a URL, set it directly
+        setImage(null);
+      } else {
+        // If the image is a File object, set it as is
+        setImage(loggedAdmin.image);
+      }
     }
-  }
-}, [loggedAdmin]);
+  }, [loggedAdmin]);
 
   return (
     <>
@@ -197,9 +192,11 @@ useEffect(() => {
                   <button
                     type="submit"
                     className="bg-[#95873C] text-white rounded-sm p-2 my-4"
+                    disabled={loading}
                   >
-                    Update Profile
+                    {loading ? "Updating..." : "Update Profile"}
                   </button>
+
                 </div>
               </div>
             </form>

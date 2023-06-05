@@ -25,6 +25,7 @@ export interface OwnerData {
   password: string;
   image: string | File | null;
   loggedAdmin : OwnerData | undefined;
+  setOwnerData : React.Dispatch<React.SetStateAction<OwnerData[]>>;
 }
 
 
@@ -36,6 +37,7 @@ export interface AirbnbData {
   price: number;
   image: string | File | null;
   owner_id: number;
+  setAibnbData: React.Dispatch<React.SetStateAction<AirbnbData[]>>;
 }
 
 
@@ -130,24 +132,16 @@ function App() {
               <Sidebar ownerData={ownerData} />
             </div>
             <div className="scrollable-content ">
-              <NavHeader
-                ownerData={ownerData}
-                name={name}
-                email={email}
-                password={password}
-                image={image}
-                loggedAdmin = {loggedAdmin}
-                
-              />
+              <NavHeader ownerData={ownerData} />
               <Routes>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/inventory" element={<Inventory />} />
                 <Route path="/orders" element={<Orders />} />
                 <Route path="/customers" element={<Customers />} />
-                <Route path="/airbnb" element={<Airbnb ownerData={ownerData} airbnbData={airbnbData}/>} />
+                <Route path="/airbnb" element={<Airbnb ownerData={ownerData} airbnbData={airbnbData} setAirbnbData={setAirbnbData}/>} />
                 <Route path="/transactions" element={<Transactions />} />
                 <Route path="/hotelbookings" element={<HotelBooking />} />
-                <Route path="/adminProfile" element={<ProfilePage />} />
+                <Route path="/adminProfile" element={<ProfilePage ownerData={ownerData}  setOwnerData={setOwnerData} />} />
                 <Route path="*" element={<h1>Not Found</h1>} />
               </Routes>
             </div>

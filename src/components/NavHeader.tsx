@@ -1,35 +1,27 @@
 import { BellFilled, MailOutlined } from "@ant-design/icons";
 import { Badge, Drawer, List, Space, Dropdown, Menu } from "antd";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import Profile from "../images/download.jpeg";
 import { Link } from "react-router-dom";
-import {  OwnerData } from "../App";
+import { OwnerData } from "../App";
 
 interface NavHeaderProps {
   ownerData: OwnerData[];
-  name: string;
-  email: string;
-  password: string;
-  image: string | File | null;
-  loggedAdmin : OwnerData | undefined;
 }
 
 
 
 function NavHeader(props: NavHeaderProps) {
 
-  const { ownerData, name, email, password, image, loggedAdmin} = props;
+  const { ownerData } = props;
+
+
   const admiData = JSON.parse(sessionStorage.getItem("admin") || "{}");
+  const loggedAdmin = ownerData.find((admin: OwnerData) => admin.id === admiData.id);
   const loggedAdminId = loggedAdmin?.id;
-  const [loggedAdminImage, setLoggedAdminImage] = useState(loggedAdmin?.image);
-  const [loggedAdminEmail, setLoggedAdminEmail] = useState(loggedAdmin?.email);
-
-  useEffect(() => {
-    setLoggedAdminImage(loggedAdmin?.image);
-    setLoggedAdminEmail(loggedAdmin?.email);
-  }, [loggedAdmin]);
-
-
+  // console.log(loggedAdminId);
+  const loggedAdminImage = loggedAdmin?.image;
+  const loggedAdminEmail = loggedAdmin?.email;
 
 
   const [commentsOpen, setCommentsOpen] = useState<boolean>(false);
@@ -85,13 +77,7 @@ function NavHeader(props: NavHeaderProps) {
             />
           </Badge>
           <Dropdown overlay={menu} placement="bottomRight">
-
-            {image ? (
-              <img className="ml-2 rounded-full h-8 w-8" src={image as string} alt="Profile" />
-            ) : (
-              <img className="ml-2" width={40} src={Profile} alt="Profile" />
-            )}
-
+            <img src={loggedAdminImage ? loggedAdminImage.toString() : Profile} alt="profile" className="rounded-full h-8 w-8" />
           </Dropdown>
           < p className="ml-2 mt-2  text-xl" >{loggedAdminEmail}</p>
         </Space>

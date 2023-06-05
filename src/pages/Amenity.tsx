@@ -1,26 +1,25 @@
 import React, { useEffect, Component, useState, ChangeEvent, FormEvent } from 'react';
 import { message } from "antd";
-import {  OwnerData, AirbnbData } from "../App";
+import { OwnerData, AirbnbData } from "../App";
 
 interface AmenityProps {
     ownerData: OwnerData[];
-    airbnbData : AirbnbData[];
+    airbnbData: AirbnbData[];
 }
 
 
 
 
-function Amenity(props: AmenityProps ) {
+function Amenity(props: AmenityProps) {
 
     const { ownerData } = props;
     const { airbnbData } = props;
-    
+
     const admiData = JSON.parse(sessionStorage.getItem("admin") || "{}");
     const loggedAdmin = ownerData.find((admin: OwnerData) => admin.id === admiData.id);
-    const loggedAdminAirbnbs = airbnbData.filter((airbnb: AirbnbData) => airbnb.admin_id ===  loggedAdmin?.id);
-    const lastAirbnbId = loggedAdminAirbnbs[loggedAdminAirbnbs.length - 1].id;
-    
-  
+    const loggedAdminAirbnbs = airbnbData.filter((airbnb: AirbnbData) => airbnb.admin_id === loggedAdmin?.id);
+    const lastAirbnbId = loggedAdminAirbnbs.length > 0 ? loggedAdminAirbnbs[loggedAdminAirbnbs.length - 1].id : null;
+
 
     const [item1, setItem1] = useState("");
     const [item2, setItem2] = useState("");
