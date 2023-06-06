@@ -93,7 +93,7 @@ function Navbar() {
 
           </div>
         </div>
-        <div className="flex items-center justify-center md:ml-4 md:my-0 my-4 shadow-lg hover:shadow-md rounded-md ">
+        <div className="flex items-center justify-center md:ml-4 md:my-0 shadow-lg hover:shadow-md rounded-md hover:border-2 border-gray-100 hover:p-2 hover:rounded-md">
           <div className="flex items-center justify-center">
             <p className="text-white font-bold mx-1">Book Your Home Stay</p>
             <Dropdown overlay={menu} placement="bottomRight">

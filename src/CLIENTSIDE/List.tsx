@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import homeImage from '../images/home.jpg';
 import homeImag from '../images/home1.jpg';
 import { Rate, Carousel } from 'antd';
+import { Link } from 'react-router-dom';    
 
 const desc = ['terrible', 'bad', 'normal', 'good', 'wonderful'];
 
@@ -34,17 +35,18 @@ function List() {
                             <p className="text-lg">Nairobi Karen</p>
                             <p className="text-lg">2 Bed Room</p>
                         </div>
-                        <button className="bg-[#95873C] text-white text-center rounded-lg hover:shadow-lg mx-auto px-4 my-4 py-2 text-sm">
+                        <Link to="/details"
+                            className="bg-[#95873C] text-white text-center rounded-lg hover:shadow-lg mx-auto px-4 my-4 py-2 text-sm">
                             Read More
-                        </button>
+                        </Link>
                     </div>
                 </div>
             </div>
 
-          
+
             <div>
                 <div className="flex flex-row justify-center mx-4 mt-6">
-                    <p className="text-xl font-bold text-center">Entire Place</p>
+                    <p className="text-xl font-bold text-center">Private Rooms</p>
                     <hr className="flex-grow border-1 border-black mt-3 mx-4" />
                 </div>
 
@@ -64,17 +66,18 @@ function List() {
                             <p className="text-lg">Nairobi Karen</p>
                             <p className="text-lg">2 Bed Room</p>
                         </div>
-                        <button className="bg-[#95873C] text-white text-center rounded-lg hover:shadow-lg mx-auto px-4 my-4 py-2 text-sm">
+
+                        <Link to="/details" className="bg-[#95873C] text-white text-center rounded-lg hover:shadow-lg mx-auto px-4 my-4 py-2 text-sm">
                             Read More
-                        </button>
+                        </Link>
                     </div>
                 </div>
             </div>
 
 
-            <div>
-                <div className="flex flex-row justify-center mx-4 mt-6">
-                    <p className="text-xl font-bold text-center">Entire Place</p>
+            <div className='my-6'>
+                <div className="flex flex-row justify-center mx-4">
+                    <p className="text-xl font-bold text-center">Hotel Rooms</p>
                     <hr className="flex-grow border-1 border-black mt-3 mx-4" />
                 </div>
 
@@ -94,9 +97,9 @@ function List() {
                             <p className="text-lg">Nairobi Karen</p>
                             <p className="text-lg">2 Bed Room</p>
                         </div>
-                        <button className="bg-[#95873C] text-white text-center rounded-lg hover:shadow-lg mx-auto px-4 my-4 py-2 text-sm">
+                        <Link to="/details" className="bg-[#95873C] text-white text-center rounded-lg hover:shadow-lg mx-auto px-4 my-4 py-2 text-sm">
                             Read More
-                        </button>
+                        </Link>
                     </div>
                 </div>
             </div>

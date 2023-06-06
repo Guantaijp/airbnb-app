@@ -11,6 +11,7 @@ import AirBnbs from './CLIENTSIDE/AirBnbs';
 import About from './CLIENTSIDE/About';
 import Contact from './CLIENTSIDE/Contact';
 import UserProfile from './CLIENTSIDE/UserProfile';
+import Detail from './CLIENTSIDE/Detail';
 
 
 
@@ -32,6 +33,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/userprofile" element={<UserProfile />} />
+        <Route path="/details/" element={<Detail />} />
         <Route path="/admin/*" element={<Admin />} />
       </Routes>
       {!location.pathname.startsWith('/admin') && <Footer />}
