@@ -27,10 +27,10 @@ function Navbar() {
 
     <Menu onClick={handleMenuClick}>
       <Menu.Item key="profile">
-        <Link to="/admin/profile">Profile</Link>
+        <Link to="/userprofile">Profile</Link>
       </Menu.Item>
       <Menu.Item key="logout">
-        <Link to="/admin/login">Logout</Link>
+        <Link to="/">Logout</Link>
       </Menu.Item>
     </Menu>
   );
@@ -54,8 +54,7 @@ function Navbar() {
 
   return (
     <div id="" className="flex flex-col sticky top-0 z-50">
-      <nav className=" navbar flex justify-around py-4 bg-[#95873C] backdrop-blur-md shadow-md w-full">
-
+      <nav className=" navbar flex justify-around py-2 bg-[#95873C] backdrop-blur-md shadow-lg w-full">
         <div className="flex items-center justify-center w-16">
           <Link to="/" className="cursor-pointer">
             <img
@@ -72,38 +71,35 @@ function Navbar() {
           {menuOpen ? <FaTimes /> : <FaHamburger />}{" "}
           {/* display icon based on menu state */}
         </div>
-        <div
-          className={`md:flex md:items-center py-4 px-7 md:px-10 lg:flex ${menuOpen ? "block" : "hidden"
-            }`}
-        >
-          {" "}
+        <div className={`md:flex md:items-center py-4 mr-4 px-7 md:px-10 lg:flex ${menuOpen ? "block" : "hidden " }`} >
           <div className="nav-links md:flex md:items-center text-white font-bold text-lg md:pb-0 pb-6">
-            {Links.map((link) => (
-              <li key={link.name} className="nav-item md:ml-4 md:my-0 my-4" style={{ listStyle: 'none' }}>
-                <a href={link.link} className="nav-link  hover:border-2 border-gray-100 hover:p-2 hover:rounded-md">
-                  {link.name}
-                </a>
-              </li>
-            ))}
+            <div className="nav-item md:ml-4 md:my-0 my-4" style={{ listStyle: 'none' }}>
+              <Link to="/" className="nav-link hover:border-2 border-gray-100 hover:p-2 hover:rounded-md mx-2">
+                Home
+              </Link>
+              
+              <Link to="/airbnb" className="nav-link hover:border-2 border-gray-100 hover:p-2 hover:rounded-md mx-2">
+                Airbnbs
+              </Link>
+              <span className="px-1"></span>
+              <Link to="/about" className="nav-link hover:border-2 border-gray-100 hover:p-2 hover:rounded-md mx-2">
+                About Us
+              </Link>
+              
+              <Link to="/contact" className="nav-link hover:border-2 border-gray-100 hover:p-2 hover:rounded-md mx-2">
+                Contact Us
+              </Link>
+            </div>
+
           </div>
         </div>
-        {/* 
-        <div className="flex items-center justify-center md:ml-4 md:my-0 my-4 shadow-lg hover:shadow-md rounded-md">
-          <Dropdown overlay={menu} placement="bottomRight">
-            <p className="text-white font-bold p-2">Book Your Home Stay</p>
-            <Link to="/profile" className="flex items-center justify-center">
-              <img src={Profile} alt="Profile" className="rounded-full w-10 h-10 p-1" />
-            </Link>
-          </Dropdown>
-        </div> */}
-        <div className="flex items-center justify-center md:ml-4 md:my-0 my-4 shadow-lg hover:shadow-md rounded-md">
-
+        <div className="flex items-center justify-center md:ml-4 md:my-0 my-4 shadow-lg hover:shadow-md rounded-md ">
           <div className="flex items-center justify-center">
-            <p className="text-white font-bold p-2">Book Your Home Stay</p>
+            <p className="text-white font-bold mx-1">Book Your Home Stay</p>
             <Dropdown overlay={menu} placement="bottomRight">
-              <Link to="/profile" className="flex items-center justify-center">
-                <img src={Profile} alt="Profile" className="rounded-full w-10 h-10 p-1" />
-              </Link>
+              <div  className="flex items-center justify-center">
+                <img src={Profile} alt="Profile" className="rounded-full w-8 h-8 mx-1" />
+              </div>
             </Dropdown>
 
           </div>
