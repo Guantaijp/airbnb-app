@@ -48,10 +48,6 @@ function NavHeader(props: NavHeaderProps) {
     </Menu>
   );
 
-
-
-
-
   return (
     <div className="flex flex-row bg-white fixed   justify-evenly w-full p-2 ">
       <p className="text-xl mt-2 font-bold">Guan Bnb Admin Corner</p>
