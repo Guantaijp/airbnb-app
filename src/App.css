@@ -1,4 +1,4 @@
-/* App.css */
+/* App.css
 .app {
   display: grid;
   grid-template-columns: 250px calc(100% - 250px);
@@ -19,4 +19,26 @@
 }
 .SideMenuVertical{
   height: 100%;
+} */
+
+.spin {
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spine {
+  0% { transform: rotateX(0); }
+  50% { transform: rotateX(360); }
+  100% { transform: rotateX(0); }
+}
+
+#groups {
+  width: 100%;
+  margin-bottom: 1em;
+}
+#groups td {
+  padding: 5px;
+}
+.size-chart::-webkit-scrollbar{
+  height: 0px;
+  width: 0px;
 }

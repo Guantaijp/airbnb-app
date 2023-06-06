@@ -6,14 +6,14 @@ import {
     TeamOutlined
 
 } from "@ant-design/icons";
-import '../App.css';
+// import '../App.css';
 import Profile from "../images/images.jpeg";
 import { Dropdown, Menu } from "antd";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from '../AuthContext';
 import { useContext } from "react";
-import { OwnerData } from "../App";
+import { OwnerData } from "../ADMINSIDES/pages/Admin";
 
 interface SidebarProps {
     ownerData: OwnerData[];
@@ -40,7 +40,7 @@ function Sidebar(props: SidebarProps) {
         if (e.key === "logout") {
             localStorage.removeItem("token");
             logout();
-            navigate("/login");
+            navigate("/admin/login");
         }
         if (e.key === "profile") {
             // history.push("/adminProfile");
@@ -53,11 +53,11 @@ function Sidebar(props: SidebarProps) {
     const menu = (
         <Menu onClick={handleMenuClick}>
             <Menu.Item key="profile">
-                <Link to="/adminProfile">Profile</Link>
+                <Link to="/admin/profile">Profile</Link>
             </Menu.Item>
             <Menu.Item key="logout">
 
-                <Link to="/login">Logout</Link>
+                <Link to="/admin/login">Logout</Link>
             </Menu.Item>
         </Menu>
     );
@@ -76,35 +76,35 @@ function Sidebar(props: SidebarProps) {
                     </Dropdown>
 
                     <div className="flex flex-col m-2">
-                        <Link to="/" className="flex flex-row mb-8">
+                        <Link to="/admin/dashboard" className="flex flex-row mb-8">
                             < AppstoreOutlined
                                 className="text-3xl text-white hover:text-gray-400 mr-2" />
                             <h1 className="text-start text-2xl font-bold text-white hover:text-gray-400">
                                 Dashboard
                             </h1>
                         </Link>
-                        <Link to="/airbnb" className="flex flex-row mb-8">
+                        <Link to="/admin/airbnb" className="flex flex-row mb-8">
                             < ShopOutlined
                                 className="text-3xl text-white hover:text-gray-400 mr-2" />
                             <h1 className="text-start text-2xl font-bold text-white hover:text-gray-400">
                                 Airbnbs
                             </h1>
                         </Link>
-                        <Link to="/transactions" className="flex flex-row mb-8">
+                        <Link to="/admin/transactions" className="flex flex-row mb-8">
                             < ShoppingCartOutlined
                                 className="text-3xl text-white hover:text-gray-400 mr-2" />
                             <h1 className="text-start text-2xl font-bold text-white hover:text-gray-400">
                                 Transactions
                             </h1>
                         </Link>
-                        <Link to="/hotelbookings" className="flex flex-row mb-8">
+                        <Link to="/admin/hotelbookings" className="flex flex-row mb-8">
                             < BookOutlined
                                 className="text-3xl text-white hover:text-gray-400 mr-2" />
                             <h1 className="text-start text-2xl font-bold text-white hover:text-gray-400">
                                 Hotel Bookings
                             </h1>
                         </Link>
-                        <Link to="/customers" className="flex flex-row mb-8">
+                        <Link to="/admin/customers" className="flex flex-row mb-8">
                             < TeamOutlined
                                 className="text-3xl text-white hover:text-gray-400 mr-2" />
                             <h1 className="text-start text-2xl font-bold text-white hover:text-gray-400">

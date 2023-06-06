@@ -1,6 +1,6 @@
 import React, { Component, ChangeEvent } from 'react';
 import { message, Spin } from "antd";
-import { AirbnbData, OwnerData } from "../../App";
+import { AirbnbData, OwnerData } from "./Admin";
 
 interface MultipleImageUploadComponentState {
   files: FileList | null;

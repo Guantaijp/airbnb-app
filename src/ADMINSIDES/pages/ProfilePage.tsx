@@ -2,7 +2,7 @@ import React, { ChangeEvent, FormEvent, useState, useEffect } from "react";
 // import Profile from "../images/images.jpeg";
 import Profile from "../../images/images.jpeg";
 import { message } from "antd";
-import { OwnerData, } from "../../App";
+import { OwnerData, } from "./Admin";
 
 
 interface ProfilePageProps {
@@ -62,10 +62,13 @@ function ProfilePage(props: ProfilePageProps) {
       formData.append("email", loggedAdmin?.email || "");
     }
 
-    if (password !== "") {
+    if (password) {
       formData.append("password", password);
     } else {
-      formData.append("password", loggedAdmin?.password || "");
+      // Check if loggedAdmin exists and has a password
+      if (loggedAdmin && loggedAdmin.password) {
+        formData.append("password", loggedAdmin.password);
+      }
     }
 
     if (image) {

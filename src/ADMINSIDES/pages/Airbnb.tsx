@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FormEvent, useState, useEffect } from "react";
 import { Table, Space, Modal, message, Popconfirm } from "antd";
-import { OwnerData, AirbnbData } from "../../App";
+import { OwnerData, AirbnbData } from "./Admin";
 import MultipleImageUploadComponent from "./MultipleImageUploadComponent";
 import Amenity from "./Amenity";
 

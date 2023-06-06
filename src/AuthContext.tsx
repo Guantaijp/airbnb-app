@@ -58,7 +58,7 @@ export default function AuthProvider({children}: {children: React.ReactNode;}) {
           localStorage.setItem('user', JSON.stringify(response.user));
           sessionStorage.setItem('user', JSON.stringify(response.user));
           sessionStorage.setItem('jwtToken', response.jwt);
-          navigate('/');
+          navigate('/admin');
         } else if (response.admin) {
           message.success('Welcome Admin');
           setAdmin(response.admin);
@@ -66,7 +66,7 @@ export default function AuthProvider({children}: {children: React.ReactNode;}) {
           localStorage.setItem('admin', JSON.stringify(response.admin));
           sessionStorage.setItem('admin', JSON.stringify(response.admin));
           sessionStorage.setItem('jwtToken', response.jwt);
-          navigate('/airbnb');
+          navigate('/admin/dashboard');
         }
       });
   };
@@ -96,7 +96,7 @@ export default function AuthProvider({children}: {children: React.ReactNode;}) {
         } else {
           // Delay the navigation by 1.5 seconds
           setTimeout(() => {
-            navigate("/login");
+            navigate("admin/login");
           }, 1500);
         }
       });
@@ -107,7 +107,7 @@ export default function AuthProvider({children}: {children: React.ReactNode;}) {
     sessionStorage.removeItem("user");
     localStorage.removeItem("token");
     sessionStorage.clear();
-    navigate("/login");
+    navigate("admin/login");
   };
 
   const contextData: AuthContextData = {

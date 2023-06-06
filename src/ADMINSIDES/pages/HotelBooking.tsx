@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Table, Space, Modal, message, Popconfirm } from "antd";
-import { AirbnbData, BookingData, OwnerData, UserData } from "../../App";
+import { AirbnbData, BookingData, OwnerData, UserData } from "./Admin";
 
 interface HotelBookingProps {
     bookingData: BookingData[];

@@ -3,7 +3,7 @@ import { Badge, Drawer, List, Space, Dropdown, Menu } from "antd";
 import { useState, useEffect } from "react";
 import Profile from "../images/download.jpeg";
 import { Link } from "react-router-dom";
-import { OwnerData } from "../App";
+import { OwnerData } from "../ADMINSIDES/pages/Admin";
 
 interface NavHeaderProps {
   ownerData: OwnerData[];
@@ -40,10 +40,10 @@ function NavHeader(props: NavHeaderProps) {
   const menu = (
     <Menu onClick={handleMenuClick}>
       <Menu.Item key="profile">
-        <Link to="/adminProfile">Profile</Link>
+        <Link to="/admin/profile">Profile</Link>
       </Menu.Item>
       <Menu.Item key="logout">
-        <Link to="/login">Logout</Link>
+        <Link to="/admin/login">Logout</Link>
       </Menu.Item>
     </Menu>
   );

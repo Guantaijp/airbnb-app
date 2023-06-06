@@ -1,6 +1,6 @@
 import { Avatar, Rate, Space, Table, Typography } from "antd";
 import { useEffect, useState } from "react";
-import { type } from "os";
+
 
 
 interface InventoryProps {
