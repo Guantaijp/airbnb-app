@@ -1,7 +1,12 @@
-import React from 'react'
 import homeImage from '../images/home.jpg';
 import homeImag from '../images/home1.jpg';
+import GoogleMapReact, { BootstrapURLKeys, MapOptions, NESWBounds, Size, fitBounds } from 'google-map-react';
+
+
+
 function Detail() {
+
+
     return (
         <div>
             <div className="flex flex-col  min-h-screen ">
@@ -48,68 +53,69 @@ function Detail() {
                     </div>
                 </div>
 
-
-                <div className=" flex flex-col mx-20 mt-4">
-                    <h1 className="text-2xl font-extrabold text-gray-900">What Karen Resoult offers</h1>
-                    <div className="flex flex-row">
-                        <div className="border-2 border-gray-600 rounded-lg m-2" style={{ width: 'fit-content' }}>
-                            <p className="text-lg  text-gray-900 m-2 text-center ">Karen Resoult</p>
+                <div className="container mx-auto">
+                    <div className="flex flex-row mt-4 justify-start">
+                        <div className="flex flex-col">
+                            <h1 className="text-2xl font-extrabold text-gray-900">What Karen Resoult offers</h1>
+                            <div className="flex flex-row">
+                                <div className="border-2 border-gray-600 rounded-lg m-2" style={{ width: 'fit-content' }}>
+                                    <p className="text-lg  text-gray-900 m-2 text-center ">Karen Resoult</p>
+                                </div>
+                                <div className="border-2 border-gray-600 rounded-lg m-2" style={{ width: 'fit-content' }}>
+                                    <p className="text-lg  text-gray-900 m-2 text-center ">Karen Resoult</p>
+                                </div>
+                                <div className="border-2 border-gray-600 rounded-lg m-2" style={{ width: 'fit-content' }}>
+                                    <p className="text-lg  text-gray-900 m-2 text-center ">Karen Resoult</p>
+                                </div>
+                                <div className="border-2 border-gray-600 rounded-lg m-2" style={{ width: 'fit-content' }}>
+                                    <p className="text-lg  text-gray-900 m-2 text-center ">Karen Resoult</p>
+                                </div>
+                                <div className="border-2 border-gray-600 rounded-lg m-2" style={{ width: 'fit-content' }}>
+                                    <p className="text-lg  text-gray-900 m-2 text-center ">Karen Resoult</p>
+                                </div>
+                            </div>
+                            <div className="flex flex-row">
+                                <div className="border-2 border-gray-600 rounded-lg m-2" style={{ width: 'fit-content' }}>
+                                    <p className="text-lg  text-gray-900 m-2 text-center ">Karen Resoult</p>
+                                </div>
+                                <div className="border-2 border-gray-600 rounded-lg m-2" style={{ width: 'fit-content' }}>
+                                    <p className="text-lg  text-gray-900 m-2 text-center ">Karen Resoult</p>
+                                </div>
+                                <div className="border-2 border-gray-600 rounded-lg m-2" style={{ width: 'fit-content' }}>
+                                    <p className="text-lg  text-gray-900 m-2 text-center ">Karen Resoult</p>
+                                </div>
+                                <div className="border-2 border-gray-600 rounded-lg m-2" style={{ width: 'fit-content' }}>
+                                    <p className="text-lg  text-gray-900 m-2 text-center ">Karen Resoult</p>
+                                </div>
+                                <div className="border-2 border-gray-600 rounded-lg m-2" style={{ width: 'fit-content' }}>
+                                    <p className="text-lg  text-gray-900 m-2 text-center ">Karen Resoult</p>
+                                </div>
+                            </div>
+                            <div className="flex flex-col mt-4">
+                                <h1 className="text-2xl font-extrabold text-gray-900">About Karen Resoult</h1>
+                                <div className="my-3">
+                                    <p className="text-lg text-gray-900 text-left w-1/2 my-0">
+                                        It is a long established fact that a reader will be
+                                        distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is
+                                        that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here',
+                                        making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as
+                                        their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various
+                                        versions have evolved over the years,
+                                        sometimes by accident, sometimes on purpose (injected humour and the like).
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                        <div className="border-2 border-gray-600 rounded-lg m-2" style={{ width: 'fit-content' }}>
-                            <p className="text-lg  text-gray-900 m-2 text-center ">Karen Resoult</p>
-                        </div>
-                        <div className="border-2 border-gray-600 rounded-lg m-2" style={{ width: 'fit-content' }}>
-                            <p className="text-lg  text-gray-900 m-2 text-center ">Karen Resoult</p>
-                        </div>
-                        <div className="border-2 border-gray-600 rounded-lg m-2" style={{ width: 'fit-content' }}>
-                            <p className="text-lg  text-gray-900 m-2 text-center ">Karen Resoult</p>
-                        </div>
-                        <div className="border-2 border-gray-600 rounded-lg m-2" style={{ width: 'fit-content' }}>
-                            <p className="text-lg  text-gray-900 m-2 text-center ">Karen Resoult</p>
+                        <div className="flex flex-col">
+                            <div className="my-3 border-2 border-gray-600 rounded-lg" style={{ width: 'fit-content' }}>
+                                <p className="text-lg text-gray-900 text-left w-1/2 my-0">$ 1000</p>
+                            </div>
                         </div>
                     </div>
-
-                    <div className="flex flex-row">
-                        <div className="border-2 border-gray-600 rounded-lg m-2" style={{ width: 'fit-content' }}>
-                            <p className="text-lg  text-gray-900 m-2 text-center ">Karen Resoult</p>
-                        </div>
-                        <div className="border-2 border-gray-600 rounded-lg m-2" style={{ width: 'fit-content' }}>
-                            <p className="text-lg  text-gray-900 m-2 text-center ">Karen Resoult</p>
-                        </div>
-                        <div className="border-2 border-gray-600 rounded-lg m-2" style={{ width: 'fit-content' }}>
-                            <p className="text-lg  text-gray-900 m-2 text-center ">Karen Resoult</p>
-                        </div>
-                        <div className="border-2 border-gray-600 rounded-lg m-2" style={{ width: 'fit-content' }}>
-                            <p className="text-lg  text-gray-900 m-2 text-center ">Karen Resoult</p>
-                        </div>
-                        <div className="border-2 border-gray-600 rounded-lg m-2" style={{ width: 'fit-content' }}>
-                            <p className="text-lg  text-gray-900 m-2 text-center ">Karen Resoult</p>
-                        </div>
-                    </div>
-                </div>
-
-                {/* About  */}
-
-                <div className="flex flex-col mx-20 mt-4">
-                    <h1 className="text-2xl font-extrabold text-gray-900">About Karen Resoult</h1>
-
-                    <div className="my-3">
-                        <p className="text-lg text-gray-900  text-left w-1/2 my-0">t is a long established fact that a reader will be
-                            distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is
-                            that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here',
-                            making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as
-                            their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various
-                            versions have evolved over the years,
-                            sometimes by accident, sometimes on purpose (injected humour and the like).
-                        </p>
-                    </div>
-
                 </div>
 
 
             </div>
-
-
         </div>
     )
 }
