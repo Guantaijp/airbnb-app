@@ -37,7 +37,7 @@ const HotelBooking = (props: HotelBookingProps) => {
         loggedAdminBookings = bookingData.filter((booking: BookingData) => booking.airbnb_id === loggedAdminAirbnbs[0].id);
     }
 
-    console.log("loggedAdminBookings", loggedAdminBookings);
+    // console.log("loggedAdminBookings", loggedAdminBookings);
 
     const confirm = () => {
         console.log("confirm")

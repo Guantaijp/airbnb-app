@@ -31,6 +31,7 @@ function NavHeader(props: NavHeaderProps) {
   // once i click profile i want to be directed to the profile page
   const handleMenuClick = (e: any) => {
     if (e.key === "logout") {
+      sessionStorage.removeItem("admin");
       localStorage.removeItem("token");
     }
     if (e.key === "profile") {
