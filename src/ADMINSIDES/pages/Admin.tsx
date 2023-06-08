@@ -3,7 +3,6 @@ import Sidebar from '../../components/Sidebar';
 import AuthProvider from "../../AuthContext";
 import { Route, Routes, useRoutes } from 'react-router-dom';
 import Login from './Login';
-import Signup from './Signup';
 import Airbnb from "./Airbnb";
 import Customers from "./Customers";
 import Dashboard from "./Dashboard";
@@ -151,7 +150,7 @@ function Admin() {
   const routes = (
     <Routes>
     <Route path="/login" element={<Login />} />
-    <Route path="/signup" element={<Signup />} />
+    {/* <Route path="/signup" element={<Signup />} /> */}
     {/* Add more routes as needed */}
   </Routes>
   );

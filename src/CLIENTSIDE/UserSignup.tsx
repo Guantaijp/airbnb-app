@@ -1,29 +1,27 @@
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import React, { useEffect, useRef, useContext } from 'react';
 import lottie, { AnimationItem } from 'lottie-web';
-import animation from '../../images/animation.json';
+import animation from '../images/animation.json';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
-import {  Input, } from 'antd';
-import { AuthContext } from '../../AuthContext';
+import { Input, } from 'antd';
+import { UserAuthContext } from '../UserAuthContext';
 
-
-
-
-const Signup = () => {
+const UserSignup = () => {
+    const navigate = useNavigate();
 
     const animationContainer = useRef<HTMLDivElement>(null);
     // const [passwordVisible, setPasswordVisible] = React.useState(false);
     const [email, setEmail] = React.useState<string>("");
     const [password, setPassword] = React.useState<string>("");
     const [name, setName] = React.useState<string>("");
-    const [confirmPassword, setConfirmPassword] = React.useState<string>("");
+    const [password_confirmation, setConfirmPassword] = React.useState<string>("");
 
-    const { register } = useContext(AuthContext);
+    const { register } = useContext(UserAuthContext);
 
-    const handleRegister = () => {
-        register(name, email, password, confirmPassword);
-    };
-
+    const handleRegister = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        register(name, email, password, password_confirmation)
+      };
 
     useEffect(() => {
         let anim: AnimationItem | null = null;
@@ -58,8 +56,8 @@ const Signup = () => {
                             <div className="mt-8 max-w-[300px]">
                                 <form
                                     onSubmit={(e) => {
-                                        e.preventDefault();
-                                        handleRegister();
+                                        handleRegister(e);
+                                        
                                     }}
                                     className="w-full space-y-6">
                                     <Input
@@ -82,7 +80,7 @@ const Signup = () => {
                                         iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
                                     />
                                     <Input.Password
-                                        value={confirmPassword}
+                                        value={password_confirmation}
                                         onChange={(e) => setConfirmPassword(e.target.value)}
                                         placeholder="Confirm Password"
                                         style={{ border: "1px solid #95873C" }}
@@ -97,7 +95,7 @@ const Signup = () => {
                                             Already have an account?
                                         </p>
 
-                                        <Link to="/login"
+                                        <Link to="/userlogin"
                                             className="ml-1 text-sm text-[#95873C] hover:text-[#95873C]">
                                             Login
                                         </Link>
@@ -112,4 +110,4 @@ const Signup = () => {
     );
 };
 
-export default Signup
+export default UserSignup;

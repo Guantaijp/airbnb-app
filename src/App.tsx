@@ -13,6 +13,10 @@ import Contact from './CLIENTSIDE/Contact';
 import UserProfile from './CLIENTSIDE/UserProfile';
 import Detail from './CLIENTSIDE/Detail';
 import BookingPage from './CLIENTSIDE/BookingPage';
+import UserAuthProvider from './UserAuthContext';
+import UserLogin from './CLIENTSIDE/UserLogin';
+import UserSignup from './CLIENTSIDE/UserSignup';
+
 
 
 
@@ -26,21 +30,29 @@ function App() {
   return (
 
     <>
-      {!location.pathname.startsWith('/admin') && <Navbar />}
+     <UserAuthProvider>
+      {!location.pathname.startsWith('/admin') && !['/userlogin', '/usersignup'].includes(location.pathname) && <Navbar />}
       <Routes>
+       
         <Route path="/" element={<Homepage />} />
         <Route path="/lists" element={<List />} />
         <Route path="/airbnb" element={<AirBnbs />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/userprofile" element={<UserProfile />} />
-        <Route path="/details/" element={<Detail />} />
+        <Route path="/details" element={<Detail />} />
         <Route path="/booking" element={<BookingPage />} />
+        <Route path="/userlogin" element={<UserLogin />} />
+        <Route path="/usersignup" element={<UserSignup />} />
+       
         <Route path="/admin/*" element={<Admin />} />
       </Routes>
-      {!location.pathname.startsWith('/admin') && <Footer />}
-    </>
+      
+      {!location.pathname.startsWith('/admin') && !['/userlogin', '/usersignup'].includes(location.pathname) && <Footer />}
+   
+    </UserAuthProvider>
 
+    </>
 
 
   );
