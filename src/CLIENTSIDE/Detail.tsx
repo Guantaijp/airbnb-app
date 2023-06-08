@@ -1,5 +1,6 @@
 import homeImage from '../images/home.jpg';
 import homeImag from '../images/home1.jpg';
+import { Link } from 'react-router-dom';
 
 
 
@@ -131,9 +132,9 @@ function Detail() {
                                 </div>
 
                                 <div className="flex flex-row justify-center">
-                                    <button className="bg-[#95873C] text-white font-bold py-2 px-4 rounded my-2">
+                                    <Link to="/booking" className="bg-[#95873C] text-white font-bold py-2 px-4 rounded my-2">
                                         Reserve Now
-                                    </button>
+                                    </Link>
                                 </div>
                             </div>
                         </div>

@@ -12,6 +12,7 @@ import About from './CLIENTSIDE/About';
 import Contact from './CLIENTSIDE/Contact';
 import UserProfile from './CLIENTSIDE/UserProfile';
 import Detail from './CLIENTSIDE/Detail';
+import BookingPage from './CLIENTSIDE/BookingPage';
 
 
 
@@ -34,6 +35,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/userprofile" element={<UserProfile />} />
         <Route path="/details/" element={<Detail />} />
+        <Route path="/booking" element={<BookingPage />} />
         <Route path="/admin/*" element={<Admin />} />
       </Routes>
       {!location.pathname.startsWith('/admin') && <Footer />}
