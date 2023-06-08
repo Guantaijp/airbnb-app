@@ -1,6 +1,5 @@
 import homeImage from '../images/home.jpg';
 import homeImag from '../images/home1.jpg';
-import GoogleMapReact, { BootstrapURLKeys, MapOptions, NESWBounds, Size, fitBounds } from 'google-map-react';
 
 
 
@@ -53,8 +52,8 @@ function Detail() {
                     </div>
                 </div>
 
-                <div className="container mx-auto">
-                    <div className="flex flex-row mt-4 justify-start">
+                <div className='justify-center items-center flex flex-col'>
+                    <div className="flex flex-row mt-4 ">
                         <div className="flex flex-col">
                             <h1 className="text-2xl font-extrabold text-gray-900">What Karen Resoult offers</h1>
                             <div className="flex flex-row">
@@ -106,9 +105,35 @@ function Detail() {
                                 </div>
                             </div>
                         </div>
-                        <div className="flex flex-col">
-                            <div className="my-3 border-2 border-gray-600 rounded-lg" style={{ width: 'fit-content' }}>
-                                <p className="text-lg text-gray-900 text-left w-1/2 my-0">$ 1000</p>
+                        <div className="flex flex-col ">
+                            <div className="border-2 border-gray-300 rounded-lg p-4">
+                                <p className="text-lg text-gray-900 my-0">1000 Ksh Per Night</p>
+                                <div className="flex flex-row border-2 border-gray-300 rounded-lg p-2 mt-2">
+                                    <div className="flex flex-col">
+                                        <p className="text-lg text-gray-900 my-0">Check In</p>
+                                        <input type="date" className="border-2 border-gray-300 rounded-sm" />
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <p className="text-lg text-gray-900 my-0">Check Out</p>
+                                        <input type="date" className="border-2 border-gray-300 rounded-sm" />
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-row justify-between mt-2">
+                                    <p className="text-lg text-gray-900 my-0 ">4,000 X 4 nights</p>
+                                    <p className="text-lg text-gray-900 my-0 ">16,000</p>
+                                </div>
+
+                                <div className="flex flex-row justify-between mt-1">
+                                    <p className="text-lg text-gray-900 my-0">Total</p>
+                                    <p className="text-lg text-gray-900 my-0 ml-auto">16,000</p>
+                                </div>
+
+                                <div className="flex flex-row justify-center"> 
+                                    <button className="bg-[#95873C] text-white font-bold py-2 px-4 rounded my-2">
+                                        Reserve Now
+                                    </button>
+                                </div> 
                             </div>
                         </div>
                     </div>
