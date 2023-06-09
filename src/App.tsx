@@ -1,12 +1,11 @@
-import React, { useState, useEffect} from 'react';
-import { BrowserRouter as Router, Route, Routes, useRoutes, Outlet } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Route, Routes} from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import Navbar from './CLIENTSIDE/Navbar';
 import Admin from './ADMINSIDES/pages/Admin';
 import Footer from './components/Footer';
 import Homepage from './CLIENTSIDE/Homepage';
 import List from './CLIENTSIDE/List';
-import Airbnb from './ADMINSIDES/pages/Airbnb';
 import AirBnbs from './CLIENTSIDE/AirBnbs';
 import About from './CLIENTSIDE/About';
 import Contact from './CLIENTSIDE/Contact';
@@ -28,17 +27,6 @@ export interface UserData {
   setUserData: React.Dispatch<React.SetStateAction<UserData[]>>;
 }
 
-export interface AirbnbData {
-  user_id: number | undefined;
-  admin_id: number | undefined;
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  image: string | File | null;
-  owner_id: number;
-  setAibnbData: React.Dispatch<React.SetStateAction<AirbnbData[]>>;
-}
 
 export interface BookingData {
   id: number;
@@ -50,11 +38,25 @@ export interface BookingData {
   setBookingData: React.Dispatch<React.SetStateAction<BookingData[]>>;
 }
 
+export interface AirbnbData {
+  user_id: number | undefined;
+  admin_id: number | undefined;
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  image: string | File | null;
+  owner_id: number;
+  category: string;
+  setAibnbData: React.Dispatch<React.SetStateAction<AirbnbData[]>>;
+  setSortedAirbnbData: React.Dispatch<React.SetStateAction<AirbnbData[]>>;
+  sortedAirbnbData: AirbnbData[];
+  handleSort: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+}
 
 function App() {
-
+  // ==========================================================//USERs DATA//=========================================================================================================
   const [userData, setUserData] = useState<UserData[]>([]);
-
   useEffect(() => {
     fetch("http://127.0.0.1:4000/users")
       .then((res) => res.json())
@@ -66,7 +68,7 @@ function App() {
       });
   }, []);
 
-
+  // ============================================================//BOOKING DATA//=======================================================================================================
   const [bookingData, setBookingData] = useState<BookingData[]>([]);
   useEffect(() => {
     fetch("http://127.0.0.1:4000/bookings")
@@ -78,9 +80,11 @@ function App() {
         console.log(error);
       });
   }, []);
-
+  // ==============================================================//AIRBNB DATA//=====================================================================================================
   // fetch airbnb data from the server
   const [airbnbData, setAirbnbData] = useState<AirbnbData[]>([]);
+  // const [sortedAirbnbData, setSortedAirbnbData] = useState<AirbnbData[]>([]);
+
   useEffect(() => {
     fetch("http://127.0.0.1:4000/airbnbs")
       .then((res) => res.json())
@@ -92,39 +96,48 @@ function App() {
       });
   }, []);
 
-
-
-  
-
-
-
-
+  // const handleSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  //   const option = e.target.value;
+  //   // Sort by category only
+  //   if (option === "category") {
+  //     const categoryOrder: { [key: string]: number } = {
+  //       hotelrooms: 0,
+  //       entirePlace: 1,
+  //       privateRooms: 2,
+  //     };
+  //     const sorted = [...airbnbData].sort((a, b) => {
+  //       return categoryOrder[a.category] - categoryOrder[b.category];
+  //     });
+  //     setSortedAirbnbData(sorted);
+  //   }
+  // };
   const location = useLocation();
   const [path, setPath] = useState(location.pathname)
   return (
 
     <>
-     <UserAuthProvider>
-      {!location.pathname.startsWith('/admin') && !['/userlogin', '/usersignup'].includes(location.pathname) && <Navbar userData={userData}  />}
-      <Routes>
-        <Route path="/" element={<Homepage />} />
-        <Route path="/lists" element={<List />} />
-        <Route path="/airbnb" element={<AirBnbs />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/userprofile" element={<UserProfile userData={userData} setUserData={setUserData}  bookingData={bookingData}  airbnbData={airbnbData}/>} />
-        <Route path="/details" element={<Detail />} />
-        <Route path="/booking" element={<BookingPage />} />
-        <Route path="/userlogin" element={<UserLogin />} />
-        <Route path="/usersignup" element={<UserSignup />} />
-       
-        <Route path="/admin/*" element={<Admin />} />
-      </Routes>
-      
-      {!location.pathname.startsWith('/admin') && !['/userlogin', '/usersignup'].includes(location.pathname) && <Footer />}
-   
-    </UserAuthProvider>
-
+      {location.pathname.startsWith('/admin') ? (
+        <Routes>
+          <Route path="/admin/*" element={<Admin />} />
+        </Routes>
+      ) : (
+        <UserAuthProvider>
+          {!['/userlogin', '/usersignup'].includes(location.pathname) && <Navbar userData={userData} />}
+          <Routes>
+            <Route path="/" element={<Homepage airbnbData={airbnbData} />} />
+            <Route path="/lists" element={<List airbnbData={airbnbData}/>} />
+            <Route path="/airbnb" element={<AirBnbs />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/userprofile" element={<UserProfile userData={userData} setUserData={setUserData} bookingData={bookingData} airbnbData={airbnbData} />} />
+            <Route path="/details" element={<Detail />} />
+            <Route path="/booking" element={<BookingPage />} />
+            <Route path="/userlogin" element={<UserLogin />} />
+            <Route path="/usersignup" element={<UserSignup />} />
+          </Routes>
+          {!['/userlogin', '/usersignup'].includes(location.pathname) && <Footer />}
+        </UserAuthProvider>
+      )}
     </>
 
 
@@ -133,6 +146,3 @@ function App() {
 
 export default App;
 
-function useQuery(arg0: string, arg1: () => Promise<any>): { isLoading: any; error: any; data: any; } {
-  throw new Error('Function not implemented.');
-}

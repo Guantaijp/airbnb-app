@@ -1,8 +1,18 @@
 import React from 'react';
 import homeImage from '../images/home1.jpg';
 import List from './List';
+import { AirbnbData } from '../App';
 
-function Homepage() {
+interface HomepageProps {
+    airbnbData: AirbnbData[];
+}
+
+
+function Homepage(props : HomepageProps) {
+
+    const { airbnbData } = props;
+
+    
     return (
         <div>
             <div className="bg-cover bg-center h-screen"style={{ backgroundImage: `url(${homeImage})` }} >
@@ -15,7 +25,7 @@ function Homepage() {
                         </div>
                     </div>
             </div>
-            <List/>
+            <List airbnbData={airbnbData}/>
         </div>
     );
 }

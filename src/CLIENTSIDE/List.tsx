@@ -1,13 +1,50 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import homeImage from '../images/home.jpg';
 import homeImag from '../images/home1.jpg';
 import { Rate, Carousel } from 'antd';
-import { Link } from 'react-router-dom';    
+import { Link } from 'react-router-dom';
+import { AirbnbData } from '../App';
+
+
+interface ListDataProps {
+    airbnbData: AirbnbData[];
+
+}
 
 const desc = ['terrible', 'bad', 'normal', 'good', 'wonderful'];
 
 
-function List() {
+function List(props: ListDataProps) {
+
+    const { airbnbData } = props;
+
+
+    useEffect(() => {
+        const categoryOrder: { [key: string]: number } = {
+            hotelrooms: 0,
+            entirePlace: 1,
+            privateRooms: 2,
+        };
+        const sorted = [...airbnbData].sort((a, b) => {
+            return categoryOrder[a.category] - categoryOrder[b.category];
+        });
+       
+    }, [airbnbData]);
+
+    // get the once in the shared room category only
+    const hotelRooms = airbnbData.filter((item) => {
+        return item.category === "hotelRooms";
+    });
+
+    // get the once in the entire place category only
+    const entirePlace = airbnbData.filter((item) => {
+        return item.category === "entirePlace";
+    });
+
+    // get the once in the private room category only
+    const privateRooms = airbnbData.filter((item) => {
+        return item.category === "privateRooms";
+    });
 
     const [value, setValue] = useState(4);
 
