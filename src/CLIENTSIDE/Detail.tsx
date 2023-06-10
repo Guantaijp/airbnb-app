@@ -1,21 +1,40 @@
+import { AirbnbData } from '../App';
 import homeImage from '../images/home.jpg';
 import homeImag from '../images/home1.jpg';
 import { Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 
 
-function Detail() {
+interface DetailDataProps {
+    airbnbData: AirbnbData[];
+}
+
+
+function Detail(props: DetailDataProps) {
+    const { id } = useParams();
+
+    const { airbnbData } = props;
+
+
+    const airbnb = airbnbData.find((item) => item.id.toString() === id);
+    const firstImageUrl = airbnb?.airbnb_images?.[0]?.image;
+    const secondImageUrl = airbnb?.airbnb_images?.[1]?.image;
+    const thirdImageUrl = airbnb?.airbnb_images?.[2]?.image;
+    const fourthImageUrl = airbnb?.airbnb_images?.[3]?.image;
+    const fifthImageUrl = airbnb?.airbnb_images?.[4]?.image;
+
 
 
     return (
 
         <div>
             <div className="flex flex-col min-h-screen">
-                <h1 className="text-2xl font-extrabold text-black mt-2 text-center">Karen Resoult</h1>
+                <h1 className="text-2xl font-extrabold text-black mt-2 text-center">{airbnb?.name}</h1>
                 <div className="mx-auto mt-4 max-w-2xl sm:px-6 lg:max-w-7xl lg:grid lg:grid-cols-3 lg:gap-x-8 lg:px-8">
                     <div className="aspect-h-4 aspect-w-3 overflow-hidden rounded-lg lg:block">
                         <img
-                            src={homeImage}
+                            src={airbnb?.airbnb_images[0]?.image}
                             alt="."
                             className="h-full w-full object-cover object-center hover:scale-105"
                         />
@@ -23,14 +42,14 @@ function Detail() {
                     <div className="lg:grid lg:grid-cols-1 lg:gap-y-8">
                         <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
                             <img
-                                src={homeImag}
+                                src={airbnb?.airbnb_images[1]?.image}
                                 alt="."
                                 className="h-full w-full object-cover object-center hover:scale-105"
                             />
                         </div>
                         <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
                             <img
-                                src="https://www.strategyzer.com/hubfs/Business_Model_Examples-airBnB.jpg"
+                                src={airbnb?.airbnb_images[2]?.image}
                                 alt="."
                                 className="h-full w-full object-cover object-center hover:scale-105"
                             />
@@ -39,14 +58,14 @@ function Detail() {
                     <div className="lg:grid lg:grid-cols-1 lg:gap-y-8">
                         <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
                             <img
-                                src="https://media.cntraveler.com/photos/5d112d50c4d7bd806dbc00a4/16:9/w_2560%2Cc_limit/airbnb%2520luxe.jpg"
+                                src={airbnb?.airbnb_images[3]?.image}
                                 alt="."
                                 className="h-full w-full object-cover object-center hover:scale-105"
                             />
                         </div>
                         <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg hover:scale-105">
                             <img
-                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4tb-_dCir6BmEqWSgDgeambRDp4DJYMG0ATDlKymveVjv7C3ad31Jy01zQhoJD8Y4w6o&usqp=CAU"
+                                src={airbnb?.airbnb_images[4]?.image}
                                 alt="."
                                 className="h-full w-full object-cover object-center hover:scale-105"
                             />
@@ -58,23 +77,39 @@ function Detail() {
                     <div className="flex flex-row justify-between">
                         <div className="flex flex-col space-y-4">
                             <h1 className="text-2xl font-extrabold text-black">What Karen Resoult offers</h1>
-                            <div className="flex flex-row space-x-4">
-                                <div className="border-2 border-gray-300 rounded-lg" style={{ width: 'fit-content' }}>
-                                    <p className="text-lg text-black m-2 text-center">Karen Resoult</p>
-                                </div>
-                                <div className="border-2 border-gray-300 rounded-lg" style={{ width: 'fit-content' }}>
-                                    <p className="text-lg text-black m-2 text-center">Karen Resoult</p>
-                                </div>
-                                <div className="border-2 border-gray-300 rounded-lg" style={{ width: 'fit-content' }}>
-                                    <p className="text-lg text-black m-2 text-center">Karen Resoult</p>
-                                </div>
-                                <div className="border-2 border-gray-300 rounded-lg" style={{ width: 'fit-content' }}>
-                                    <p className="text-lg text-black m-2 text-center">Karen Resoult</p>
-                                </div>
-                                <div className="border-2 border-gray-300 rounded-lg" style={{ width: 'fit-content' }}>
-                                    <p className="text-lg text-black m-2 text-center">Karen Resoult</p>
-                                </div>
-                            </div>
+                            <div className="grid grid-cols-5 gap-4">
+  <div className="border-2 border-gray-300 rounded-lg">
+    <p className="text-lg text-black m-2 text-center">Karen Resoult</p>
+  </div>
+  <div className="border-2 border-gray-300 rounded-lg">
+    <p className="text-lg text-black m-2 text-center">Karen Resoult</p>
+  </div>
+  <div className="border-2 border-gray-300 rounded-lg">
+    <p className="text-lg text-black m-2 text-center">Karen Resoult</p>
+  </div>
+  <div className="border-2 border-gray-300 rounded-lg">
+    <p className="text-lg text-black m-2 text-center">Karen Resoult</p>
+  </div>
+  <div className="border-2 border-gray-300 rounded-lg">
+    <p className="text-lg text-black m-2 text-center">Karen Resoult</p>
+  </div>
+  <div className="border-2 border-gray-300 rounded-lg">
+    <p className="text-lg text-black m-2 text-center">Karen Resoult</p>
+  </div>
+  <div className="border-2 border-gray-300 rounded-lg">
+    <p className="text-lg text-black m-2 text-center">Karen Resoult</p>
+  </div>
+  <div className="border-2 border-gray-300 rounded-lg">
+    <p className="text-lg text-black m-2 text-center">Karen Resoult</p>
+  </div>
+  <div className="border-2 border-gray-300 rounded-lg">
+    <p className="text-lg text-black m-2 text-center">Karen Resoult</p>
+  </div>
+  <div className="border-2 border-gray-300 rounded-lg">
+    <p className="text-lg text-black m-2 text-center">Karen Resoult</p>
+  </div>
+</div>
+
                             <div className="flex flex-row space-x-4">
                                 <div className="border-2 border-gray-300 rounded-lg" style={{ width: 'fit-content' }}>
                                     <p className="text-lg text-black m-2 text-center">Karen Resoult</p>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Route, Routes} from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import Navbar from './CLIENTSIDE/Navbar';
 import Admin from './ADMINSIDES/pages/Admin';
@@ -38,14 +38,20 @@ export interface BookingData {
   setBookingData: React.Dispatch<React.SetStateAction<BookingData[]>>;
 }
 
+
 export interface AirbnbData {
+  beds: number;
+  airbnb_images: { image: string }[]; // Update the type of airbnb_images
+  images: File | null;
+  location: string;
+  bed: number;
   user_id: number | undefined;
   admin_id: number | undefined;
   id: number;
   name: string;
   description: string;
   price: number;
-  image: string | File | null;
+  image: string;
   owner_id: number;
   category: string;
   setAibnbData: React.Dispatch<React.SetStateAction<AirbnbData[]>>;
@@ -53,6 +59,7 @@ export interface AirbnbData {
   sortedAirbnbData: AirbnbData[];
   handleSort: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
+
 
 function App() {
   // ==========================================================//USERs DATA//=========================================================================================================
@@ -96,21 +103,6 @@ function App() {
       });
   }, []);
 
-  // const handleSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
-  //   const option = e.target.value;
-  //   // Sort by category only
-  //   if (option === "category") {
-  //     const categoryOrder: { [key: string]: number } = {
-  //       hotelrooms: 0,
-  //       entirePlace: 1,
-  //       privateRooms: 2,
-  //     };
-  //     const sorted = [...airbnbData].sort((a, b) => {
-  //       return categoryOrder[a.category] - categoryOrder[b.category];
-  //     });
-  //     setSortedAirbnbData(sorted);
-  //   }
-  // };
   const location = useLocation();
   const [path, setPath] = useState(location.pathname)
   return (
@@ -125,12 +117,12 @@ function App() {
           {!['/userlogin', '/usersignup'].includes(location.pathname) && <Navbar userData={userData} />}
           <Routes>
             <Route path="/" element={<Homepage airbnbData={airbnbData} />} />
-            <Route path="/lists" element={<List airbnbData={airbnbData}/>} />
+            <Route path="/lists" element={<List airbnbData={airbnbData} />} />
             <Route path="/airbnb" element={<AirBnbs />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/userprofile" element={<UserProfile userData={userData} setUserData={setUserData} bookingData={bookingData} airbnbData={airbnbData} />} />
-            <Route path="/details" element={<Detail />} />
+            <Route path="/details/:id" element={<Detail airbnbData={airbnbData} />} />
             <Route path="/booking" element={<BookingPage />} />
             <Route path="/userlogin" element={<UserLogin />} />
             <Route path="/usersignup" element={<UserSignup />} />
@@ -139,8 +131,6 @@ function App() {
         </UserAuthProvider>
       )}
     </>
-
-
   );
 }
 

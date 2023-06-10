@@ -28,7 +28,7 @@ function List(props: ListDataProps) {
         const sorted = [...airbnbData].sort((a, b) => {
             return categoryOrder[a.category] - categoryOrder[b.category];
         });
-       
+
     }, [airbnbData]);
 
     // get the once in the shared room category only
@@ -55,89 +55,105 @@ function List(props: ListDataProps) {
                     <p className="text-xl font-bold text-center">Entire Place</p>
                     <hr className="flex-grow border-1 border-black mt-3 mx-4" />
                 </div>
-
-                <div className="flex flex-row  mx-4 mt-2 ">
-                    <div className="flex flex-col rounded-sm hover:shadow-lg hover:bg-gray-100 my-2">
-                        <Carousel autoplay className="w-96 h-58 rounded-sm">
-                            <div key="1">
-                                <img className="w-full h-full rounded-sm" src={homeImag} alt="" />
+                <div className="flex flex-row mx-2 mt-2 ">
+                    {entirePlace.map((item) => (
+                        <div key={item.id} className="flex flex-col rounded-sm hover:shadow-lg hover:bg-gray-100 my-2 mx-8">
+                            <Carousel autoplay className="w-96 h-58 rounded-sm">
+                                {item.airbnb_images &&
+                                    Array.isArray(item.airbnb_images) &&
+                                    item.airbnb_images.map((imageObj) => (
+                                        <div 
+                                        // key={imageObj.id}
+                                        >
+                                            <img className="w-96 h-64 rounded-sm" src={imageObj.image} alt="" />
+                                        </div>
+                                    ))}
+                            </Carousel>
+                            <div className="m-2">
+                                <Rate style={{ fontSize: '18px', float: 'right' }} tooltips={desc} onChange={setValue} value={value} />
+                                <p className="text-lg">{item.price} Ksh Per Night</p>
+                                <p className="text-lg">{item.location}</p>
+                                <p className="text-lg">{item.beds}Beds</p>
                             </div>
-                            <div key="2">
-                                <img className="w-full h-full rounded-sm" src={homeImage} alt="" />
-                            </div>
-                        </Carousel>
-                        <div className="m-2">
-                            <Rate style={{ fontSize: '18px', float: 'right' }} tooltips={desc} onChange={setValue} value={value} />
-                            <p className="text-lg">4,000 Ksh Per Night</p>
-                            <p className="text-lg">Nairobi Karen</p>
-                            <p className="text-lg">2 Bed Room</p>
+                            <Link
+                                to={`/details/${item.id}`}
+                                className="bg-[#95873C] text-white text-center rounded-lg hover:shadow-lg mx-auto px-4 my-4 py-2 text-sm"
+                            >
+                                Read More
+                            </Link>
                         </div>
-                        <Link to="/details"
-                            className="bg-[#95873C] text-white text-center rounded-lg hover:shadow-lg mx-auto px-4 my-4 py-2 text-sm">
-                            Read More
-                        </Link>
-                    </div>
+                    ))}
                 </div>
             </div>
-
 
             <div>
                 <div className="flex flex-row justify-center mx-4 mt-6">
                     <p className="text-xl font-bold text-center">Private Rooms</p>
                     <hr className="flex-grow border-1 border-black mt-3 mx-4" />
                 </div>
-
-                <div className="flex flex-row  mx-4 mt-2 ">
-                    <div className="flex flex-col rounded-sm hover:shadow-lg hover:bg-gray-100 my-2">
-                        <Carousel autoplay className="w-96 h-58 rounded-sm">
-                            <div key="1">
-                                <img className="w-full h-full rounded-sm" src={homeImag} alt="" />
+                <div className="flex flex-row mx-4 mt-2 ">
+                    {privateRooms.map((item) => (
+                        <div key={item.id} className="flex flex-col rounded-sm hover:shadow-lg hover:bg-gray-100 my-2 mx-8">
+                            <Carousel autoplay className="w-96 h-58 rounded-sm">
+                                {item.airbnb_images &&
+                                    Array.isArray(item.airbnb_images) &&
+                                    item.airbnb_images.map((imageObj) => (
+                                        <div
+                                        //  key={imageObj.id}
+                                         >
+                                            <img className="w-96 h-full rounded-sm" src={imageObj.image} alt="" />
+                                        </div>
+                                    ))}
+                            </Carousel>
+                            <div className="m-2">
+                                <Rate style={{ fontSize: '18px', float: 'right' }} tooltips={desc} onChange={setValue} value={value} />
+                                <p className="text-lg">{item.price} Ksh Per Night</p>
+                                <p className="text-lg">{item.location}</p>
+                                <p className="text-lg">{item.beds}bed </p>
                             </div>
-                            <div key="2">
-                                <img className="w-full h-full rounded-sm" src={homeImage} alt="" />
-                            </div>
-                        </Carousel>
-                        <div className="m-2">
-                            <Rate style={{ fontSize: '18px', float: 'right' }} tooltips={desc} onChange={setValue} value={value} />
-                            <p className="text-lg">4,000 Ksh Per Night</p>
-                            <p className="text-lg">Nairobi Karen</p>
-                            <p className="text-lg">2 Bed Room</p>
+                            <Link
+                                  to={`/details/${item.id}`}
+                                className="bg-[#95873C] text-white text-center rounded-lg hover:shadow-lg mx-auto px-4 my-4 py-2 text-sm"
+                            >
+                                Read More
+                            </Link>
                         </div>
-
-                        <Link to="/details" className="bg-[#95873C] text-white text-center rounded-lg hover:shadow-lg mx-auto px-4 my-4 py-2 text-sm">
-                            Read More
-                        </Link>
-                    </div>
+                    ))}
                 </div>
             </div>
-
-
-            <div className='my-6'>
-                <div className="flex flex-row justify-center mx-4">
+            <div>
+                <div className="flex flex-row justify-center mx-4 mt-6">
                     <p className="text-xl font-bold text-center">Hotel Rooms</p>
                     <hr className="flex-grow border-1 border-black mt-3 mx-4" />
                 </div>
-
-                <div className="flex flex-row  mx-4 mt-2 ">
-                    <div className="flex flex-col rounded-sm hover:shadow-lg hover:bg-gray-100 my-2">
-                        <Carousel autoplay className="w-96 h-58 rounded-sm">
-                            <div key="1">
-                                <img className="w-full h-full rounded-sm" src={homeImag} alt="" />
+                <div className="flex flex-row mx-4 mt-2 ">
+                    {hotelRooms.map((item) => (
+                        <div key={item.id} className="flex flex-col rounded-sm hover:shadow-lg hover:bg-gray-100 my-2 mx-8">
+                            <Carousel autoplay className="w-96 h-58 rounded-sm">
+                                {item.airbnb_images &&
+                                    Array.isArray(item.airbnb_images) &&
+                                    item.airbnb_images.map((imageObj) => (
+                                        <div
+                                        //  key={imageObj.id}
+                                         >
+                                            <img className="w-96 h-64 rounded-sm" src={imageObj.image} alt="" />
+                                        </div>
+                                    ))}
+                            </Carousel>
+                            <div className="m-2">
+                                <Rate style={{ fontSize: '18px', float: 'right' }} tooltips={desc} onChange={setValue} value={value} />
+                                <p className="text-lg">{item.price} Ksh Per Night</p>
+                                <p className="text-lg">{item.location}</p>
+                                <p className="text-lg">{item.beds} beds</p>
                             </div>
-                            <div key="2">
-                                <img className="w-full h-full rounded-sm" src={homeImage} alt="" />
-                            </div>
-                        </Carousel>
-                        <div className="m-2">
-                            <Rate style={{ fontSize: '18px', float: 'right' }} tooltips={desc} onChange={setValue} value={value} />
-                            <p className="text-lg">4,000 Ksh Per Night</p>
-                            <p className="text-lg">Nairobi Karen</p>
-                            <p className="text-lg">2 Bed Room</p>
+                            <Link
+                                  to={`/details/${item.id}`}
+                                className="bg-[#95873C] text-white text-center rounded-lg hover:shadow-lg mx-auto px-4 my-4 py-2 text-sm"
+                            >
+                                Read More
+                            </Link>
                         </div>
-                        <Link to="/details" className="bg-[#95873C] text-white text-center rounded-lg hover:shadow-lg mx-auto px-4 my-4 py-2 text-sm">
-                            Read More
-                        </Link>
-                    </div>
+                    ))}
                 </div>
             </div>
 
