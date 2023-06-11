@@ -48,14 +48,7 @@ function Navbar(props: NavbarProps) {
 
   const menu = (
 
-    // <Menu onClick={handleMenuClick}>
-    //   <Menu.Item key="profile">
-    //     <Link to="/userprofile">Profile</Link>
-    //   </Menu.Item>
-    //   <Menu.Item key="logout">
-    //     <Link to="/">Logout</Link>
-    //   </Menu.Item>
-    // </Menu>
+
     
     <Menu onClick={handleMenuClick}>
       {isLoggedIn ? ( 

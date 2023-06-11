@@ -45,6 +45,17 @@ export interface AirbnbData {
   images: File | null;
   location: string;
   bed: number;
+  amenities: {
+      id: number
+      item1: string;
+      item2: string;
+      item3: string;
+      item4: string;
+      item5: string;
+      item6: string;
+      item7: string;
+      item8: string;
+}[]; // Update the type of amenities
   user_id: number | undefined;
   admin_id: number | undefined;
   id: number;

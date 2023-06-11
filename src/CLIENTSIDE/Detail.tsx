@@ -18,11 +18,11 @@ function Detail(props: DetailDataProps) {
 
 
     const airbnb = airbnbData.find((item) => item.id.toString() === id);
-    const firstImageUrl = airbnb?.airbnb_images?.[0]?.image;
-    const secondImageUrl = airbnb?.airbnb_images?.[1]?.image;
-    const thirdImageUrl = airbnb?.airbnb_images?.[2]?.image;
-    const fourthImageUrl = airbnb?.airbnb_images?.[3]?.image;
-    const fifthImageUrl = airbnb?.airbnb_images?.[4]?.image;
+    // get price of the airbnb
+    const price = airbnb?.price;
+    console.log(price);
+
+   
 
 
 
@@ -77,56 +77,37 @@ function Detail(props: DetailDataProps) {
                     <div className="flex flex-row justify-between">
                         <div className="flex flex-col space-y-4">
                             <h1 className="text-2xl font-extrabold text-black">What Karen Resoult offers</h1>
-                            <div className="grid grid-cols-5 gap-4">
-  <div className="border-2 border-gray-300 rounded-lg">
-    <p className="text-lg text-black m-2 text-center">Karen Resoult</p>
-  </div>
-  <div className="border-2 border-gray-300 rounded-lg">
-    <p className="text-lg text-black m-2 text-center">Karen Resoult</p>
-  </div>
-  <div className="border-2 border-gray-300 rounded-lg">
-    <p className="text-lg text-black m-2 text-center">Karen Resoult</p>
-  </div>
-  <div className="border-2 border-gray-300 rounded-lg">
-    <p className="text-lg text-black m-2 text-center">Karen Resoult</p>
-  </div>
-  <div className="border-2 border-gray-300 rounded-lg">
-    <p className="text-lg text-black m-2 text-center">Karen Resoult</p>
-  </div>
-  <div className="border-2 border-gray-300 rounded-lg">
-    <p className="text-lg text-black m-2 text-center">Karen Resoult</p>
-  </div>
-  <div className="border-2 border-gray-300 rounded-lg">
-    <p className="text-lg text-black m-2 text-center">Karen Resoult</p>
-  </div>
-  <div className="border-2 border-gray-300 rounded-lg">
-    <p className="text-lg text-black m-2 text-center">Karen Resoult</p>
-  </div>
-  <div className="border-2 border-gray-300 rounded-lg">
-    <p className="text-lg text-black m-2 text-center">Karen Resoult</p>
-  </div>
-  <div className="border-2 border-gray-300 rounded-lg">
-    <p className="text-lg text-black m-2 text-center">Karen Resoult</p>
-  </div>
-</div>
-
                             <div className="flex flex-row space-x-4">
-                                <div className="border-2 border-gray-300 rounded-lg" style={{ width: 'fit-content' }}>
-                                    <p className="text-lg text-black m-2 text-center">Karen Resoult</p>
-                                </div>
-                                <div className="border-2 border-gray-300 rounded-lg" style={{ width: 'fit-content' }}>
-                                    <p className="text-lg text-black m-2 text-center">Karen Resoult</p>
-                                </div>
-                                <div className="border-2 border-gray-300 rounded-lg" style={{ width: 'fit-content' }}>
-                                    <p className="text-lg text-black m-2 text-center">Karen Resoult</p>
-                                </div>
-                                <div className="border-2 border-gray-300 rounded-lg" style={{ width: 'fit-content' }}>
-                                    <p className="text-lg text-black m-2 text-center">Karen Resoult</p>
-                                </div>
-                                <div className="border-2 border-gray-300 rounded-lg" style={{ width: 'fit-content' }}>
-                                    <p className="text-lg text-black m-2 text-center">Karen Resoult</p>
-                                </div>
+                                {airbnb?.amenities.slice(0, 5).map((item) => (
+                                    <div
+                                        key={item.id}
+                                        className="flex flex-row rounded-lg p-4 space-x-4" // Added padding to create space between the text and the border
+                                        style={{ width: 'fit-content' }}
+                                    >
+                                        <div className="border-2 border-gray-300 rounded-lg " style={{ width: 'fit-content' }}>
+                                            <p className="text-lg text-black m-2 text-center">{item.item1}</p>
+                                        </div>
+                                        
+                                        <div className="border-2 border-gray-300 rounded-lg" style={{ width: 'fit-content' }}>
+                                            <p className="text-lg text-black m-2 text-center">{item.item2}</p>
+                                        </div>
+                                        <div className="border-2 border-gray-300 rounded-lg" style={{ width: 'fit-content' }}>
+                                            <p className="text-lg text-black m-2 text-center">{item.item3}</p>
+                                        </div>
+                                        <div className="border-2 border-gray-300 rounded-lg" style={{ width: 'fit-content' }}>
+                                            <p className="text-lg text-black m-2 text-center">{item.item4}</p>
+                                        </div>
+                                        <div className="border-2 border-gray-300 rounded-lg" style={{ width: 'fit-content' }}>
+                                            <p className="text-lg text-black m-2 text-center">{item.item5}</p>
+                                        </div>
+                                        <div className="border-2 border-gray-300 rounded-lg" style={{ width: 'fit-content' }}>
+                                            <p className="text-lg text-black m-2 text-center">{item.item6}</p>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
+
+
 
                             <div className="flex flex-col mt-4">
                                 <h1 className="text-2xl font-extrabold text-black">About Karen Resoult</h1>
@@ -144,7 +125,7 @@ function Detail(props: DetailDataProps) {
                         </div>
                         <div className="flex flex-col mt-8">
                             <div className="border-2 border-gray-300 rounded-lg p-4 ml-auto">
-                                <p className="text-lg text-black my-0">1000 Ksh Per Night</p>
+                                <p className="text-lg text-black my-0">{price} Ksh Per Night</p>
                                 <div className="flex flex-row border-2 border-gray-300 rounded-lg p-2 mt-2">
                                     <div className="flex flex-col">
                                         <p className="text-lg text-black my-0">Check In</p>
