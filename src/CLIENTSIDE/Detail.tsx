@@ -1,41 +1,35 @@
 import { AirbnbData } from '../App';
-import homeImage from '../images/home.jpg';
-import homeImag from '../images/home1.jpg';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
-import React, { useEffect, useState } from "react";
-import { DatePicker, Space, Spin, Card, Skeleton, Switch } from 'antd';
-import type { RangePickerProps } from 'antd/es/date-picker';
-import dayjs from 'dayjs';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { useEffect, useState } from "react";
+import { DatePicker, Spin, Card, } from 'antd';
+// import type { RangePickerProps } from 'antd/es/date-picker';
+import dayjs, { Dayjs } from 'dayjs';
+import dayjsGenerateConfig from 'rc-picker/lib/generate/dayjs';
+import generatePicker from 'antd/lib/date-picker/generatePicker';
+import { RangeValue } from 'rc-picker/lib/interface';
+// import 'antd/lib/date-picker/style/index.css';
 
-import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
 
 interface DetailDataProps {
     airbnbData: AirbnbData[];
 }
 
-
-
 const { Meta } = Card;
 
-
-
-
-
-dayjs.extend(customParseFormat);
 
 const { RangePicker } = DatePicker;
 
 
-// eslint-disable-next-line arrow-body-style
-const disabledDate: RangePickerProps['disabledDate'] = (current) => {
-    // Can not select days before today and today
-    return current && current < dayjs().endOf('day');
-};
+// const disabledDate: RangePickerProps['disabledDate'] = (current) => {
+//     return current && current < dayjs().endOf('day');
+// };
 
 
 function Detail(props: DetailDataProps) {
+
+
+
     const { id } = useParams();
     const { airbnbData } = props;
     const airbnb = airbnbData.find((item) => item.id.toString() === id);
@@ -55,6 +49,33 @@ function Detail(props: DetailDataProps) {
         }, 1000); // Replace this with your actual data fetching logic
     }, []);
 
+
+    // const [selectedRange, setSelectedRange] = useState<RangeValue<Dayjs>>(null);
+
+    const disabledDate = (current: Dayjs) => {
+        // Disable dates that are in the past
+        return current.isBefore(dayjs(), 'day');
+    };
+    const [selectedRange, setSelectedRange] = useState<RangeValue<Dayjs>>(null);
+    const [differenceInNights, setDifferenceInNights] = useState<number>(0);
+    const [totalPrice, setTotalPrice] = useState<number>(0);
+  
+    const handleRangeChange = (dates: RangeValue<Dayjs>, dateStrings: [string, string]) => {
+      setSelectedRange(dates);
+  
+      if (dates && dates.length === 2) {
+        const startDate = dates[0] as Dayjs;
+        const endDate = dates[1] as Dayjs;
+        const difference = endDate.diff(startDate, 'day');
+        setDifferenceInNights(difference);
+  
+        // You can perform further calculations or actions based on the difference in nights
+        // For example, calculate the total price based on the price per night and the difference in nights
+        const pricePerNight = price || 0;
+        const total = pricePerNight * difference;
+        setTotalPrice(total);
+      }
+    };
 
     return (
 
@@ -232,15 +253,19 @@ function Detail(props: DetailDataProps) {
                                             <div className="">
                                                 <p className="text-lg text-black my-0">{price} Ksh Per Night</p>
                                                 <div className="p-2 mt-2">
-                                                    <RangePicker disabledDate={disabledDate} />
+                                                    <RangePicker
+                                                        onChange={handleRangeChange}
+                                                        disabledDate={disabledDate} />
                                                 </div>
                                                 <div className="flex flex-row justify-between mt-2">
-                                                    <p className="text-lg text-black my-0">4,000 X 4 nights</p>
-                                                    <p className="text-lg text-black my-0">16,000</p>
+                                                    <p className="text-lg text-black my-0">{price} X {
+                    
+                                                    } Nights</p>
+                                                    <p className="text-lg text-black my-0">{totalPrice}</p>
                                                 </div>
                                                 <div className="flex flex-row justify-between mt-1">
                                                     <p className="text-lg text-black my-0">Total</p>
-                                                    <p className="text-lg text-black my-0 ml-auto">16,000</p>
+                                                    <p className="text-lg text-black my-0 ml-auto">{totalPrice}</p>
                                                 </div>
                                                 <div className="flex flex-row justify-center">
                                                     {isLoggedIn ? (
@@ -248,7 +273,7 @@ function Detail(props: DetailDataProps) {
                                                             Reserve Now
                                                         </Link>
                                                     ) : (
-                                                        <Link to="/login" className="bg-[#95873C] text-white font-bold py-2 px-4 rounded my-2">
+                                                        <Link to="/userlogin" className="bg-[#95873C] text-white font-bold py-2 px-4 rounded my-2">
                                                             Login to Reserve
                                                         </Link>
                                                     )}
