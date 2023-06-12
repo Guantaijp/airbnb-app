@@ -41,7 +41,9 @@ export interface BookingData {
 
 export interface AirbnbData {
   beds: number;
-  airbnb_images: { image: string }[]; // Update the type of airbnb_images
+  airbnb_images: {
+      id: number | null | undefined; image: string 
+}[]; // Update the type of airbnb_images
   images: File | null;
   location: string;
   bed: number;
