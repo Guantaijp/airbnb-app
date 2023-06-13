@@ -1,5 +1,5 @@
 import { AirbnbData } from '../App';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import { DatePicker, Spin, Card, } from 'antd';
@@ -14,22 +14,12 @@ import { RangeValue } from 'rc-picker/lib/interface';
 interface DetailDataProps {
     airbnbData: AirbnbData[];
 }
-
 const { Meta } = Card;
-
-
 const { RangePicker } = DatePicker;
-
-
-// const disabledDate: RangePickerProps['disabledDate'] = (current) => {
-//     return current && current < dayjs().endOf('day');
-// };
-
-
 function Detail(props: DetailDataProps) {
 
 
-
+    const navigate = useNavigate();
     const { id } = useParams();
     const { airbnbData } = props;
     const airbnb = airbnbData.find((item) => item.id.toString() === id);
@@ -59,23 +49,47 @@ function Detail(props: DetailDataProps) {
     const [selectedRange, setSelectedRange] = useState<RangeValue<Dayjs>>(null);
     const [differenceInNights, setDifferenceInNights] = useState<number>(0);
     const [totalPrice, setTotalPrice] = useState<number>(0);
-  
+
     const handleRangeChange = (dates: RangeValue<Dayjs>, dateStrings: [string, string]) => {
-      setSelectedRange(dates);
-  
-      if (dates && dates.length === 2) {
-        const startDate = dates[0] as Dayjs;
-        const endDate = dates[1] as Dayjs;
-        const difference = endDate.diff(startDate, 'day');
-        setDifferenceInNights(difference);
-  
-        // You can perform further calculations or actions based on the difference in nights
-        // For example, calculate the total price based on the price per night and the difference in nights
-        const pricePerNight = price || 0;
-        const total = pricePerNight * difference;
-        setTotalPrice(total);
-      }
+        setSelectedRange(dates);
+
+        if (dates && dates.length === 2) {
+            const startDate = dates[0] as Dayjs;
+            const endDate = dates[1] as Dayjs;
+            const difference = endDate.diff(startDate, 'day');
+            setDifferenceInNights(difference);
+
+            // You can perform further calculations or actions based on the difference in nights
+            // For example, calculate the total price based on the price per night and the difference in nights
+            const pricePerNight = price || 0;
+            const total = pricePerNight * difference;
+            setTotalPrice(total);
+        }
     };
+    const handleSubmit = async (event: React.FormEvent) => {
+        event.preventDefault(); // Prevent default form submission behavior
+
+        if (selectedRange && selectedRange.length === 2) {
+            const response = await fetch('http://localhost:4000/bookings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    from_date: selectedRange[0]?.format('YYYY-MM-DD'),
+                    to_date: selectedRange[1]?.format('YYYY-MM-DD'),
+                    airbnb_id: airbnb?.id,
+                    user_id: user?.id,
+                    total_price: totalPrice,
+                    difference_in_nights: differenceInNights,
+                }),
+            });
+            const data = await response.json();
+            console.log(data);
+            navigate('/booking');
+        }
+    };
+
 
     return (
 
@@ -250,17 +264,15 @@ function Detail(props: DetailDataProps) {
                                 <div className="flex flex-col mt-8 w-1/2">
                                     <Card style={{ width: 300, marginTop: 16 }} loading={loading}>
                                         {!loading && (
-                                            <div className="">
+                                            <form onSubmit={handleSubmit} className="">
                                                 <p className="text-lg text-black my-0">{price} Ksh Per Night</p>
                                                 <div className="p-2 mt-2">
-                                                    <RangePicker
-                                                        onChange={handleRangeChange}
-                                                        disabledDate={disabledDate} />
+                                                    <RangePicker 
+                                                   
+                                                    onChange={handleRangeChange} disabledDate={disabledDate} />
                                                 </div>
                                                 <div className="flex flex-row justify-between mt-2">
-                                                    <p className="text-lg text-black my-0">{price} X {
-                    
-                                                    } Nights</p>
+                                                    <p className="text-lg text-black my-0">{price} X {differenceInNights} Nights</p>
                                                     <p className="text-lg text-black my-0">{totalPrice}</p>
                                                 </div>
                                                 <div className="flex flex-row justify-between mt-1">
@@ -269,16 +281,17 @@ function Detail(props: DetailDataProps) {
                                                 </div>
                                                 <div className="flex flex-row justify-center">
                                                     {isLoggedIn ? (
-                                                        <Link to="/booking" className="bg-[#95873C] text-white font-bold py-2 px-4 rounded my-2">
+                                                        <button type="submit" className="bg-[#95873C] text-white font-bold py-2 px-4 rounded my-2">
                                                             Reserve Now
-                                                        </Link>
+                                                        </button>
                                                     ) : (
                                                         <Link to="/userlogin" className="bg-[#95873C] text-white font-bold py-2 px-4 rounded my-2">
                                                             Login to Reserve
                                                         </Link>
                                                     )}
                                                 </div>
-                                            </div>
+                                            </form>
+
                                         )}
                                     </Card>
                                 </div>
