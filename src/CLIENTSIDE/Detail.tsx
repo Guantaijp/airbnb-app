@@ -1,4 +1,4 @@
-import { AirbnbData } from '../App';
+import { AirbnbData, BookingData } from '../App';
 import { Link, useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from "react";
@@ -13,7 +13,10 @@ import { RangeValue } from 'rc-picker/lib/interface';
 
 interface DetailDataProps {
     airbnbData: AirbnbData[];
+    bookingData: BookingData[];
+    setBookingData: React.Dispatch<React.SetStateAction<BookingData[]>>;
 }
+
 const { Meta } = Card;
 const { RangePicker } = DatePicker;
 function Detail(props: DetailDataProps) {
@@ -21,7 +24,8 @@ function Detail(props: DetailDataProps) {
 
     const navigate = useNavigate();
     const { id } = useParams();
-    const { airbnbData } = props;
+    const { airbnbData, bookingData, setBookingData } = props;
+   
     const airbnb = airbnbData.find((item) => item.id.toString() === id);
     // get price of the airbnb
     const price = airbnb?.price;
@@ -40,8 +44,7 @@ function Detail(props: DetailDataProps) {
     }, []);
 
 
-    // const [selectedRange, setSelectedRange] = useState<RangeValue<Dayjs>>(null);
-
+    
     const disabledDate = (current: Dayjs) => {
         // Disable dates that are in the past
         return current.isBefore(dayjs(), 'day');
@@ -66,29 +69,38 @@ function Detail(props: DetailDataProps) {
             setTotalPrice(total);
         }
     };
-    const handleSubmit = async (event: React.FormEvent) => {
-        event.preventDefault(); // Prevent default form submission behavior
 
-        if (selectedRange && selectedRange.length === 2) {
-            const response = await fetch('http://localhost:4000/bookings', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    from_date: selectedRange[0]?.format('YYYY-MM-DD'),
-                    to_date: selectedRange[1]?.format('YYYY-MM-DD'),
-                    airbnb_id: airbnb?.id,
-                    user_id: user?.id,
-                    total_price: totalPrice,
-                    difference_in_nights: differenceInNights,
-                }),
-            });
-            const data = await response.json();
-            console.log(data);
-            navigate('/booking');
-        }
-    };
+
+const handleSubmit = async (event: React.FormEvent) => {
+  event.preventDefault(); // Prevent default form submission behavior
+
+  if (selectedRange && selectedRange.length === 2) {
+    const response = await fetch('http://localhost:4000/reservations', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from_date: selectedRange[0]?.format('YYYY-MM-DD'),
+        to_date: selectedRange[1]?.format('YYYY-MM-DD'),
+        airbnb_id: airbnb?.id,
+        user_id: user?.id,
+        estimated_amount: totalPrice,
+        difference_in_nights: differenceInNights,
+      }),
+    });
+
+    const data = await response.json();
+    console.log(data);
+
+    // Update the UI with the latest data
+    // Example: Assuming there is a state variable named 'bookings' to store the reservations
+    setBookingData([...bookingData, data]);
+
+    navigate('/booking');
+  }
+};
+
 
 
     return (
@@ -307,3 +319,7 @@ function Detail(props: DetailDataProps) {
 }
 
 export default Detail
+
+function setBookings(arg0: any[]) {
+    throw new Error('Function not implemented.');
+}

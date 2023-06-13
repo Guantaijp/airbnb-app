@@ -29,6 +29,9 @@ export interface UserData {
 
 
 export interface BookingData {
+  airbnb: any;
+  difference_in_nights: number;
+  estimated_amount: any;
   id: number;
   to_date: string;
   from_date: string;
@@ -91,7 +94,7 @@ function App() {
   // ============================================================//BOOKING DATA//=======================================================================================================
   const [bookingData, setBookingData] = useState<BookingData[]>([]);
   useEffect(() => {
-    fetch("http://127.0.0.1:4000/bookings")
+    fetch("http://127.0.0.1:4000/reservations")
       .then((res) => res.json())
       .then((data) => {
         setBookingData(data);
@@ -135,8 +138,8 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/userprofile" element={<UserProfile userData={userData} setUserData={setUserData} bookingData={bookingData} airbnbData={airbnbData} />} />
-            <Route path="/details/:id" element={<Detail airbnbData={airbnbData} />} />
-            <Route path="/booking" element={<BookingPage />} />
+            <Route path="/details/:id" element={<Detail airbnbData={airbnbData}  bookingData={bookingData} setBookingData={setBookingData} />} />
+            <Route path="/booking" element={<BookingPage bookingData={bookingData}   setBookingData={setBookingData} airbnbData={airbnbData} />} />
             <Route path="/userlogin" element={<UserLogin />} />
             <Route path="/usersignup" element={<UserSignup />} />
           </Routes>

@@ -6,24 +6,84 @@ import { Select, Space } from 'antd';
 import { MdPhoneIphone, MdCreditCard } from 'react-icons/md';
 import homeImag from '../images/home.jpg';
 import { Link } from 'react-router-dom';
+import { AirbnbData, BookingData, } from '../App';
 
+
+
+interface BookingPageProps {
+  airbnbData: AirbnbData[];
+  bookingData: BookingData[];
+  setBookingData: React.Dispatch<React.SetStateAction<BookingData[]>>;
+}
 
 const handleChange = (value: string) => {
   console.log(`selected ${value}`);
 };
-
 const desc = ['terrible', 'bad', 'normal', 'good', 'wonderful'];
 
-function BookingPage() {
-
+function BookingPage(props: BookingPageProps) {
+  const { bookingData, setBookingData, airbnbData } = props;
   const [value, setValue] = useState();
   const [valueRate, setValueRate] = useState(4);
+  const lastBooking = bookingData[bookingData.length - 1];
+  // console.log(lastBooking);
+  // console.log(airbnbData);
+
+  // get airbnbData   from the last booking
+  const airbnbDataFromLastBooking = airbnbData.find((airbnb) => airbnb.id === lastBooking.airbnb_id);
+  // get the first image from the airbnbDataFromLastBooking
+  const image = airbnbDataFromLastBooking?.airbnb_images[0].image;
+  // console.log(image);
+
+
+  const [calculatedValue, setCalculatedValue] = useState<number>(0);
 
   const onChange = (e: RadioChangeEvent) => {
-    console.log('radio checked', e.target.value);
+    let calculatedAmount = 0;
+
+    if (e.target.value === 1) {
+      calculatedAmount = lastBooking.estimated_amount;
+    } else if (e.target.value === 2) {
+      calculatedAmount = lastBooking.estimated_amount / 2;
+    }
+
+    setCalculatedValue(calculatedAmount);
     setValue(e.target.value);
   };
 
+  let fromDate = null;
+  let toDate = null;
+  let nightDifference = Number.NaN;
+  let airbnbPrice = null;
+  let airbnbName = null;
+  // let airbnbImage = null;
+
+  if (lastBooking && lastBooking.from_date && lastBooking.to_date && lastBooking.difference_in_nights && lastBooking.airbnb.price && lastBooking.airbnb.name) {
+    fromDate = new Date(lastBooking.from_date).toLocaleDateString(undefined, {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
+
+    toDate = new Date(lastBooking.to_date).toLocaleDateString(undefined, {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
+
+    nightDifference = lastBooking.difference_in_nights;
+    airbnbPrice = lastBooking.airbnb.price;
+    airbnbName = lastBooking.airbnb.name;
+    // airbnbImage = lastBooking.airbnb.airbnb_images[0].image;
+  } else {
+    // Handle the case when lastBooking is undefined or doesn't have the expected properties
+    // For example, you could set default values or display an error message.
+  }
+
+
+  // const image = lastBooking?.airbnb?.airbnb_images[0].image;
+  // multipy the price by the number of nights
+  const estimatedAmount = airbnbPrice * nightDifference;
 
 
 
@@ -42,7 +102,7 @@ function BookingPage() {
             <div className="flex flex-row justify-between">
               <p className="text-lg font-bold">Pay In Full</p>
               <Radio.Group onChange={onChange} value={value}>
-                <Radio className="mt-1" value={2} />
+                <Radio className="mt-1" value={1} />
               </Radio.Group>
             </div>
             <p className="text-sm">Payment should be made in full</p>
@@ -50,7 +110,7 @@ function BookingPage() {
             <div className="flex flex-row justify-between">
               <p className="text-lg font-bold">Pay In Installment</p>
               <Radio.Group onChange={onChange} value={value}>
-                <Radio className="mt-1" value={1} />
+                <Radio className="mt-1" value={2} />
               </Radio.Group>
             </div>
             <p className="text-sm">Payment should be made in half the amount</p>
@@ -90,9 +150,9 @@ function BookingPage() {
         <div className="flex flex-col my-4 border-2 border-gray-300 rounded-lg justify-center">
 
           <div className="flex flex-row mx-10 mt-10">
-            <img className="w-64 h-64 rounded-lg mr-4" src={homeImag} alt="" />
+            <img className="w-64 h-64 rounded-lg mr-4" src={image} alt="" />
             <div className="flex flex-col">
-              <p className="text-lg font-bold">Karen Resoult</p>
+              <p className="text-lg font-bold">{airbnbName}</p>
               <Rate style={{ fontSize: '18px', float: 'right' }} tooltips={desc} onChange={setValueRate} value={valueRate} />
             </div>
           </div>
@@ -100,25 +160,27 @@ function BookingPage() {
           <div className="flex flex-row border-2 justify-between border-gray-300 rounded-lg p-2 mt-2 mx-12">
             <div className="flex flex-col">
               <p className="text-lg text-black my-0">Check In</p>
-              <input type="date" className="border-2 border-gray-300 rounded-sm" />
+              {/* <input type="date" className="border-2 border-gray-300 rounded-sm" /> */}
+              <p className="text-lg text-black my-0">{fromDate}</p>
             </div>
             <div className="border-gray-300 border-2 h-16 mx-4" />
 
             <div className="flex flex-col">
               <p className="text-lg text-black my-0">Check Out</p>
-              <input type="date" className="border-2 border-gray-300 rounded-sm" />
+              {/* <input type="date" className="border-2 border-gray-300 rounded-sm" /> */}
+              <p className="text-lg text-black my-0">{toDate}</p>
             </div>
           </div>
 
 
           <div className="flex flex-row justify-between mt-2 mx-12">
-            <p className="text-lg text-black my-0">4,000 X 4 nights</p>
-            <p className="text-lg text-black my-0">16,000</p>
+            <p className="text-lg text-black my-0">{airbnbPrice} X {nightDifference} nights</p>
+            <p className="text-lg text-black my-0">{estimatedAmount}</p>
           </div>
 
           <div className="flex flex-row justify-between mt-1 mx-12">
-            <p className="text-lg text-black my-0">Total</p>
-            <p className="text-lg text-black my-0 ml-auto">16,000</p>
+            <p className="text-lg text-black my-0">Payment</p>
+            <p className="text-lg text-black my-0 ml-auto">{calculatedValue}</p>
           </div>
 
           <div className="flex flex-row justify-center">
