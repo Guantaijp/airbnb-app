@@ -191,7 +191,7 @@ const handleSubmit = async (event: React.FormEvent) => {
                     <div className="flex flex-row justify-between w-full">
                         {/* First Part */}
                         <div className="flex flex-col space-y-4 w-1/2">
-                            <h1 className="text-2xl font-extrabold text-black">What Karen Resoult offers</h1>
+                            <h1 className="text-2xl font-extrabold text-black">What {airbnb?.name} offers</h1>
                             <div className="flex flex-row space-x-4">
                                 {airbnb?.amenities.slice(0, 5).map((item) => (
                                     <div
@@ -258,7 +258,7 @@ const handleSubmit = async (event: React.FormEvent) => {
                                 ))}
                             </div>
                             <div className="flex flex-col mt-4">
-                                <h1 className="text-2xl font-extrabold text-black">About Karen Resoult</h1>
+                                <h1 className="text-2xl font-extrabold text-black">About {airbnb?.name}</h1>
                                 <div className="my-3 mb-8">
                                     <p className="text-lg text-black text-left my-0">
                                         It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is

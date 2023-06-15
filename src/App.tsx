@@ -135,7 +135,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Homepage airbnbData={airbnbData} />} />
             <Route path="/lists" element={<List airbnbData={airbnbData} />} />
-            <Route path="/airbnb" element={<AirBnbs />} />
+            <Route path="/airbnb" element={<AirBnbs airbnbData={airbnbData}  />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/userprofile" element={<UserProfile userData={userData} setUserData={setUserData} bookingData={bookingData} airbnbData={airbnbData} />} />

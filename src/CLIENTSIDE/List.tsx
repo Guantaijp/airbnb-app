@@ -67,7 +67,7 @@ function List(props: ListDataProps) {
                     <p className="text-xl font-bold text-center">Entire Place</p>
                     <hr className="flex-grow border-1 border-black mt-3 mx-4" />
                 </div>
-                <div className="flex flex-row  mt-2 ">
+                <div className="flex flex-row  mt-2 justify-center">
                     {entirePlace.length === 0 ? (
                         Array.from({ length: 4 }).map((_, index) => (
                             <div key={index} className="flex flex-col rounded-sm hover:shadow-lg hover:bg-gray-100 my-2 mx-8">
@@ -140,7 +140,7 @@ function List(props: ListDataProps) {
                     <p className="text-xl font-bold text-center">Private Rooms</p>
                     <hr className="flex-grow border-1 border-black mt-3 mx-4" />
                 </div>
-                <div className="flex flex-row  mt-2 ">
+                <div className="flex flex-row  mt-2 justify-center">
                     {privateRooms.length === 0 ? (
                         Array.from({ length: 4 }).map((_, index) => (
                             <div key={index} className="flex flex-col rounded-sm hover:shadow-lg hover:bg-gray-100 my-2 mx-8">
@@ -212,7 +212,7 @@ function List(props: ListDataProps) {
                     <p className="text-xl font-bold text-center">Hotel Rooms</p>
                     <hr className="flex-grow border-1 border-black mt-3 mx-4" />
                 </div>
-                <div className="flex flex-row  mt-2 ">
+                <div className="flex flex-row  mt-2 justify-center">
                     {hotelRooms.length === 0 ? (
                         Array.from({ length: 4 }).map((_, index) => (
                             <div key={index} className="flex flex-col rounded-sm hover:shadow-lg hover:bg-gray-100 my-2 mx-8">

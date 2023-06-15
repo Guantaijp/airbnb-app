@@ -47,6 +47,7 @@ function UserProfile(props: ProfilePageProps) {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [image, setImage] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -57,6 +58,10 @@ function UserProfile(props: ProfilePageProps) {
 
   const handleEmailChange = (event: ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
+  };
+
+  const handlePhoneNumberChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setPhoneNumber(event.target.value);
   };
 
   const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -75,6 +80,8 @@ function UserProfile(props: ProfilePageProps) {
   const loggedUserImage = loggedUser?.image;
   const loggedUserName = loggedUser?.name;
   const loggedUserEmail = loggedUser?.email;
+  // const loggedUserPassword = loggedUser?.password;
+  const loggedUserPhoneNumber = loggedUser?.phoneNumber;
 
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -92,6 +99,12 @@ function UserProfile(props: ProfilePageProps) {
       formData.append("email", email);
     } else {
       formData.append("email", loggedUser?.email || "");
+    }
+
+    if (phoneNumber !== "") {
+      formData.append("phoneNumber", phoneNumber);
+    } else {
+      formData.append("phoneNumber", loggedUser?.phoneNumber || "");
     }
 
     if (password) {
@@ -141,6 +154,7 @@ function UserProfile(props: ProfilePageProps) {
     if (loggedUser) {
       setName(loggedUser.name);
       setEmail(loggedUser.email);
+      setPhoneNumber(loggedUser.phoneNumber);
       setPassword(loggedUser.password);
 
       if (typeof loggedUser.image === "string") {
@@ -254,6 +268,15 @@ function UserProfile(props: ProfilePageProps) {
                                 type="text"
                                 className="border border-gray-300 m-2 rounded-sm p-2"
                                 placeholder="Email"
+                              />
+                            </div>
+                            <div className="flex flex-col flex-grow">
+                              <input
+                                value={phoneNumber}
+                                onChange={handlePhoneNumberChange}
+                                type="text"
+                                className="border border-gray-300 m-2 rounded-sm p-2"
+                                placeholder="Phone Number"
                               />
                             </div>
                             <div className="flex flex-col flex-grow">
