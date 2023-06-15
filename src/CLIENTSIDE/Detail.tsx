@@ -30,6 +30,7 @@ function Detail(props: DetailDataProps) {
     // get price of the airbnb
     const price = airbnb?.price;
     const user = JSON.parse(sessionStorage.getItem("user") || "{}");
+    // console.log(user)
     const isLoggedIn = sessionStorage.getItem("jwtToken") ? true : false;
 
     const [loading, setLoading] = useState(true);

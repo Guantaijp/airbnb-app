@@ -78,13 +78,11 @@ function List(props: ListDataProps) {
                                     <Skeleton active paragraph={{ rows: 1 }} />
                                     <Skeleton active paragraph={{ rows: 1 }} />
                                 </div>
-                            
+
                             </div>
                         ))
                     ) : (
-
                         entirePlace.map((item) => (
-
                             <div key={item.id} className="flex flex-col rounded-sm hover:shadow-lg hover:bg-gray-100 my-2 mx-8">
                                 {loading ? (
                                     <Skeleton.Image style={{ width: '100%', height: '58px' }} />
@@ -99,14 +97,15 @@ function List(props: ListDataProps) {
                                             ))}
                                     </Carousel>
                                 )}
-
                                 <div className="">
                                     <Rate style={{ fontSize: '18px', float: 'right' }} tooltips={desc} onChange={setValue} value={value} />
                                     {loading ? (
                                         <>
-                                            <Skeleton active paragraph={{ rows: 1 }} />
-                                            <Skeleton active paragraph={{ rows: 1 }} />
-                                            <Skeleton active paragraph={{ rows: 1 }} />
+                                            <div className="flex flex-col mx-8">
+                                                <Skeleton active paragraph={{ rows: 1 }} style={{ marginBottom: '10px' }} />
+                                                <Skeleton active paragraph={{ rows: 1 }} style={{ marginBottom: '10px' }} />
+                                                <Skeleton active paragraph={{ rows: 1 }} style={{ marginBottom: '10px' }} />
+                                            </div>
                                         </>
                                     ) : (
                                         <>
@@ -130,8 +129,6 @@ function List(props: ListDataProps) {
                                     </Link>
                                 )}
                             </div>
-
-
                         ))
                     )}
 
@@ -143,34 +140,71 @@ function List(props: ListDataProps) {
                     <p className="text-xl font-bold text-center">Private Rooms</p>
                     <hr className="flex-grow border-1 border-black mt-3 mx-4" />
                 </div>
-                <div className="flex flex-row mx-4 mt-2 ">
-                    {privateRooms.map((item) => (
-                        <div key={item.id} className="flex flex-col rounded-sm hover:shadow-lg hover:bg-gray-100 my-2 mx-8">
-                            <Carousel autoplay className="w-96 h-58 rounded-sm">
-                                {item.airbnb_images &&
-                                    Array.isArray(item.airbnb_images) &&
-                                    item.airbnb_images.map((imageObj) => (
-                                        <div
-                                        //  key={imageObj.id}
-                                        >
-                                            <img className="w-96 h-full rounded-sm" src={imageObj.image} alt="" />
-                                        </div>
-                                    ))}
-                            </Carousel>
-                            <div className="m-2">
-                                <Rate style={{ fontSize: '18px', float: 'right' }} tooltips={desc} onChange={setValue} value={value} />
-                                <p className="text-lg">{item.price} Ksh Per Night</p>
-                                <p className="text-lg">{item.location}</p>
-                                <p className="text-lg">{item.beds}bed </p>
+                <div className="flex flex-row  mt-2 ">
+                    {privateRooms.length === 0 ? (
+                        Array.from({ length: 4 }).map((_, index) => (
+                            <div key={index} className="flex flex-col rounded-sm hover:shadow-lg hover:bg-gray-100 my-2 mx-8">
+                                <Skeleton.Image style={{ width: '100%', height: '58px' }} />
+                                <div className="">
+                                    <Rate style={{ fontSize: '18px', float: 'right' }} tooltips={desc} onChange={setValue} value={value} />
+                                    <Skeleton active paragraph={{ rows: 1 }} />
+                                    <Skeleton active paragraph={{ rows: 1 }} />
+                                    <Skeleton active paragraph={{ rows: 1 }} />
+                                </div>
+
                             </div>
-                            <Link
-                                to={`/details/${item.id}`}
-                                className="bg-[#95873C] text-white text-center rounded-lg hover:shadow-lg mx-auto px-4 my-4 py-2 text-sm"
-                            >
-                                Read More
-                            </Link>
-                        </div>
-                    ))}
+                        ))
+                    ) : (
+                        privateRooms.map((item) => (
+                            <div key={item.id} className="flex flex-col rounded-sm hover:shadow-lg hover:bg-gray-100 my-2 mx-8">
+                                {loading ? (
+                                    <Skeleton.Image style={{ width: '100%', height: '58px' }} />
+                                ) : (
+                                    <Carousel autoplay className="w-96 h-58">
+                                        {item.airbnb_images &&
+                                            Array.isArray(item.airbnb_images) &&
+                                            item.airbnb_images.map((imageObj) => (
+                                                <div key={imageObj.id}>
+                                                    <img className="w-full h-auto rounded-sm" src={imageObj.image} alt="" />
+                                                </div>
+                                            ))}
+                                    </Carousel>
+                                )}
+                                <div className="">
+                                    <Rate style={{ fontSize: '18px', float: 'right' }} tooltips={desc} onChange={setValue} value={value} />
+                                    {loading ? (
+                                        <>
+                                            <div className="flex flex-col mx-8">
+                                                <Skeleton active paragraph={{ rows: 1 }} style={{ marginBottom: '10px' }} />
+                                                <Skeleton active paragraph={{ rows: 1 }} style={{ marginBottom: '10px' }} />
+                                                <Skeleton active paragraph={{ rows: 1 }} style={{ marginBottom: '10px' }} />
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <p className="text-lg">{item.price} Ksh Per Night</p>
+                                            <p className="text-lg">{item.location}</p>
+                                            <p className="text-lg">{item.beds} Beds</p>
+                                        </>
+                                    )}
+                                </div>
+                                {loading ? (
+                                    <Skeleton.Button
+                                        active
+                                        className="bg-[#95873C] text-white text-center rounded-lg mx-auto px-4 my-4 py-2 text-sm"
+                                    />
+                                ) : (
+                                    <Link
+                                        to={`/details/${item.id}`}
+                                        className="bg-[#95873C] text-white text-center rounded-lg hover:shadow-lg mx-auto px-4 my-4 py-2 text-sm"
+                                    >
+                                        Read More
+                                    </Link>
+                                )}
+                            </div>
+                        ))
+                    )}
+
                 </div>
             </div>
             <div>
@@ -178,34 +212,71 @@ function List(props: ListDataProps) {
                     <p className="text-xl font-bold text-center">Hotel Rooms</p>
                     <hr className="flex-grow border-1 border-black mt-3 mx-4" />
                 </div>
-                <div className="flex flex-row mx-4 mt-2 ">
-                    {hotelRooms.map((item) => (
-                        <div key={item.id} className="flex flex-col rounded-sm hover:shadow-lg hover:bg-gray-100 my-2 mx-8">
-                            <Carousel autoplay className="w-96 h-58 rounded-sm">
-                                {item.airbnb_images &&
-                                    Array.isArray(item.airbnb_images) &&
-                                    item.airbnb_images.map((imageObj) => (
-                                        <div
-                                        //  key={imageObj.id}
-                                        >
-                                            <img className="w-96 h-64 rounded-sm" src={imageObj.image} alt="" />
-                                        </div>
-                                    ))}
-                            </Carousel>
-                            <div className="m-2">
-                                <Rate style={{ fontSize: '18px', float: 'right' }} tooltips={desc} onChange={setValue} value={value} />
-                                <p className="text-lg">{item.price} Ksh Per Night</p>
-                                <p className="text-lg">{item.location}</p>
-                                <p className="text-lg">{item.beds} beds</p>
+                <div className="flex flex-row  mt-2 ">
+                    {hotelRooms.length === 0 ? (
+                        Array.from({ length: 4 }).map((_, index) => (
+                            <div key={index} className="flex flex-col rounded-sm hover:shadow-lg hover:bg-gray-100 my-2 mx-8">
+                                <Skeleton.Image style={{ width: '100%', height: '58px' }} />
+                                <div className="">
+                                    <Rate style={{ fontSize: '18px', float: 'right' }} tooltips={desc} onChange={setValue} value={value} />
+                                    <Skeleton active paragraph={{ rows: 1 }} />
+                                    <Skeleton active paragraph={{ rows: 1 }} />
+                                    <Skeleton active paragraph={{ rows: 1 }} />
+                                </div>
+
                             </div>
-                            <Link
-                                to={`/details/${item.id}`}
-                                className="bg-[#95873C] text-white text-center rounded-lg hover:shadow-lg mx-auto px-4 my-4 py-2 text-sm"
-                            >
-                                Read More
-                            </Link>
-                        </div>
-                    ))}
+                        ))
+                    ) : (
+                        hotelRooms.map((item) => (
+                            <div key={item.id} className="flex flex-col rounded-sm hover:shadow-lg hover:bg-gray-100 my-2 mx-8">
+                                {loading ? (
+                                    <Skeleton.Image style={{ width: '100%', height: '58px' }} />
+                                ) : (
+                                    <Carousel autoplay className="w-96 h-58">
+                                        {item.airbnb_images &&
+                                            Array.isArray(item.airbnb_images) &&
+                                            item.airbnb_images.map((imageObj) => (
+                                                <div key={imageObj.id}>
+                                                    <img className="w-full h-auto rounded-sm" src={imageObj.image} alt="" />
+                                                </div>
+                                            ))}
+                                    </Carousel>
+                                )}
+                                <div className="items-center">
+                                    <Rate style={{ fontSize: '18px', float: 'right' }} tooltips={desc} onChange={setValue} value={value} />
+                                    {loading ? (
+                                        <>
+                                            <div className="flex flex-col mx-8">
+                                                <Skeleton active paragraph={{ rows: 1 }} style={{ marginBottom: '10px' }} />
+                                                <Skeleton active paragraph={{ rows: 1 }} style={{ marginBottom: '10px' }} />
+                                                <Skeleton active paragraph={{ rows: 1 }} style={{ marginBottom: '10px' }} />
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <p className="text-lg">{item.price} Ksh Per Night</p>
+                                            <p className="text-lg">{item.location}</p>
+                                            <p className="text-lg">{item.beds} Beds</p>
+                                        </>
+                                    )}
+                                </div>
+                                {loading ? (
+                                    <Skeleton.Button
+                                        active
+                                        className="bg-[#95873C] text-white text-center rounded-lg mx-auto px-4 my-4 py-2 text-sm"
+                                    />
+                                ) : (
+                                    <Link
+                                        to={`/details/${item.id}`}
+                                        className="bg-[#95873C] text-white text-center rounded-lg hover:shadow-lg mx-auto px-4 my-4 py-2 text-sm"
+                                    >
+                                        Read More
+                                    </Link>
+                                )}
+                            </div>
+                        ))
+                    )}
+
                 </div>
             </div>
 

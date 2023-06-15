@@ -24,6 +24,7 @@ export interface UserData {
   email: string;
   password: string;
   image: string | File | null;
+  phoneNumber:string
   setUserData: React.Dispatch<React.SetStateAction<UserData[]>>;
 }
 
@@ -139,7 +140,7 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/userprofile" element={<UserProfile userData={userData} setUserData={setUserData} bookingData={bookingData} airbnbData={airbnbData} />} />
             <Route path="/details/:id" element={<Detail airbnbData={airbnbData}  bookingData={bookingData} setBookingData={setBookingData} />} />
-            <Route path="/booking" element={<BookingPage bookingData={bookingData}   setBookingData={setBookingData} airbnbData={airbnbData} />} />
+            <Route path="/booking" element={<BookingPage bookingData={bookingData}   setBookingData={setBookingData} airbnbData={airbnbData} userData={userData}/>} />
             <Route path="/userlogin" element={<UserLogin />} />
             <Route path="/usersignup" element={<UserSignup />} />
           </Routes>

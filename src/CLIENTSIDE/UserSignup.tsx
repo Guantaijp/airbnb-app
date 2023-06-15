@@ -1,4 +1,4 @@
-import { Link,useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import React, { useEffect, useRef, useContext } from 'react';
 import lottie, { AnimationItem } from 'lottie-web';
 import animation from '../images/animation.json';
@@ -15,13 +15,14 @@ const UserSignup = () => {
     const [password, setPassword] = React.useState<string>("");
     const [name, setName] = React.useState<string>("");
     const [password_confirmation, setConfirmPassword] = React.useState<string>("");
+    const [phoneNumber, setPhoneNumber] = React.useState<string>("");
 
     const { register } = useContext(UserAuthContext);
 
     const handleRegister = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        register(name, email, password, password_confirmation)
-      };
+        register(name, email, password, password_confirmation, phoneNumber);
+    };
 
     useEffect(() => {
         let anim: AnimationItem | null = null;
@@ -57,7 +58,7 @@ const UserSignup = () => {
                                 <form
                                     onSubmit={(e) => {
                                         handleRegister(e);
-                                        
+
                                     }}
                                     className="w-full space-y-6">
                                     <Input
@@ -70,6 +71,17 @@ const UserSignup = () => {
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         placeholder="Email"
+                                        style={{ border: "1px solid #95873C" }}
+                                    />
+                                    <Input
+                                        value={phoneNumber}
+                                        onChange={(e) => {
+                                            const formattedValue = e.target.value.replace(/[^0-9+]/g, ''); // Remove any characters that are not numbers or '+'
+                                            if (formattedValue.length <= 13) {
+                                                setPhoneNumber(formattedValue);
+                                            }
+                                        }}
+                                        placeholder="Phone Number"
                                         style={{ border: "1px solid #95873C" }}
                                     />
                                     <Input.Password

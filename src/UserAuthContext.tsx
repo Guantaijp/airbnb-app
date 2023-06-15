@@ -8,13 +8,14 @@ export interface User {
     email: string;
     password: string;
     password_confirmation: string;
+    phoneNumber: string;
 }
 
 
 interface UserAuthContextData {
     user: User | undefined;
     login: (email: string, password: string, userType: string) => void;
-    register: (name: string, email: string, password: string, password_confirmation: string) => void;
+    register: (name: string, email: string, password: string, password_confirmation: string , phoneNumber: string) => void;
     logout: () => void;
 }
 
@@ -55,13 +56,13 @@ export default function UserAuthProvider({ children }: { children: React.ReactNo
 
     //Register
 
-    const register = (name: string, email: string, password: string, password_confirmation: string): void => {
+    const register = (name: string, email: string, password: string, password_confirmation: string,phoneNumber: string): void => {
         fetch("http://127.0.0.1:4000/users", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ name, email, password, password_confirmation }),
+            body: JSON.stringify({ name, email, password, password_confirmation , phoneNumber}),
         })
             .then((res) => res.json())
             .then((response) => {

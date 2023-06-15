@@ -6,13 +6,14 @@ import { Select, Space } from 'antd';
 import { MdPhoneIphone, MdCreditCard } from 'react-icons/md';
 import homeImag from '../images/home.jpg';
 import { Link } from 'react-router-dom';
-import { AirbnbData, BookingData, } from '../App';
+import { AirbnbData, BookingData, UserData, } from '../App';
 
 
 
 interface BookingPageProps {
   airbnbData: AirbnbData[];
   bookingData: BookingData[];
+  userData: UserData[];
   setBookingData: React.Dispatch<React.SetStateAction<BookingData[]>>;
 }
 
@@ -22,15 +23,13 @@ const handleChange = (value: string) => {
 const desc = ['terrible', 'bad', 'normal', 'good', 'wonderful'];
 
 function BookingPage(props: BookingPageProps) {
-  const { bookingData, setBookingData, airbnbData } = props;
+  const { bookingData, setBookingData, airbnbData, userData } = props;
   const [value, setValue] = useState();
   const [valueRate, setValueRate] = useState(4);
   const lastBooking = bookingData[bookingData.length - 1];
-  // console.log(lastBooking);
-  // console.log(airbnbData);
 
   // get airbnbData   from the last booking
-  const airbnbDataFromLastBooking = airbnbData.find((airbnb) => airbnb.id === lastBooking.airbnb_id);
+  const airbnbDataFromLastBooking = airbnbData.find((airbnb) => airbnb.id === lastBooking?.airbnb_id);
   // get the first image from the airbnbDataFromLastBooking
   const image = airbnbDataFromLastBooking?.airbnb_images[0].image;
   // console.log(image);
@@ -80,10 +79,36 @@ function BookingPage(props: BookingPageProps) {
     // For example, you could set default values or display an error message.
   }
 
-
-  // const image = lastBooking?.airbnb?.airbnb_images[0].image;
-  // multipy the price by the number of nights
   const estimatedAmount = airbnbPrice * nightDifference;
+
+  // ge logged in user
+  const loggedInUser = userData.find((user) => user.id === lastBooking?.user_id);
+  const loginUserPhoneNumber = loggedInUser?.phoneNumber || '';
+  //remove the first character
+  const mobile = loginUserPhoneNumber.slice(1);
+  // console.log(phone);
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  // post Payment
+  const postPayment = async (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
+
+    setIsLoading(true);
+    const response = await fetch('https://44a6-41-80-117-154.ngrok-free.app/stkpush', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        phoneNumber: mobile,
+        amount: calculatedValue
+      })
+    });
+    const data = await response.json();
+    console.log(data);
+    setIsLoading(false);
+  };
 
 
 
@@ -92,9 +117,9 @@ function BookingPage(props: BookingPageProps) {
       <div className="flex flex-row justify-center items-center mx-auto my-4 max-w-2xl sm:px-6 lg:max-w-7xl   ">
         <div className="flex flex-col mr-4">
           <div className="flex flex-row mr-1">
-            <Link to="/details">
+            {/* <Link to="/details">
               <ArrowLeftOutlined className="text-2xl" />
-            </Link>
+            </Link> */}
             <p className="text-2xl font-bold mt-1">Confirm Your Pay</p>
           </div>
           <p className="text-lg font-bold mt-1">Choose Your Plan</p>
@@ -177,17 +202,22 @@ function BookingPage(props: BookingPageProps) {
             <p className="text-lg text-black my-0">{airbnbPrice} X {nightDifference} nights</p>
             <p className="text-lg text-black my-0">{estimatedAmount}</p>
           </div>
+          <form onSubmit={postPayment}>
+            <div className="flex flex-row justify-between mt-1 mx-12">
+              <p className="text-lg text-black my-0">Payment</p>
+              <p className="text-lg text-black my-0 ml-auto">{calculatedValue}</p>
+            </div>
 
-          <div className="flex flex-row justify-between mt-1 mx-12">
-            <p className="text-lg text-black my-0">Payment</p>
-            <p className="text-lg text-black my-0 ml-auto">{calculatedValue}</p>
-          </div>
-
-          <div className="flex flex-row justify-center">
-            <button className="bg-[#95873C] text-white font-bold py-2 px-4 rounded my-2">
-              Pay Now
-            </button>
-          </div>
+            <div className="flex flex-row justify-center">
+              <button
+                type="submit"
+                className="bg-[#95873C] text-white font-bold py-2 px-4 rounded my-2"
+                disabled={isLoading}
+              >
+                {isLoading ? 'Loading...' : 'Pay Now'}
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
