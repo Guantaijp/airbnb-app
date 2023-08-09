@@ -1,6 +1,6 @@
 import { BellFilled, MailOutlined } from "@ant-design/icons";
 import { Badge, Drawer, List, Space, Dropdown, Menu } from "antd";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Profile from "../images/download.jpeg";
 import { Link } from "react-router-dom";
 import { OwnerData } from "../ADMINSIDES/pages/Admin";

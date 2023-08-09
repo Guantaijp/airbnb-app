@@ -95,7 +95,7 @@ function BookingPage(props: BookingPageProps) {
     e.preventDefault();
 
     setIsLoading(true);
-    const response = await fetch('https://44a6-41-80-117-154.ngrok-free.app/stkpush', {
+    const response = await fetch('https://a173-41-80-117-192.ngrok-free.app/stkpush', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
