@@ -9,7 +9,7 @@ module.exports = {
         sm: '100%',
         md: '100%',
         lg: '1024px',
-      }, 
+      },
     },
   },
   plugins: [],
